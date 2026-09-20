@@ -149,13 +149,15 @@ body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink
     <div class="customer-found" id="customerFound">
       <div class="customer-name" id="foundName">Rahul Sharma</div>
       <div class="customer-info" id="foundInfo">98XXXXXX21 · Pune</div>
-      <div class="customer-info">Previous Purchase: Splendor Plus · 2024</div>
+      <div class="customer-info" id="foundAddress">Address: —</div>
+      <div class="customer-info" id="foundStatus">Previous Purchase: Splendor Plus · 2024</div>
     </div>
   </div>
   <div id="newCustomer" class="hide">
     <div class="input-group"><label>Customer Name</label><input class="input" id="newName" placeholder="Enter full name"></div>
     <div class="input-group"><label>Mobile Number</label><input class="input" id="newMobile" placeholder="10 digit mobile number" maxlength="10"></div>
     <div class="input-group"><label>City</label><input class="input" id="newCity" placeholder="City"></div>
+    <div class="input-group"><label>Address</label><input class="input" id="newAddress" placeholder="House no, street, area"></div>
     <button class="primary-btn" onclick="createCustomer()">Create Customer</button>
   </div>
 </div>
@@ -379,9 +381,9 @@ function getCustomers(){
   let list = JSON.parse(localStorage.getItem('hero_customers')||'null');
   if(!list){
     list = [
-      {name:'Rahul Sharma',mobile:'9812345621',city:'Pune'},
-      {name:'Priya Deshmukh',mobile:'9876501234',city:'Pune'},
-      {name:'Sanjay Patil',mobile:'9765432109',city:'Nashik'}
+      {name:'Rahul Sharma',mobile:'9812345621',city:'Pune',address:'12 FC Road, Shivajinagar'},
+      {name:'Priya Deshmukh',mobile:'9876501234',city:'Pune',address:'45 Baner Road, Baner'},
+      {name:'Sanjay Patil',mobile:'9765432109',city:'Nashik',address:'8 College Road, Nashik'}
     ];
     localStorage.setItem('hero_customers',JSON.stringify(list));
   }
@@ -471,10 +473,11 @@ function searchCustomer(){
   const found=document.getElementById('customerFound');
   if(mobile.length>=10){
     const match=getCustomers().find(c=>c.mobile===mobile);
-    currentCustomer = match || {name:'New Walk-in',mobile:mobile,city:'—'};
+    currentCustomer = match || {name:'New Walk-in',mobile:mobile,city:'—',address:'—'};
     document.getElementById('foundName').textContent=currentCustomer.name;
     document.getElementById('foundInfo').textContent=mobile.slice(0,2)+'XXXXXX'+mobile.slice(-2)+' · '+currentCustomer.city;
-    document.querySelector('#customerFound .customer-info:last-child').textContent =
+    document.getElementById('foundAddress').textContent='Address: '+(currentCustomer.address||'—');
+    document.getElementById('foundStatus').textContent =
       match ? 'Registered customer' : 'No previous record — will be saved as new';
     found.style.display='block';
   }else{
@@ -485,10 +488,11 @@ function createCustomer(){
   const name=document.getElementById('newName').value.trim();
   const mobile=document.getElementById('newMobile').value.trim();
   const city=document.getElementById('newCity').value.trim();
+  const address=document.getElementById('newAddress').value.trim();
   if(!name||mobile.length<10){ toast('Enter name and a valid 10 digit mobile'); return; }
   const list=getCustomers();
-  if(!list.some(c=>c.mobile===mobile)){ list.unshift({name,mobile,city:city||'—'}); saveCustomers(list); }
-  currentCustomer={name,mobile,city:city||'—'};
+  if(!list.some(c=>c.mobile===mobile)){ list.unshift({name,mobile,city:city||'—',address:address||'—'}); saveCustomers(list); }
+  currentCustomer={name,mobile,city:city||'—',address:address||'—'};
   toast('Customer '+name+' created');
   document.querySelector('.customer-tab').click();
   document.getElementById('mobile').value=mobile;
@@ -500,7 +504,7 @@ function renderCustomersList(){
   const el=document.getElementById('customersList');
   el.innerHTML = list.length ? list.map(c=>`
     <div class="customer-row">
-      <div><div class="cname">${c.name}</div><div class="cmeta">${c.mobile} · ${c.city}</div></div>
+      <div><div class="cname">${c.name}</div><div class="cmeta">${c.mobile} · ${c.city}</div><div class="cmeta">${c.address||'—'}</div></div>
       <button class="pick-btn" onclick='pickCustomer(${JSON.stringify(c.mobile)})'>Use</button>
     </div>`).join('') : '<div style="font-size:12px;color:var(--gray);padding:10px 0;">No customers found.</div>';
 }
@@ -692,7 +696,8 @@ function generatePDF(){
   doc.setFontSize(10); doc.setTextColor(60,60,60);
   doc.text('Name: '+data.customer.name, 14, y); y+=6;
   doc.text('Mobile: '+data.customer.mobile, 14, y); y+=6;
-  doc.text('City: '+(data.customer.city||'—'), 14, y); y+=10;
+  doc.text('City: '+(data.customer.city||'—'), 14, y); y+=6;
+  doc.text('Address: '+(data.customer.address||'—'), 14, y); y+=10;
 
   doc.setFontSize(11); doc.setTextColor(30,30,30);
   doc.text('Vehicles', 14, y); y+=7;
