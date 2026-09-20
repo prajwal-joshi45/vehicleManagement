@@ -5,3825 +5,1803 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>Vehicle Estimate App</title>
+<title>Hero Dealership Sales</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-
-    :root {
-        --primary: #0d6efd;
-        --primary-dark: #0958c7;
-        --success: #198754;
-        --danger: #dc3545;
-        --warning: #f59f00;
-        --bg: #f5f7fb;
-        --card: #ffffff;
-        --border: #e2e6ec;
-        --text: #20242a;
-        --muted: #6c757d;
-        --radius: 14px;
-    }
-
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-                     Roboto, Arial, sans-serif;
-        background: var(--bg);
-        color: var(--text);
-    }
-
-    button,
-    input,
-    select,
-    textarea {
-        font-family: inherit;
-    }
-
-    button {
-        cursor: pointer;
-    }
-
-    /* =========================
-       APP
-    ========================= */
-
-    .app {
-        max-width: 480px;
-        margin: auto;
-        min-height: 100vh;
-        background: var(--bg);
-        position: relative;
-        padding-bottom: 75px;
-    }
-
-    /* =========================
-       TOP BAR
-    ========================= */
-
-    .topbar {
-        height: 62px;
-        background: white;
-        border-bottom: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 17px;
-        position: sticky;
-        top: 0;
-        z-index: 50;
-    }
-
-    .topbar-title {
-        font-size: 19px;
-        font-weight: 700;
-    }
-
-    .icon-btn {
-        width: 38px;
-        height: 38px;
-        border: none;
-        background: transparent;
-        border-radius: 10px;
-        font-size: 21px;
-        color: #333;
-    }
-
-    .icon-btn:hover {
-        background: #f0f2f5;
-    }
-
-    /* =========================
-       SCREEN
-    ========================= */
-
-    .screen {
-        display: none;
-        padding: 15px;
-    }
-
-    .screen.active {
-        display: block;
-    }
-
-    /* =========================
-       SEARCH
-    ========================= */
-
-    .search-box {
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: 11px;
-        height: 46px;
-        display: flex;
-        align-items: center;
-        padding: 0 12px;
-        margin-bottom: 11px;
-    }
-
-    .search-box span {
-        font-size: 18px;
-        color: #777;
-        margin-right: 8px;
-    }
-
-    .search-box input {
-        width: 100%;
-        border: none;
-        outline: none;
-        font-size: 14px;
-    }
-
-    /* =========================
-       FILTER CHIPS
-    ========================= */
-
-    .filter-row {
-        display: flex;
-        gap: 7px;
-        overflow-x: auto;
-        padding-bottom: 4px;
-    }
-
-    .filter-chip {
-        white-space: nowrap;
-        background: white;
-        border: 1px solid var(--border);
-        padding: 9px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-    }
-
-    .filter-chip.active {
-        color: var(--primary);
-        border-color: var(--primary);
-        background: #edf5ff;
-    }
-
-    /* =========================
-       ESTIMATE CARD
-    ========================= */
-
-    .estimate-card {
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 14px;
-        margin-top: 10px;
-        position: relative;
-        box-shadow: 0 2px 5px rgba(0,0,0,.025);
-    }
-
-    .estimate-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .estimate-no {
-        font-weight: 700;
-        font-size: 14px;
-    }
-
-    .status {
-        font-size: 11px;
-        padding: 5px 9px;
-        border-radius: 7px;
-        font-weight: 600;
-    }
-
-    .status.draft {
-        background: #e9ecef;
-        color: #495057;
-    }
-
-    .status.pending {
-        background: #fff3cd;
-        color: #856404;
-    }
-
-    .status.completed {
-        background: #d1e7dd;
-        color: #0f5132;
-    }
-
-    .customer-name {
-        margin-top: 8px;
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    .vehicle-name {
-        font-size: 13px;
-        color: var(--muted);
-        margin-top: 3px;
-    }
-
-    .chassis {
-        font-size: 11px;
-        color: #777;
-        margin-top: 5px;
-    }
-
-    .estimate-bottom {
-        display: flex;
-        justify-content: space-between;
-        align-items: end;
-        margin-top: 10px;
-    }
-
-    .estimate-date {
-        color: #777;
-        font-size: 11px;
-    }
-
-    .estimate-amount {
-        font-weight: 700;
-        font-size: 15px;
-    }
-
-    .arrow {
-        position: absolute;
-        right: 12px;
-        top: 52%;
-        color: #777;
-        font-size: 20px;
-    }
-
-    /* =========================
-       FAB
-    ========================= */
-
-    .fab {
-        position: fixed;
-        right: calc(50% - 220px);
-        bottom: 82px;
-        width: 55px;
-        height: 55px;
-        border-radius: 50%;
-        border: none;
-        background: var(--primary);
-        color: white;
-        font-size: 25px;
-        box-shadow: 0 5px 20px rgba(13,110,253,.3);
-        z-index: 40;
-    }
-
-    @media(max-width:480px) {
-        .fab {
-            right: 20px;
-        }
-    }
-
-    /* =========================
-       BOTTOM NAV
-    ========================= */
-
-    .bottom-nav {
-        position: fixed;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: min(480px,100%);
-        height: 68px;
-        background: white;
-        border-top: 1px solid var(--border);
-        display: grid;
-        grid-template-columns: repeat(4,1fr);
-        z-index: 100;
-    }
-
-    .nav-item {
-        border: none;
-        background: transparent;
-        color: #777;
-        font-size: 10px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 4px;
-    }
-
-    .nav-item span:first-child {
-        font-size: 20px;
-    }
-
-    .nav-item.active {
-        color: var(--primary);
-        font-weight: 600;
-    }
-
-    /* =========================
-       DETAIL
-    ========================= */
-
-    .page-title {
-        font-size: 21px;
-        font-weight: 700;
-        margin-bottom: 4px;
-    }
-
-    .page-subtitle {
-        color: #777;
-        font-size: 12px;
-        margin-bottom: 15px;
-    }
-
-    .info-card {
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 14px;
-        margin-bottom: 12px;
-    }
-
-    .info-row {
-        display: flex;
-        align-items: center;
-        gap: 11px;
-        padding: 11px 0;
-        border-bottom: 1px solid #eee;
-    }
-
-    .info-row:last-child {
-        border-bottom: none;
-    }
-
-    .info-icon {
-        width: 30px;
-        text-align: center;
-        font-size: 18px;
-    }
-
-    .info-label {
-        color: #777;
-        font-size: 10px;
-    }
-
-    .info-value {
-        font-size: 13px;
-        font-weight: 500;
-        margin-top: 2px;
-    }
-
-    .section-title {
-        font-size: 14px;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
-
-    /* =========================
-       BUTTONS
-    ========================= */
-
-    .button-row {
-        display: grid;
-        grid-template-columns: repeat(3,1fr);
-        gap: 7px;
-        margin-top: 15px;
-    }
-
-    .btn {
-        min-height: 42px;
-        border-radius: 9px;
-        border: 1px solid var(--border);
-        padding: 8px 10px;
-        background: white;
-        font-size: 12px;
-        font-weight: 600;
-    }
-
-    .btn-primary {
-        background: var(--primary);
-        color: white;
-        border-color: var(--primary);
-    }
-
-    .btn-success {
-        background: var(--success);
-        color: white;
-        border-color: var(--success);
-    }
-
-    .btn-danger {
-        background: var(--danger);
-        color: white;
-        border-color: var(--danger);
-    }
-
-    .btn-outline {
-        background: white;
-        color: var(--primary);
-        border-color: var(--primary);
-    }
-
-    .full-btn {
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    /* =========================
-       FORM
-    ========================= */
-
-    .form-section {
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 14px;
-        margin-bottom: 12px;
-    }
-
-    .form-section-header {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 14px;
-        font-weight: 700;
-        margin-bottom: 14px;
-    }
-
-    .form-group {
-        margin-bottom: 12px;
-    }
-
-    .form-group label {
-        display: block;
-        font-size: 11px;
-        font-weight: 600;
-        margin-bottom: 5px;
-    }
-
-    .form-control,
-    .form-select,
-    textarea {
-        width: 100%;
-        border: 1px solid #d7dce2;
-        background: white;
-        border-radius: 8px;
-        padding: 11px;
-        outline: none;
-        font-size: 13px;
-    }
-
-    .form-control:focus,
-    .form-select:focus,
-    textarea:focus {
-        border-color: var(--primary);
-    }
-
-    .form-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-    }
-
-    .form-grid-3 {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 8px;
-    }
-
-    .input-with-button {
-        display: flex;
-        gap: 6px;
-    }
-
-    .input-with-button select {
-        flex: 1;
-    }
-
-    .plus-btn {
-        width: 40px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        background: white;
-        color: var(--primary);
-        font-size: 18px;
-    }
-
-    /* =========================
-       ITEM CARDS
-    ========================= */
-
-    .item-card {
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 11px;
-        margin-top: 9px;
-    }
-
-    .item-header {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .item-title {
-        font-weight: 700;
-        font-size: 13px;
-    }
-
-    .item-description {
-        font-size: 11px;
-        color: #777;
-        margin-top: 3px;
-    }
-
-    .item-meta {
-        display: grid;
-        grid-template-columns: repeat(3,1fr);
-        margin-top: 10px;
-        gap: 5px;
-    }
-
-    .meta-box {
-        background: #f7f8fa;
-        border-radius: 7px;
-        padding: 7px;
-        text-align: center;
-    }
-
-    .meta-label {
-        color: #777;
-        font-size: 9px;
-    }
-
-    .meta-value {
-        font-size: 11px;
-        font-weight: 600;
-        margin-top: 2px;
-    }
-
-    .delete-small {
-        border: none;
-        background: transparent;
-        color: var(--danger);
-        font-size: 16px;
-    }
-
-    /* =========================
-       TOTALS
-    ========================= */
-
-    .total-row {
-        display: flex;
-        justify-content: space-between;
-        padding: 8px 0;
-        font-size: 13px;
-    }
-
-    .total-row strong {
-        font-size: 14px;
-    }
-
-    .grand-total {
-        border-top: 1px solid var(--border);
-        margin-top: 8px;
-        padding-top: 13px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .grand-total span {
-        color: var(--primary);
-        font-size: 21px;
-        font-weight: 800;
-    }
-
-    /* =========================
-       FILTER SCREEN
-    ========================= */
-
-    .filter-screen {
-        background: white;
-        min-height: calc(100vh - 62px);
-    }
-
-    .filter-screen .form-section {
-        border: none;
-        padding: 0;
-    }
-
-    /* =========================
-       DRAWER
-    ========================= */
-
-    .overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,.4);
-        z-index: 200;
-    }
-
-    .overlay.show {
-        display: block;
-    }
-
-    .drawer {
-        position: fixed;
-        top: 0;
-        left: -310px;
-        width: 290px;
-        height: 100vh;
-        background: white;
-        z-index: 210;
-        transition: .25s;
-        padding: 20px;
-    }
-
-    .drawer.show {
-        left: 0;
-    }
-
-    .profile {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .avatar {
-        width: 48px;
-        height: 48px;
-        background: #e9ecef;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-    }
-
-    .profile-name {
-        font-weight: 700;
-        font-size: 14px;
-    }
-
-    .profile-email {
-        color: #777;
-        font-size: 11px;
-    }
-
-    .drawer-item {
-        display: flex;
-        gap: 13px;
-        align-items: center;
-        padding: 13px 10px;
-        margin-top: 6px;
-        border-radius: 9px;
-        font-size: 13px;
-    }
-
-    .drawer-item.active {
-        color: var(--primary);
-        background: #edf5ff;
-        font-weight: 600;
-    }
-
-    /* =========================
-       NOTIFICATIONS
-    ========================= */
-
-    .notification {
-        display: flex;
-        gap: 10px;
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 12px;
-        margin-bottom: 9px;
-    }
-
-    .notification-icon {
-        width: 35px;
-        height: 35px;
-        background: #edf5ff;
-        color: var(--primary);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .notification-title {
-        font-size: 12px;
-        font-weight: 700;
-    }
-
-    .notification-text {
-        font-size: 11px;
-        color: #777;
-        margin-top: 3px;
-    }
-
-    .notification-time {
-        font-size: 9px;
-        color: #999;
-        margin-top: 4px;
-    }
-
-    /* =========================
-       MODAL
-    ========================= */
-
-    .modal {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,.45);
-        z-index: 300;
-        align-items: flex-end;
-        justify-content: center;
-    }
-
-    .modal.show {
-        display: flex;
-    }
-
-    .modal-content {
-        background: white;
-        width: min(480px,100%);
-        max-height: 92vh;
-        overflow-y: auto;
-        border-radius: 18px 18px 0 0;
-        padding: 18px;
-        animation: slideUp .25s ease;
-    }
-
-    @keyframes slideUp {
-        from {
-            transform: translateY(100%);
-        }
-        to {
-            transform: translateY(0);
-        }
-    }
-
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 18px;
-    }
-
-    .modal-title {
-        font-size: 17px;
-        font-weight: 700;
-    }
-
-    .close {
-        border: none;
-        background: #f1f3f5;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        font-size: 17px;
-    }
-
-    /* =========================
-       TOAST
-    ========================= */
-
-    .toast {
-        position: fixed;
-        bottom: 85px;
-        left: 50%;
-        transform: translateX(-50%) translateY(100px);
-        background: #212529;
-        color: white;
-        padding: 11px 16px;
-        border-radius: 8px;
-        font-size: 12px;
-        z-index: 500;
-        opacity: 0;
-        transition: .3s;
-    }
-
-    .toast.show {
-        transform: translateX(-50%) translateY(0);
-        opacity: 1;
-    }
-
-    /* =========================
-       EMPTY
-    ========================= */
-
-    .empty {
-        text-align: center;
-        padding: 60px 20px;
-        color: #888;
-    }
-
-    .empty-icon {
-        font-size: 45px;
-        margin-bottom: 10px;
-    }
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f3f5f8;
+    color:#1f2937;
+    max-width:480px;
+    margin:auto;
+}
+
+/* APP HEADER */
+
+.app-header{
+    background:#e31837;
+    color:#fff;
+    padding:16px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.header-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.header-title{
+    font-size:19px;
+    font-weight:700;
+}
+
+.header-subtitle{
+    font-size:11px;
+    opacity:.85;
+    margin-top:3px;
+}
+
+.header-icon{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#fff;
+    color:#e31837;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+/* CONTENT */
+
+.page{
+    padding:14px;
+    padding-bottom:90px;
+}
+
+.section{
+    margin-bottom:16px;
+}
+
+.section-title{
+    font-size:14px;
+    font-weight:700;
+    margin-bottom:9px;
+    color:#111827;
+}
+
+.card{
+    background:#fff;
+    border-radius:14px;
+    padding:14px;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+
+/* CUSTOMER */
+
+.customer-tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-bottom:12px;
+}
+
+.customer-tab{
+    padding:11px;
+    border:1px solid #ddd;
+    border-radius:9px;
+    background:#fff;
+    text-align:center;
+    font-size:13px;
+    cursor:pointer;
+}
+
+.customer-tab.active{
+    background:#e31837;
+    color:white;
+    border-color:#e31837;
+}
+
+.input-group{
+    margin-bottom:10px;
+}
+
+.input-group label{
+    font-size:11px;
+    color:#6b7280;
+    display:block;
+    margin-bottom:5px;
+}
+
+.input{
+    width:100%;
+    border:1px solid #d8dde5;
+    border-radius:9px;
+    padding:11px;
+    font-size:13px;
+    outline:none;
+}
+
+.input:focus{
+    border-color:#e31837;
+}
+
+.customer-found{
+    display:none;
+    background:#f0fdf4;
+    border:1px solid #bbf7d0;
+    padding:11px;
+    border-radius:10px;
+}
+
+.customer-name{
+    font-weight:700;
+    font-size:14px;
+}
+
+.customer-info{
+    font-size:11px;
+    color:#4b5563;
+    margin-top:4px;
+}
+
+/* QUICK ACTIONS */
+
+.quick-actions{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+}
+
+.quick-action{
+    background:white;
+    border-radius:12px;
+    padding:10px 4px;
+    text-align:center;
+    font-size:10px;
+    box-shadow:0 2px 7px rgba(0,0,0,.05);
+}
+
+.quick-icon{
+    font-size:20px;
+    margin-bottom:5px;
+}
+
+/* VEHICLE */
+
+.vehicle-list{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding-bottom:4px;
+}
+
+.vehicle-card{
+    min-width:185px;
+    background:#fff;
+    border-radius:14px;
+    padding:10px;
+    border:1px solid #e5e7eb;
+}
+
+.vehicle-card.selected{
+    border:2px solid #e31837;
+}
+
+.vehicle-image{
+    height:90px;
+    border-radius:10px;
+    background:#eef1f5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    color:#9ca3af;
+    margin-bottom:9px;
+}
+
+.vehicle-name{
+    font-weight:700;
+    font-size:14px;
+}
+
+.vehicle-variant{
+    font-size:11px;
+    color:#6b7280;
+    margin-top:3px;
+}
+
+.vehicle-price{
+    font-weight:bold;
+    margin-top:7px;
+    font-size:13px;
+}
+
+.select-btn{
+    width:100%;
+    border:none;
+    background:#111827;
+    color:#fff;
+    padding:9px;
+    border-radius:8px;
+    margin-top:9px;
+    font-size:11px;
+}
+
+/* SELECTED VEHICLES */
+
+.selected-vehicle{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:11px 0;
+    border-bottom:1px solid #eee;
+}
+
+.selected-left{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.vehicle-thumb{
+    width:50px;
+    height:42px;
+    border-radius:7px;
+    background:#edf0f3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:9px;
+}
+
+.selected-name{
+    font-size:12px;
+    font-weight:700;
+}
+
+.selected-price{
+    font-size:11px;
+    color:#6b7280;
+}
+
+.remove{
+    color:#e31837;
+    font-size:12px;
+    cursor:pointer;
+}
+
+/* OPTIONS */
+
+.option-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+}
+
+.option-card{
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:11px;
+    background:white;
+}
+
+.option-card label{
+    font-size:11px;
+    color:#6b7280;
+}
+
+.option-card strong{
+    display:block;
+    margin-top:5px;
+    font-size:13px;
+}
+
+/* ACCESSORIES */
+
+.accessory{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:10px 0;
+    border-bottom:1px solid #eee;
+}
+
+.accessory input{
+    width:18px;
+    height:18px;
+}
+
+.accessory-name{
+    flex:1;
+    font-size:12px;
+}
+
+.accessory-price{
+    font-size:12px;
+    font-weight:bold;
+}
+
+/* FINANCE */
+
+.emi-box{
+    background:#111827;
+    color:white;
+    border-radius:12px;
+    padding:14px;
+    margin-top:10px;
+}
+
+.emi-label{
+    font-size:10px;
+    opacity:.7;
+}
+
+.emi-value{
+    font-size:22px;
+    font-weight:bold;
+    margin-top:4px;
+}
+
+.emi-row{
+    display:flex;
+    justify-content:space-between;
+    margin-top:10px;
+    font-size:11px;
+}
+
+/* EXCHANGE */
+
+.exchange-toggle{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.switch{
+    width:44px;
+    height:24px;
+    background:#d1d5db;
+    border-radius:20px;
+    position:relative;
+    cursor:pointer;
+}
+
+.switch.active{
+    background:#e31837;
+}
+
+.switch-circle{
+    width:20px;
+    height:20px;
+    background:white;
+    border-radius:50%;
+    position:absolute;
+    top:2px;
+    left:2px;
+    transition:.2s;
+}
+
+.switch.active .switch-circle{
+    left:22px;
+}
+
+/* QUOTATION */
+
+.quote-summary{
+    background:#fff;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 2px 10px rgba(0,0,0,.07);
+}
+
+.quote-header{
+    background:#111827;
+    color:white;
+    padding:14px;
+}
+
+.quote-title{
+    font-size:15px;
+    font-weight:bold;
+}
+
+.quote-number{
+    font-size:10px;
+    opacity:.7;
+    margin-top:3px;
+}
+
+.quote-body{
+    padding:14px;
+}
+
+.amount-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    padding:7px 0;
+}
+
+.amount-row.total{
+    border-top:1px solid #ddd;
+    margin-top:6px;
+    padding-top:12px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+/* STATUS */
+
+.status-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:6px;
+}
+
+.status{
+    padding:9px 3px;
+    border-radius:8px;
+    text-align:center;
+    font-size:9px;
+    border:1px solid #ddd;
+}
+
+.status.active{
+    background:#e31837;
+    color:white;
+    border-color:#e31837;
+}
+
+/* BUTTONS */
+
+.primary-btn{
+    width:100%;
+    background:#e31837;
+    color:white;
+    border:none;
+    padding:13px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:bold;
+    margin-top:9px;
+}
+
+.secondary-btn{
+    width:100%;
+    background:#fff;
+    color:#111827;
+    border:1px solid #ddd;
+    padding:12px;
+    border-radius:10px;
+    font-size:12px;
+    margin-top:8px;
+}
+
+.whatsapp-btn{
+    background:#25D366;
+    color:white;
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:480px;
+    height:67px;
+    background:white;
+    border-top:1px solid #ddd;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    z-index:1000;
+}
+
+.nav-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    font-size:9px;
+    color:#6b7280;
+}
+
+.nav-item.active{
+    color:#e31837;
+    font-weight:bold;
+}
+
+.nav-icon{
+    font-size:18px;
+    margin-bottom:3px;
+}
+
+/* MODAL */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:2000;
+    align-items:flex-end;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:480px;
+    margin:auto;
+    border-radius:20px 20px 0 0;
+    padding:18px;
+    max-height:90vh;
+    overflow:auto;
+}
+
+.modal-title{
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:14px;
+}
+
+.close-btn{
+    float:right;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.hide{
+    display:none;
+}
+
+.badge{
+    display:inline-block;
+    padding:4px 7px;
+    border-radius:5px;
+    background:#fee2e2;
+    color:#b91c1c;
+    font-size:9px;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<!-- HEADER -->
 
-    <!-- =====================================
-         LIST SCREEN
-    ====================================== -->
+<header class="app-header">
 
-    <section id="listScreen" class="screen active">
+    <div class="header-row">
 
-        <div class="topbar" style="margin: -15px -15px 15px;">
-            <button class="icon-btn" onclick="openDrawer()">☰</button>
-
-            <div class="topbar-title">
-                Vehicle Estimates
+        <div>
+            <div class="header-title">
+                Hero Dealership
             </div>
 
-            <button class="icon-btn" onclick="openCreate()">＋</button>
+            <div class="header-subtitle">
+                Sales & Quotation
+            </div>
         </div>
 
-        <div class="search-box">
-            <span>⌕</span>
+        <div class="header-icon">
+            PJ
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="page">
+
+
+<!-- CUSTOMER -->
+
+<section class="section">
+
+<div class="section-title">
+    Customer
+</div>
+
+<div class="card">
+
+    <div class="customer-tabs">
+
+        <div class="customer-tab active"
+             onclick="customerMode('existing',this)">
+            Existing Customer
+        </div>
+
+        <div class="customer-tab"
+             onclick="customerMode('new',this)">
+            + New Customer
+        </div>
+
+    </div>
+
+
+    <div id="existingCustomer">
+
+        <div class="input-group">
+
+            <label>
+                Mobile Number
+            </label>
+
             <input
-                id="searchInput"
-                type="text"
-                placeholder="Search Estimate No, Customer, Vehicle..."
-                oninput="renderEstimates()">
-        </div>
-
-        <div class="filter-row">
-
-            <button
-                class="filter-chip active"
-                onclick="openFilters()">
-                All Status ▾
-            </button>
-
-            <button
-                class="filter-chip"
-                onclick="openFilters()">
-                From Date ▾
-            </button>
-
-            <button
-                class="filter-chip"
-                onclick="openFilters()">
-                To Date ▾
-            </button>
-
-        </div>
-
-        <div id="estimateList"></div>
-
-        <button class="fab" onclick="openCreate()">＋</button>
-
-    </section>
-
-
-    <!-- =====================================
-         FILTER SCREEN
-    ====================================== -->
-
-    <section id="filterScreen" class="screen filter-screen">
-
-        <div class="topbar" style="margin:-15px -15px 20px;">
-
-            <button class="icon-btn" onclick="showScreen('listScreen')">
-                ‹
-            </button>
-
-            <div class="topbar-title">
-                Filters
-            </div>
-
-            <button
-                class="icon-btn"
-                style="font-size:12px;color:#0d6efd;width:auto;"
-                onclick="clearFilters()">
-                Clear All
-            </button>
-
-        </div>
-
-        <div class="form-section">
-
-            <div class="form-group">
-
-                <label>Search</label>
-
-                <input
-                    class="form-control"
-                    id="filterSearch"
-                    placeholder="Estimate No, Customer, Vehicle...">
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Status</label>
-
-                <select class="form-select" id="filterStatus">
-
-                    <option value="">All Status</option>
-                    <option value="draft">Draft</option>
-                    <option value="pending">Pending</option>
-                    <option value="completed">Completed</option>
-
-                </select>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>From Date</label>
-
-                <input
-                    type="date"
-                    class="form-control"
-                    id="filterFrom">
-
-            </div>
-
-            <div class="form-group">
-
-                <label>To Date</label>
-
-                <input
-                    type="date"
-                    class="form-control"
-                    id="filterTo">
-
-            </div>
-
-            <button
-                class="btn btn-primary full-btn"
-                onclick="applyFilters()">
-
-                Apply Filters
-
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================
-         DETAIL SCREEN
-    ====================================== -->
-
-    <section id="detailScreen" class="screen">
-
-        <div class="topbar" style="margin:-15px -15px 15px;">
-
-            <button
-                class="icon-btn"
-                onclick="showScreen('listScreen')">
-                ‹
-            </button>
-
-            <div class="topbar-title">
-                Estimate Details
-            </div>
-
-            <button class="icon-btn">•••</button>
-
-        </div>
-
-        <div id="detailContent"></div>
-
-    </section>
-
-
-    <!-- =====================================
-         CREATE / EDIT SCREEN
-    ====================================== -->
-
-    <section id="formScreen" class="screen">
-
-        <div class="topbar" style="margin:-15px -15px 15px;">
-
-            <button
-                class="icon-btn"
-                onclick="showScreen('listScreen')">
-                ‹
-            </button>
-
-            <div class="topbar-title" id="formTitle">
-                Create New Estimate
-            </div>
-
-            <div style="width:38px;"></div>
+                class="input"
+                id="mobile"
+                placeholder="Enter mobile number"
+                oninput="searchCustomer()">
 
         </div>
 
 
-        <!-- BASIC INFORMATION -->
+        <div class="customer-found" id="customerFound">
 
-        <div class="form-section">
-
-            <div class="form-section-header">
-                ℹ️ Basic Information
+            <div class="customer-name">
+                Rahul Sharma
             </div>
 
-            <div class="form-grid">
-
-                <div class="form-group">
-
-                    <label>Estimate No</label>
-
-                    <input
-                        id="estimateNumber"
-                        class="form-control"
-                        readonly>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Estimate Date</label>
-
-                    <input
-                        id="estimateDate"
-                        type="date"
-                        class="form-control">
-
-                </div>
-
+            <div class="customer-info">
+                98XXXXXX21
+                · Pune
             </div>
 
-            <div class="form-grid">
-
-                <div class="form-group">
-
-                    <label>Status</label>
-
-                    <select
-                        id="estimateStatus"
-                        class="form-select">
-
-                        <option value="draft">Draft</option>
-                        <option value="pending">Pending</option>
-                        <option value="completed">Completed</option>
-
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Employee Name</label>
-
-                    <div class="input-with-button">
-
-                        <select
-                            id="employee"
-                            class="form-select">
-
-                            <option>Suresh Yadav</option>
-                            <option>Rahul Patil</option>
-                            <option>Amit Sharma</option>
-
-                        </select>
-
-                        <button
-                            class="plus-btn"
-                            onclick="openSimpleModal('employee')">
-                            ＋
-                        </button>
-
-                    </div>
-
-                </div>
-
+            <div class="customer-info">
+                Previous Purchase:
+                Splendor Plus · 2024
             </div>
 
         </div>
 
+    </div>
 
-        <!-- CUSTOMER -->
 
-        <div class="form-section">
+    <div id="newCustomer" class="hide">
 
-            <div class="form-section-header">
-                👤 Customer Information
-            </div>
+        <div class="input-group">
 
-            <div class="form-group">
+            <label>
+                Customer Name
+            </label>
 
-                <label>Customer</label>
-
-                <div class="input-with-button">
-
-                    <select
-                        id="customer"
-                        class="form-select"
-                        onchange="customerChanged()">
-
-                        <option value="">Select Customer</option>
-                        <option value="Rajesh Sharma">
-                            Rajesh Sharma
-                        </option>
-                        <option value="Priya Patel">
-                            Priya Patel
-                        </option>
-                        <option value="Amit Kumar">
-                            Amit Kumar
-                        </option>
-
-                    </select>
-
-                    <button
-                        class="plus-btn"
-                        onclick="openSimpleModal('customer')">
-                        ＋
-                    </button>
-
-                </div>
-
-            </div>
-
-            <div class="form-grid">
-
-                <div class="form-group">
-
-                    <label>Phone</label>
-
-                    <input
-                        id="customerPhone"
-                        class="form-control"
-                        readonly>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Email</label>
-
-                    <input
-                        id="customerEmail"
-                        class="form-control"
-                        readonly>
-
-                </div>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Address</label>
-
-                <textarea
-                    id="customerAddress"
-                    rows="2"
-                    readonly></textarea>
-
-            </div>
+            <input class="input"
+                   placeholder="Enter full name">
 
         </div>
 
+        <div class="input-group">
 
-        <!-- VEHICLE -->
+            <label>
+                Mobile Number
+            </label>
 
-        <div class="form-section">
-
-            <div class="form-section-header">
-
-                🚗 Vehicle Information
-
-                <button
-                    class="plus-btn"
-                    style="margin-left:auto;"
-                    onclick="openVehicleModal()">
-                    ＋
-                </button>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Vehicle Registration No</label>
-
-                <select
-                    id="vehicle"
-                    class="form-select"
-                    onchange="vehicleChanged()">
-
-                    <option value="">
-                        Select Vehicle
-                    </option>
-
-                    <option value="MH-15-AB-1234">
-                        MH-15-AB-1234
-                    </option>
-
-                    <option value="MH-12-CD-5678">
-                        MH-12-CD-5678
-                    </option>
-
-                    <option value="RJ-14-CT-1234">
-                        RJ-14-CT-1234
-                    </option>
-
-                </select>
-
-            </div>
-
-            <div class="form-grid">
-
-                <div class="form-group">
-
-                    <label>Make & Model</label>
-
-                    <input
-                        id="vehicleModel"
-                        class="form-control"
-                        readonly>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Manufacturing Year</label>
-
-                    <input
-                        id="vehicleYear"
-                        class="form-control"
-                        readonly>
-
-                </div>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Chassis No</label>
-
-                <input
-                    id="chassisNo"
-                    class="form-control"
-                    readonly>
-
-            </div>
+            <input class="input"
+                   placeholder="10 digit mobile number">
 
         </div>
 
+        <div class="input-group">
 
-        <!-- PARTS -->
+            <label>
+                City
+            </label>
 
-        <div class="form-section">
-
-            <div class="form-section-header">
-                ⚙️ Parts Items
-            </div>
-
-            <div class="form-group">
-
-                <label>Part Number</label>
-
-                <select
-                    id="partNo"
-                    class="form-select">
-
-                    <option value="">
-                        Select Part
-                    </option>
-
-                    <option value="BRK-001">
-                        BRK-001 - Front Bumper
-                    </option>
-
-                    <option value="HDL-002">
-                        HDL-002 - Headlight
-                    </option>
-
-                    <option value="FND-003">
-                        FND-003 - Fender
-                    </option>
-
-                </select>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Description</label>
-
-                <input
-                    id="partDescription"
-                    class="form-control"
-                    placeholder="Part description">
-
-            </div>
-
-            <div class="form-grid-3">
-
-                <div class="form-group">
-
-                    <label>Qty</label>
-
-                    <input
-                        id="partQty"
-                        type="number"
-                        value="1"
-                        min="1"
-                        class="form-control">
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>MRP ₹</label>
-
-                    <input
-                        id="partMrp"
-                        type="number"
-                        value="0"
-                        class="form-control">
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>GST %</label>
-
-                    <input
-                        id="partGst"
-                        type="number"
-                        value="18"
-                        class="form-control">
-
-                </div>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Discount %</label>
-
-                <input
-                    id="partDiscount"
-                    type="number"
-                    value="0"
-                    class="form-control">
-
-            </div>
-
-            <button
-                class="btn btn-primary full-btn"
-                onclick="addPart()">
-
-                ＋ Add Part
-
-            </button>
-
-            <div id="partsList"></div>
+            <input class="input"
+                   placeholder="City">
 
         </div>
 
-
-        <!-- LABOR -->
-
-        <div class="form-section">
-
-            <div class="form-section-header">
-                🔧 Labor Items
-            </div>
-
-            <div class="form-group">
-
-                <label>Labor Code</label>
-
-                <select
-                    id="laborCode"
-                    class="form-select">
-
-                    <option value="">
-                        Select Labor Code
-                    </option>
-
-                    <option value="LAB-001">
-                        LAB-001
-                    </option>
-
-                    <option value="LAB-002">
-                        LAB-002
-                    </option>
-
-                </select>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Labor Name</label>
-
-                <input
-                    id="laborName"
-                    class="form-control"
-                    placeholder="Labor description">
-
-            </div>
-
-            <div class="form-grid">
-
-                <div class="form-group">
-
-                    <label>Hours</label>
-
-                    <input
-                        id="laborHours"
-                        type="number"
-                        value="1"
-                        step=".5"
-                        class="form-control">
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Rate ₹</label>
-
-                    <input
-                        id="laborRate"
-                        type="number"
-                        value="0"
-                        class="form-control">
-
-                </div>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>GST %</label>
-
-                <input
-                    id="laborGst"
-                    type="number"
-                    value="18"
-                    class="form-control">
-
-            </div>
-
-            <button
-                class="btn btn-primary full-btn"
-                onclick="addLabor()">
-
-                ＋ Add Labor
-
-            </button>
-
-            <div id="laborList"></div>
-
-        </div>
-
-
-        <!-- INSURANCE -->
-
-        <div class="form-section">
-
-            <div class="form-section-header">
-                🛡️ Insurance Details
-            </div>
-
-            <div class="form-group">
-
-                <label>Insurance Company</label>
-
-                <div class="input-with-button">
-
-                    <select
-                        id="insuranceCompany"
-                        class="form-select">
-
-                        <option>
-                            Select Insurance
-                        </option>
-
-                        <option>Bajaj Allianz</option>
-                        <option>ICICI Lombard</option>
-                        <option>HDFC ERGO</option>
-                        <option>United India Insurance</option>
-
-                    </select>
-
-                    <button
-                        class="plus-btn"
-                        onclick="openSimpleModal('insurance')">
-                        ＋
-                    </button>
-
-                </div>
-
-            </div>
-
-            <div class="form-grid">
-
-                <div class="form-group">
-
-                    <label>Policy No</label>
-
-                    <input
-                        id="policyNo"
-                        class="form-control"
-                        placeholder="Policy number">
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Claim No</label>
-
-                    <input
-                        id="claimNo"
-                        class="form-control"
-                        placeholder="Claim number">
-
-                </div>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Surveyor Name</label>
-
-                <div class="input-with-button">
-
-                    <select
-                        id="surveyor"
-                        class="form-select">
-
-                        <option>Select Surveyor</option>
-                        <option>Rajiv Mehta</option>
-                        <option>Sunil Kumar</option>
-
-                    </select>
-
-                    <button
-                        class="plus-btn"
-                        onclick="openSimpleModal('surveyor')">
-                        ＋
-                    </button>
-
-                </div>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Accident Date</label>
-
-                <input
-                    id="accidentDate"
-                    type="date"
-                    class="form-control">
-
-            </div>
-
-        </div>
-
-
-        <!-- CALCULATIONS -->
-
-        <div class="form-section">
-
-            <div class="form-section-header">
-                🧮 Calculations & Summary
-            </div>
-
-            <div class="total-row">
-                <span>Total Labor</span>
-                <strong id="totalLabor">₹0.00</strong>
-            </div>
-
-            <div class="total-row">
-                <span>Total Parts</span>
-                <strong id="totalParts">₹0.00</strong>
-            </div>
-
-            <div class="total-row">
-                <span>Subtotal</span>
-                <strong id="subtotal">₹0.00</strong>
-            </div>
-
-            <div class="total-row">
-                <span>Parts GST</span>
-                <strong id="partsGstTotal">₹0.00</strong>
-            </div>
-
-            <div class="total-row">
-                <span>Labor GST</span>
-                <strong id="laborGstTotal">₹0.00</strong>
-            </div>
-
-            <div class="total-row">
-                <span>Total GST</span>
-                <strong id="totalGst">₹0.00</strong>
-            </div>
-
-            <hr style="border:none;border-top:1px solid #eee;margin:8px 0;">
-
-            <div class="form-grid">
-
-                <div class="form-group">
-
-                    <label>Surveyor Charges</label>
-
-                    <input
-                        id="surveyorCharges"
-                        type="number"
-                        value="0"
-                        class="form-control"
-                        oninput="calculateTotals()">
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Surveyor Tax %</label>
-
-                    <input
-                        id="surveyorTax"
-                        type="number"
-                        value="18"
-                        class="form-control"
-                        oninput="calculateTotals()">
-
-                </div>
-
-            </div>
-
-            <div class="form-grid">
-
-                <div class="form-group">
-
-                    <label>Depreciation %</label>
-
-                    <input
-                        id="depreciation"
-                        type="number"
-                        value="0"
-                        class="form-control"
-                        oninput="calculateTotals()">
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Salvage Value</label>
-
-                    <input
-                        id="salvage"
-                        type="number"
-                        value="0"
-                        class="form-control"
-                        oninput="calculateTotals()">
-
-                </div>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Deductible Amount</label>
-
-                <input
-                    id="deductible"
-                    type="number"
-                    value="0"
-                    class="form-control"
-                    oninput="calculateTotals()">
-
-            </div>
-
-            <div class="grand-total">
-
-                <b>Final Estimate Amount</b>
-
-                <span id="finalAmount">
-                    ₹0.00
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- SAVE -->
-
-        <button
-            class="btn btn-success full-btn"
-            onclick="saveEstimate('draft')">
-
-            💾 Save as Draft
-
+        <button class="primary-btn">
+            Create Customer
         </button>
 
-        <button
-            class="btn btn-primary full-btn"
-            onclick="saveEstimate('completed')">
+    </div>
 
-            ✓ Save & Complete
+</div>
 
-        </button>
-
-    </section>
+</section>
 
 
-    <!-- =====================================
-         REPORTS SCREEN
-    ====================================== -->
+<!-- QUICK ACTIONS -->
 
-    <section id="reportsScreen" class="screen">
+<section class="section">
 
-        <div class="topbar" style="margin:-15px -15px 15px;">
+<div class="quick-actions">
 
-            <button class="icon-btn">☰</button>
+    <div class="quick-action">
+        <div class="quick-icon">🏍️</div>
+        Test Ride
+    </div>
 
-            <div class="topbar-title">
-                Reports
-            </div>
+    <div class="quick-action">
+        <div class="quick-icon">💰</div>
+        Finance
+    </div>
 
-            <div style="width:38px;"></div>
+    <div class="quick-action">
+        <div class="quick-icon">♻️</div>
+        Exchange
+    </div>
 
-        </div>
+    <div class="quick-action">
+        <div class="quick-icon">📋</div>
+        Follow-up
+    </div>
 
-        <div class="info-card">
+</div>
 
-            <div class="section-title">
-                Estimate Summary
-            </div>
-
-            <div class="total-row">
-                <span>Total Estimates</span>
-                <strong>24</strong>
-            </div>
-
-            <div class="total-row">
-                <span>Draft</span>
-                <strong>5</strong>
-            </div>
-
-            <div class="total-row">
-                <span>Pending</span>
-                <strong>8</strong>
-            </div>
-
-            <div class="total-row">
-                <span>Completed</span>
-                <strong>11</strong>
-            </div>
-
-            <div class="grand-total">
-                <b>Total Estimate Value</b>
-                <span>₹8,42,500</span>
-            </div>
-
-        </div>
-
-    </section>
+</section>
 
 
-    <!-- =====================================
-         NOTIFICATIONS
-    ====================================== -->
+<!-- VEHICLES -->
 
-    <section id="notificationsScreen" class="screen">
+<section class="section">
 
-        <div class="topbar" style="margin:-15px -15px 15px;">
+<div class="section-title">
+    Select Vehicles
+    <span class="badge">Compare up to 4</span>
+</div>
 
-            <button
-                class="icon-btn"
-                onclick="showScreen('listScreen')">
-                ‹
-            </button>
-
-            <div class="topbar-title">
-                Notifications
-            </div>
-
-            <div style="width:38px;"></div>
-
-        </div>
-
-        <div class="notification">
-
-            <div class="notification-icon">🔔</div>
-
-            <div>
-
-                <div class="notification-title">
-                    New estimate created
-                </div>
-
-                <div class="notification-text">
-                    EST-2026-006 has been created.
-                </div>
-
-                <div class="notification-time">
-                    2 min ago
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="notification">
-
-            <div class="notification-icon">✓</div>
-
-            <div>
-
-                <div class="notification-title">
-                    Estimate updated
-                </div>
-
-                <div class="notification-text">
-                    EST-2026-002 has been updated.
-                </div>
-
-                <div class="notification-time">
-                    1 hour ago
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="notification">
-
-            <div class="notification-icon">✓</div>
-
-            <div>
-
-                <div class="notification-title">
-                    Status changed
-                </div>
-
-                <div class="notification-text">
-                    EST-2026-003 marked as Completed.
-                </div>
-
-                <div class="notification-time">
-                    3 hours ago
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
+<div class="vehicle-list">
 
 
-    <!-- =====================================
-         PROFILE
-    ====================================== -->
+<div class="vehicle-card selected">
 
-    <section id="profileScreen" class="screen">
+    <div class="vehicle-image">
+        Vehicle Image
+    </div>
 
-        <div class="topbar" style="margin:-15px -15px 15px;">
+    <div class="vehicle-name">
+        Splendor Plus
+    </div>
 
-            <div class="topbar-title">
-                Profile
-            </div>
+    <div class="vehicle-variant">
+        XTEC 2.0
+    </div>
 
-        </div>
+    <div class="vehicle-price">
+        ₹ 89,000
+    </div>
 
-        <div class="info-card">
+    <button class="select-btn"
+            onclick="selectVehicle('Splendor Plus',89000)">
+        Selected
+    </button>
 
-            <div class="profile">
+</div>
 
-                <div class="avatar">
-                    👤
+
+<div class="vehicle-card">
+
+    <div class="vehicle-image">
+        Vehicle Image
+    </div>
+
+    <div class="vehicle-name">
+        Xtreme 125R
+    </div>
+
+    <div class="vehicle-variant">
+        Disc Variant
+    </div>
+
+    <div class="vehicle-price">
+        ₹ 98,000
+    </div>
+
+    <button class="select-btn"
+            onclick="selectVehicle('Xtreme 125R',98000)">
+        Select
+    </button>
+
+</div>
+
+
+<div class="vehicle-card">
+
+    <div class="vehicle-image">
+        Vehicle Image
+    </div>
+
+    <div class="vehicle-name">
+        Super Splendor
+    </div>
+
+    <div class="vehicle-variant">
+        Disc
+    </div>
+
+    <div class="vehicle-price">
+        ₹ 94,000
+    </div>
+
+    <button class="select-btn"
+            onclick="selectVehicle('Super Splendor',94000)">
+        Select
+    </button>
+
+</div>
+
+
+<div class="vehicle-card">
+
+    <div class="vehicle-image">
+        Vehicle Image
+    </div>
+
+    <div class="vehicle-name">
+        Glamour
+    </div>
+
+    <div class="vehicle-variant">
+        XTEC
+    </div>
+
+    <div class="vehicle-price">
+        ₹ 91,000
+    </div>
+
+    <button class="select-btn"
+            onclick="selectVehicle('Glamour',91000)">
+        Select
+    </button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SELECTED VEHICLES -->
+
+<section class="section">
+
+<div class="section-title">
+    Selected Vehicles
+</div>
+
+<div class="card">
+
+    <div id="selectedVehicles">
+
+        <div class="selected-vehicle">
+
+            <div class="selected-left">
+
+                <div class="vehicle-thumb">
+                    IMAGE
                 </div>
 
                 <div>
 
-                    <div class="profile-name">
-                        Admin User
+                    <div class="selected-name">
+                        Splendor Plus
                     </div>
 
-                    <div class="profile-email">
-                        admin@company.com
+                    <div class="selected-price">
+                        XTEC 2.0
                     </div>
 
                 </div>
 
             </div>
 
-            <div class="drawer-item">
-                ⚙️ Settings
-            </div>
-
-            <div class="drawer-item">
-                🔐 Security
-            </div>
-
-            <div class="drawer-item">
-                🚪 Logout
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================
-         BOTTOM NAV
-    ====================================== -->
-
-    <nav class="bottom-nav">
-
-        <button
-            class="nav-item active"
-            onclick="showScreen('listScreen');setActiveNav(this)">
-            <span>▤</span>
-            <span>Estimates</span>
-        </button>
-
-        <button
-            class="nav-item"
-            onclick="showScreen('reportsScreen');setActiveNav(this)">
-            <span>▥</span>
-            <span>Reports</span>
-        </button>
-
-        <button
-            class="nav-item"
-            onclick="showScreen('notificationsScreen');setActiveNav(this)">
-            <span>♧</span>
-            <span>Notifications</span>
-        </button>
-
-        <button
-            class="nav-item"
-            onclick="showScreen('profileScreen');setActiveNav(this)">
-            <span>♙</span>
-            <span>Profile</span>
-        </button>
-
-    </nav>
-
-</div>
-
-
-<!-- =========================================
-     DRAWER
-========================================= -->
-
-<div id="overlay"
-     class="overlay"
-     onclick="closeDrawer()"></div>
-
-<div id="drawer" class="drawer">
-
-    <div class="profile">
-
-        <div class="avatar">
-            👤
-        </div>
-
-        <div>
-
-            <div class="profile-name">
-                Admin User
-            </div>
-
-            <div class="profile-email">
-                admin@company.com
-            </div>
-
-        </div>
-
-    </div>
-
-    <div
-        class="drawer-item active"
-        onclick="closeDrawer();showScreen('listScreen')">
-        📄 Vehicle Estimates
-    </div>
-
-    <div
-        class="drawer-item"
-        onclick="closeDrawer();showScreen('reportsScreen')">
-        📊 Reports
-    </div>
-
-    <div
-        class="drawer-item"
-        onclick="closeDrawer();showScreen('notificationsScreen')">
-        🔔 Notifications
-    </div>
-
-    <div
-        class="drawer-item"
-        onclick="closeDrawer();showScreen('profileScreen')">
-        ⚙️ Settings
-    </div>
-
-    <div class="drawer-item">
-        🚪 Logout
-    </div>
-
-</div>
-
-
-<!-- =========================================
-     SIMPLE MODAL
-========================================= -->
-
-<div id="simpleModal" class="modal">
-
-    <div class="modal-content">
-
-        <div class="modal-header">
-
-            <div
-                class="modal-title"
-                id="simpleModalTitle">
-                Add New
-            </div>
-
-            <button
-                class="close"
-                onclick="closeModal('simpleModal')">
+            <div class="remove">
                 ×
-            </button>
+            </div>
 
         </div>
 
-        <div class="form-group">
+    </div>
 
-            <label id="simpleModalLabel">
-                Enter Value
-            </label>
+</div>
 
-            <input
-                id="simpleModalInput"
-                class="form-control"
-                placeholder="Enter value">
+</section>
 
-        </div>
 
-        <button
-            class="btn btn-primary full-btn"
-            onclick="saveSimpleModal()">
+<!-- PURCHASE OPTIONS -->
 
-            Save
+<section class="section">
 
-        </button>
+<div class="section-title">
+    Purchase Details
+</div>
+
+<div class="card">
+
+<div class="option-grid">
+
+    <div class="option-card">
+
+        <label>Purchase Type</label>
+
+        <strong>
+            Retail
+        </strong>
+
+    </div>
+
+    <div class="option-card">
+
+        <label>Usage</label>
+
+        <strong>
+            Personal
+        </strong>
+
+    </div>
+
+    <div class="option-card">
+
+        <label>Registration</label>
+
+        <strong>
+            Maharashtra
+        </strong>
+
+    </div>
+
+    <div class="option-card">
+
+        <label>Insurance</label>
+
+        <strong>
+            1 + 5 Years
+        </strong>
+
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ACCESSORIES -->
+
+<section class="section">
+
+<div class="section-title">
+    Accessories
+</div>
+
+<div class="card">
+
+
+<div class="accessory">
+
+<input type="checkbox"
+       checked
+       onchange="calculateQuote()">
+
+<div class="accessory-name">
+    Seat Cover
+</div>
+
+<div class="accessory-price">
+    ₹ 1,200
+</div>
+
+</div>
+
+
+<div class="accessory">
+
+<input type="checkbox"
+       onchange="calculateQuote()">
+
+<div class="accessory-name">
+    Leg Guard
+</div>
+
+<div class="accessory-price">
+    ₹ 1,800
+</div>
+
+</div>
+
+
+<div class="accessory">
+
+<input type="checkbox"
+       onchange="calculateQuote()">
+
+<div class="accessory-name">
+    Mobile Holder
+</div>
+
+<div class="accessory-price">
+    ₹ 800
+</div>
+
+</div>
+
+
+<div class="accessory">
+
+<input type="checkbox"
+       onchange="calculateQuote()">
+
+<div class="accessory-name">
+    Floor Mat
+</div>
+
+<div class="accessory-price">
+    ₹ 700
+</div>
+
+</div>
+
+
+<button class="secondary-btn"
+        onclick="openModal('accessoryModal')">
+    + Add More Accessories
+</button>
+
+</div>
+
+</section>
+
+
+<!-- EXCHANGE -->
+
+<section class="section">
+
+<div class="section-title">
+    Exchange Vehicle
+</div>
+
+<div class="card">
+
+<div class="exchange-toggle">
+
+<div>
+
+<strong style="font-size:13px;">
+    Customer wants exchange
+</strong>
+
+<div style="font-size:10px;color:#777;margin-top:3px;">
+    Add old vehicle for valuation
+</div>
+
+</div>
+
+<div class="switch"
+     id="exchangeSwitch"
+     onclick="toggleExchange()">
+
+<div class="switch-circle"></div>
+
+</div>
+
+</div>
+
+
+<div id="exchangeDetails"
+     class="hide"
+     style="margin-top:14px;">
+
+<input class="input"
+       placeholder="Old vehicle registration">
+
+<br><br>
+
+<input class="input"
+       placeholder="Expected exchange value">
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- FINANCE -->
+
+<section class="section">
+
+<div class="section-title">
+    Finance
+</div>
+
+<div class="card">
+
+<div class="option-grid">
+
+    <div class="option-card">
+
+        <label>Finance</label>
+
+        <strong>
+            HDFC / Hero FinCorp
+        </strong>
+
+    </div>
+
+    <div class="option-card">
+
+        <label>Down Payment</label>
+
+        <strong>
+            ₹ 25,000
+        </strong>
 
     </div>
 
 </div>
 
 
-<!-- =========================================
-     VEHICLE MODAL
-========================================= -->
+<div class="emi-box">
 
-<div id="vehicleModal" class="modal">
+<div class="emi-label">
+    Estimated Monthly EMI
+</div>
 
-    <div class="modal-content">
+<div class="emi-value">
+    ₹ 3,250
+</div>
 
-        <div class="modal-header">
+<div class="emi-row">
 
-            <div class="modal-title">
-                Add New Vehicle
-            </div>
+<span>
+    Loan: ₹75,000
+</span>
 
-            <button
-                class="close"
-                onclick="closeModal('vehicleModal')">
-                ×
-            </button>
+<span>
+    36 Months
+</span>
 
-        </div>
+</div>
 
-        <div class="form-group">
+</div>
 
-            <label>Customer Name</label>
+<button class="secondary-btn">
+    Check Finance Eligibility
+</button>
 
-            <input
-                id="newVehicleCustomer"
-                class="form-control"
-                value=""
-                readonly>
+</div>
 
-        </div>
+</section>
 
-        <div class="form-grid">
 
-            <div class="form-group">
+<!-- QUOTATION -->
 
-                <label>Registration No</label>
+<section class="section">
 
-                <input
-                    id="newRegNo"
-                    class="form-control"
-                    placeholder="MH-15-AB-1234">
+<div class="section-title">
+    Quotation
+</div>
 
-            </div>
+<div class="quote-summary">
 
-            <div class="form-group">
+<div class="quote-header">
 
-                <label>RTO Code</label>
+<div class="quote-title">
+    Hero MotoCorp Quotation
+</div>
 
-                <input
-                    id="newRto"
-                    class="form-control"
-                    placeholder="MH-15">
-
-            </div>
-
-        </div>
-
-        <div class="form-grid">
-
-            <div class="form-group">
-
-                <label>Make</label>
-
-                <select class="form-select">
-
-                    <option>Select Make</option>
-                    <option>Maruti</option>
-                    <option>Hyundai</option>
-                    <option>Tata</option>
-                    <option>Mahindra</option>
-
-                </select>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Model</label>
-
-                <select class="form-select">
-
-                    <option>Select Model</option>
-                    <option>Swift</option>
-                    <option>Creta</option>
-                    <option>Nexon</option>
-                    <option>XUV700</option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-        <div class="form-grid">
-
-            <div class="form-group">
-
-                <label>Variant</label>
-
-                <select class="form-select">
-
-                    <option>Select Variant</option>
-                    <option>Base</option>
-                    <option>Mid</option>
-                    <option>Top</option>
-
-                </select>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Color</label>
-
-                <select class="form-select">
-
-                    <option>Select Color</option>
-                    <option>White</option>
-                    <option>Black</option>
-                    <option>Red</option>
-                    <option>Blue</option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-        <div class="form-grid">
-
-            <div class="form-group">
-
-                <label>Manufacturing Year</label>
-
-                <select class="form-select">
-
-                    <option>2026</option>
-                    <option>2025</option>
-                    <option>2024</option>
-                    <option>2023</option>
-
-                </select>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Fuel Type</label>
-
-                <select class="form-select">
-
-                    <option>Petrol</option>
-                    <option>Diesel</option>
-                    <option>CNG</option>
-                    <option>Electric</option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-        <div class="form-group">
-
-            <label>Vehicle Type</label>
-
-            <select class="form-select">
-
-                <option>Car</option>
-                <option>Bike</option>
-                <option>SUV</option>
-                <option>Commercial</option>
-
-            </select>
-
-        </div>
-
-        <div class="form-group">
-
-            <label>Chassis No *</label>
-
-            <input
-                id="newChassis"
-                class="form-control"
-                placeholder="Enter chassis number">
-
-        </div>
-
-        <div class="form-group">
-
-            <label>Engine No</label>
-
-            <input
-                class="form-control"
-                placeholder="Enter engine number">
-
-        </div>
-
-        <button
-            class="btn btn-success full-btn"
-            onclick="saveVehicle()">
-
-            Save Vehicle
-
-        </button>
-
-    </div>
+<div class="quote-number">
+    QT-2026-000125
+</div>
 
 </div>
 
 
-<!-- =========================================
-     CUSTOMER MODAL
-========================================= -->
+<div class="quote-body">
 
-<div id="customerModal" class="modal">
 
-    <div class="modal-content">
+<div class="amount-row">
 
-        <div class="modal-header">
+<span>
+    Vehicle Price
+</span>
 
-            <div class="modal-title">
-                Add New Customer
-            </div>
-
-            <button
-                class="close"
-                onclick="closeModal('customerModal')">
-                ×
-            </button>
-
-        </div>
-
-        <div class="form-group">
-
-            <label>Customer Name *</label>
-
-            <input
-                id="newCustomerName"
-                class="form-control"
-                placeholder="Customer name">
-
-        </div>
-
-        <div class="form-grid">
-
-            <div class="form-group">
-
-                <label>Phone Number *</label>
-
-                <input
-                    class="form-control"
-                    placeholder="Phone">
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Mobile Number *</label>
-
-                <input
-                    class="form-control"
-                    placeholder="Mobile">
-
-            </div>
-
-        </div>
-
-        <div class="form-group">
-
-            <label>Email</label>
-
-            <input
-                class="form-control"
-                type="email"
-                placeholder="Email">
-
-        </div>
-
-        <div class="form-group">
-
-            <label>Address</label>
-
-            <textarea rows="2"></textarea>
-
-        </div>
-
-        <div class="section-title">
-            Billing Address
-        </div>
-
-        <div class="form-group">
-
-            <input
-                class="form-control"
-                placeholder="Billing Street">
-
-        </div>
-
-        <div class="form-grid">
-
-            <input
-                class="form-control"
-                placeholder="Billing City">
-
-            <input
-                class="form-control"
-                placeholder="Zip Code">
-
-        </div>
-
-        <div class="section-title" style="margin-top:15px;">
-            Shipping Address
-        </div>
-
-        <div class="form-group">
-
-            <input
-                class="form-control"
-                placeholder="Shipping Street">
-
-        </div>
-
-        <div class="form-grid">
-
-            <input
-                class="form-control"
-                placeholder="Shipping State">
-
-            <input
-                class="form-control"
-                placeholder="Shipping Zip">
-
-        </div>
-
-        <button
-            class="btn btn-primary full-btn"
-            onclick="saveCustomer()">
-
-            Save Customer
-
-        </button>
-
-    </div>
+<strong>
+    ₹ 89,000
+</strong>
 
 </div>
 
 
-<!-- =========================================
-     TOAST
-========================================= -->
+<div class="amount-row">
 
-<div id="toast" class="toast">
-    Saved successfully
+<span>
+    RTO / Registration
+</span>
+
+<strong>
+    ₹ 9,500
+</strong>
+
 </div>
+
+
+<div class="amount-row">
+
+<span>
+    Insurance
+</span>
+
+<strong>
+    ₹ 7,500
+</strong>
+
+</div>
+
+
+<div class="amount-row">
+
+<span>
+    Accessories
+</span>
+
+<strong id="accessoryAmount">
+    ₹ 1,200
+</strong>
+
+</div>
+
+
+<div class="amount-row">
+
+<span>
+    Discount
+</span>
+
+<strong>
+    - ₹ 2,000
+</strong>
+
+</div>
+
+
+<div class="amount-row total">
+
+<span>
+    On-Road Price
+</span>
+
+<span id="totalAmount">
+    ₹ 1,05,200
+</span>
+
+</div>
+
+
+<button class="primary-btn"
+        onclick="generatePDF()">
+
+    📄 Generate PDF Quotation
+
+</button>
+
+
+<button class="primary-btn whatsapp-btn"
+        onclick="sendWhatsApp()">
+
+    WhatsApp Quotation
+
+</button>
+
+
+<button class="secondary-btn">
+
+    Save Quotation
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- LEAD STATUS -->
+
+<section class="section">
+
+<div class="section-title">
+    Lead Status
+</div>
+
+<div class="card">
+
+<div class="status-grid">
+
+<div class="status active">
+    Enquiry
+</div>
+
+<div class="status">
+    Quotation
+</div>
+
+<div class="status">
+    Test Ride
+</div>
+
+<div class="status">
+    Booking
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- FOLLOW UP -->
+
+<section class="section">
+
+<div class="section-title">
+    Follow-up
+</div>
+
+<div class="card">
+
+<div class="input-group">
+
+<label>
+    Next Follow-up
+</label>
+
+<input class="input"
+       type="date">
+
+</div>
+
+<div class="input-group">
+
+<label>
+    Follow-up Remark
+</label>
+
+<input class="input"
+       placeholder="Customer interested in Xtreme 125R...">
+
+</div>
+
+<button class="primary-btn">
+    Save Follow-up
+</button>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- ACCESSORY MODAL -->
+
+<div class="modal"
+     id="accessoryModal">
+
+<div class="modal-box">
+
+<span class="close-btn"
+      onclick="closeModal('accessoryModal')">
+    ×
+</span>
+
+<div class="modal-title">
+    Add Accessories
+</div>
+
+<div class="accessory">
+
+<input type="checkbox">
+
+<div class="accessory-name">
+    Helmet
+</div>
+
+<div class="accessory-price">
+    ₹ 1,500
+</div>
+
+</div>
+
+<div class="accessory">
+
+<input type="checkbox">
+
+<div class="accessory-name">
+    Chrome Kit
+</div>
+
+<div class="accessory-price">
+    ₹ 1,200
+</div>
+
+</div>
+
+<div class="accessory">
+
+<input type="checkbox">
+
+<div class="accessory-name">
+    Saree Guard
+</div>
+
+<div class="accessory-price">
+    ₹ 900
+</div>
+
+</div>
+
+<button class="primary-btn"
+        onclick="closeModal('accessoryModal')">
+
+    Add Selected
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+<div class="nav-item active">
+
+<div class="nav-icon">🏠</div>
+Home
+
+</div>
+
+<div class="nav-item">
+
+<div class="nav-icon">👥</div>
+Customers
+
+</div>
+
+<div class="nav-item">
+
+<div class="nav-icon">➕</div>
+New Sale
+
+</div>
+
+<div class="nav-item">
+
+<div class="nav-icon">📄</div>
+Quotes
+
+</div>
+
+<div class="nav-item">
+
+<div class="nav-icon">📊</div>
+Reports
+
+</div>
+
+</nav>
 
 
 <script>
 
-/* =========================================
-   DATA
-========================================= */
-
-let estimates = [
-
+let selectedVehicles = [
     {
-        id: 1,
-        no: "EST-2026-001",
-        customer: "Rajesh Sharma",
-        vehicle: "Maruti Swift",
-        reg: "MH-15-AB-1234",
-        chassis: "MA3ER1234567890",
-        employee: "Suresh Yadav",
-        insurance: "Bajaj Allianz",
-        date: "2026-03-12",
-        amount: 25000,
-        status: "draft"
-    },
-
-    {
-        id: 2,
-        no: "EST-2026-002",
-        customer: "Priya Patel",
-        vehicle: "Hyundai Creta",
-        reg: "RJ-14-CT-1234",
-        chassis: "MALBC1BL5RM123456",
-        employee: "Suresh Yadav",
-        insurance: "Bajaj Allianz",
-        date: "2026-03-10",
-        amount: 48000,
-        status: "pending"
-    },
-
-    {
-        id: 3,
-        no: "EST-2026-003",
-        customer: "Amit Kumar",
-        vehicle: "Tata Nexon",
-        reg: "MH-12-CD-5678",
-        chassis: "MAT6298J4R1234567",
-        employee: "Rahul Patil",
-        insurance: "ICICI Lombard",
-        date: "2026-03-08",
-        amount: 35500,
-        status: "completed"
-    },
-
-    {
-        id: 4,
-        no: "EST-2026-004",
-        customer: "Sunita Desai",
-        vehicle: "Honda City",
-        reg: "MH-14-XY-7890",
-        chassis: "MAKGD8657P123456",
-        employee: "Amit Sharma",
-        insurance: "HDFC ERGO",
-        date: "2026-03-05",
-        amount: 42000,
-        status: "pending"
-    },
-
-    {
-        id: 5,
-        no: "EST-2026-006",
-        customer: "Vikram Singh",
-        vehicle: "Mahindra XUV700",
-        reg: "MH-15-ZZ-9876",
-        chassis: "MA1NF2YY123456",
-        employee: "Suresh Yadav",
-        insurance: "United India Insurance",
-        date: "2026-03-03",
-        amount: 67500,
-        status: "pending"
+        name:"Splendor Plus",
+        price:89000
     }
-
 ];
 
-let parts = [];
-let labors = [];
-let editingId = null;
-let simpleModalType = "";
 
+/* CUSTOMER */
 
-/* =========================================
-   SCREEN CONTROL
-========================================= */
+function customerMode(mode, element){
 
-function showScreen(id) {
-
-    document
-        .querySelectorAll(".screen")
-        .forEach(x => x.classList.remove("active"));
-
-    document
-        .getElementById(id)
-        .classList.add("active");
-
-    window.scrollTo(0,0);
-}
-
-
-/* =========================================
-   NAV
-========================================= */
-
-function setActiveNav(element) {
-
-    document
-        .querySelectorAll(".nav-item")
+    document.querySelectorAll(".customer-tab")
         .forEach(x => x.classList.remove("active"));
 
     element.classList.add("active");
+
+    if(mode === "new"){
+
+        document.getElementById("newCustomer")
+            .classList.remove("hide");
+
+        document.getElementById("existingCustomer")
+            .classList.add("hide");
+
+    }else{
+
+        document.getElementById("newCustomer")
+            .classList.add("hide");
+
+        document.getElementById("existingCustomer")
+            .classList.remove("hide");
+
+    }
+
 }
 
 
-/* =========================================
-   RENDER ESTIMATES
-========================================= */
+function searchCustomer(){
 
-function renderEstimates() {
+    let mobile =
+        document.getElementById("mobile").value;
 
-    const list = document.getElementById("estimateList");
+    if(mobile.length >= 10){
 
-    const search =
-        document
-            .getElementById("searchInput")
-            .value
-            .toLowerCase();
+        document.getElementById("customerFound")
+            .style.display = "block";
 
-    const filtered = estimates.filter(e => {
+    }else{
 
-        return (
-            e.no.toLowerCase().includes(search) ||
-            e.customer.toLowerCase().includes(search) ||
-            e.vehicle.toLowerCase().includes(search) ||
-            e.chassis.toLowerCase().includes(search)
-        );
+        document.getElementById("customerFound")
+            .style.display = "none";
 
+    }
+
+}
+
+
+/* VEHICLE */
+
+function selectVehicle(name,price){
+
+    if(
+        selectedVehicles.some(
+            x => x.name === name
+        )
+    ){
+
+        alert("Vehicle already selected");
+
+        return;
+
+    }
+
+    if(selectedVehicles.length >= 4){
+
+        alert("Maximum 4 vehicles can be compared");
+
+        return;
+
+    }
+
+    selectedVehicles.push({
+        name:name,
+        price:price
     });
 
-    if (!filtered.length) {
+    renderSelectedVehicles();
 
-        list.innerHTML = `
-            <div class="empty">
-                <div class="empty-icon">📄</div>
-                <div>No estimates found</div>
-            </div>
-        `;
+}
 
-        return;
-    }
 
-    list.innerHTML = filtered.map(e => `
+function renderSelectedVehicles(){
 
-        <div class="estimate-card"
-             onclick="openDetail(${e.id})">
+    let container =
+        document.getElementById("selectedVehicles");
 
-            <div class="estimate-top">
+    container.innerHTML = "";
 
-                <div class="estimate-no">
-                    ${e.no}
+    selectedVehicles.forEach((vehicle,index)=>{
+
+        let row =
+        document.createElement("div");
+
+        row.className =
+            "selected-vehicle";
+
+        row.innerHTML = `
+
+            <div class="selected-left">
+
+                <div class="vehicle-thumb">
+                    IMAGE
                 </div>
-
-                <span class="status ${e.status}">
-                    ${capitalize(e.status)}
-                </span>
-
-            </div>
-
-            <div class="customer-name">
-                ${e.customer}
-            </div>
-
-            <div class="vehicle-name">
-                ${e.vehicle}
-            </div>
-
-            <div class="chassis">
-                ${e.chassis}
-            </div>
-
-            <div class="estimate-bottom">
-
-                <div class="estimate-date">
-                    ${formatDate(e.date)}
-                </div>
-
-                <div class="estimate-amount">
-                    ₹${formatMoney(e.amount)}
-                </div>
-
-            </div>
-
-            <div class="arrow">
-                ›
-            </div>
-
-        </div>
-
-    `).join("");
-
-}
-
-
-/* =========================================
-   DETAIL
-========================================= */
-
-function openDetail(id) {
-
-    const e = estimates.find(x => x.id === id);
-
-    if (!e) return;
-
-    document.getElementById("detailContent").innerHTML = `
-
-        <div class="page-title">
-            ${e.no}
-        </div>
-
-        <div class="page-subtitle">
-            ${formatDate(e.date)}
-        </div>
-
-        <div style="margin-bottom:12px;">
-            <span class="status ${e.status}">
-                ${capitalize(e.status)}
-            </span>
-        </div>
-
-        <div class="info-card">
-
-            ${infoRow("👤","Customer",e.customer)}
-
-            ${infoRow("📞","Phone","+91 98765 43210")}
-
-            ${infoRow("🚗","Vehicle",e.vehicle)}
-
-            ${infoRow("▥","Registration",e.reg)}
-
-            ${infoRow("▥","Chassis No",e.chassis)}
-
-            ${infoRow("👨‍💼","Employee Name",e.employee)}
-
-            ${infoRow("🏢","Insurance Company",e.insurance)}
-
-            ${infoRow("₹","Estimated Amount",
-                       "₹" + formatMoney(e.amount))}
-
-        </div>
-
-        <div class="info-card">
-
-            <div class="section-title">
-                Insurance Details
-            </div>
-
-            ${infoRow("📄","Policy No","POL-2026-00987")}
-
-            ${infoRow("🔖","Claim No","CLM-2026-00421")}
-
-            ${infoRow("👨‍🔧","Surveyor","Rajiv Mehta")}
-
-            ${infoRow("📅","Accident Date","08 Mar 2026")}
-
-        </div>
-
-        <div class="info-card">
-
-            <div class="section-title">
-                Estimate Summary
-            </div>
-
-            ${infoRow("⚙️","Parts Amount","₹30,000")}
-
-            ${infoRow("🔧","Labor Amount","₹10,000")}
-
-            ${infoRow("🧮","GST","₹8,000")}
-
-            ${infoRow("₹","Final Amount",
-                       "₹" + formatMoney(e.amount))}
-
-        </div>
-
-        <div class="button-row">
-
-            <button
-                class="btn btn-outline"
-                onclick="openEdit(${e.id})">
-                Edit
-            </button>
-
-            <button
-                class="btn btn-outline"
-                onclick="duplicateEstimate(${e.id})">
-                Duplicate
-            </button>
-
-            <button
-                class="btn btn-primary"
-                onclick="shareEstimate(${e.id})">
-                Send / Share
-            </button>
-
-        </div>
-
-        <button
-            class="btn btn-danger full-btn"
-            onclick="deleteEstimate(${e.id})">
-
-            Delete Estimate
-
-        </button>
-
-    `;
-
-    showScreen("detailScreen");
-}
-
-
-function infoRow(icon,label,value) {
-
-    return `
-
-        <div class="info-row">
-
-            <div class="info-icon">
-                ${icon}
-            </div>
-
-            <div>
-
-                <div class="info-label">
-                    ${label}
-                </div>
-
-                <div class="info-value">
-                    ${value}
-                </div>
-
-            </div>
-
-        </div>
-
-    `;
-}
-
-
-/* =========================================
-   CREATE
-========================================= */
-
-function openCreate() {
-
-    editingId = null;
-
-    document.getElementById("formTitle")
-        .innerText = "Create New Estimate";
-
-    document.getElementById("estimateNumber")
-        .value = "EST-2026-" +
-        String(estimates.length + 1).padStart(3,"0");
-
-    document.getElementById("estimateDate")
-        .value = new Date().toISOString().split("T")[0];
-
-    document.getElementById("estimateStatus")
-        .value = "draft";
-
-    parts = [];
-    labors = [];
-
-    renderParts();
-    renderLabors();
-    calculateTotals();
-
-    showScreen("formScreen");
-}
-
-
-/* =========================================
-   EDIT
-========================================= */
-
-function openEdit(id) {
-
-    const e = estimates.find(x => x.id === id);
-
-    if (!e) return;
-
-    editingId = id;
-
-    document.getElementById("formTitle")
-        .innerText = "Edit Estimate";
-
-    document.getElementById("estimateNumber")
-        .value = e.no;
-
-    document.getElementById("estimateDate")
-        .value = e.date;
-
-    document.getElementById("estimateStatus")
-        .value = e.status;
-
-    document.getElementById("customer")
-        .value = e.customer;
-
-    customerChanged();
-
-    document.getElementById("vehicle")
-        .value = e.reg;
-
-    vehicleChanged();
-
-    showScreen("formScreen");
-}
-
-
-/* =========================================
-   CUSTOMER
-========================================= */
-
-function customerChanged() {
-
-    const value =
-        document.getElementById("customer").value;
-
-    const data = {
-
-        "Rajesh Sharma": {
-            phone: "+91 98765 43210",
-            email: "rajesh@example.com",
-            address: "Nashik, Maharashtra"
-        },
-
-        "Priya Patel": {
-            phone: "+91 98765 12345",
-            email: "priya@example.com",
-            address: "Jaipur, Rajasthan"
-        },
-
-        "Amit Kumar": {
-            phone: "+91 98765 67890",
-            email: "amit@example.com",
-            address: "Pune, Maharashtra"
-        }
-
-    };
-
-    const c = data[value];
-
-    if (!c) {
-
-        document.getElementById("customerPhone").value = "";
-        document.getElementById("customerEmail").value = "";
-        document.getElementById("customerAddress").value = "";
-
-        return;
-    }
-
-    document.getElementById("customerPhone").value = c.phone;
-    document.getElementById("customerEmail").value = c.email;
-    document.getElementById("customerAddress").value = c.address;
-
-    document.getElementById("newVehicleCustomer").value = value;
-}
-
-
-/* =========================================
-   VEHICLE
-========================================= */
-
-function vehicleChanged() {
-
-    const reg =
-        document.getElementById("vehicle").value;
-
-    const data = {
-
-        "MH-15-AB-1234": {
-            model: "Maruti Swift",
-            year: "2022",
-            chassis: "MA3ER1234567890"
-        },
-
-        "MH-12-CD-5678": {
-            model: "Tata Nexon",
-            year: "2023",
-            chassis: "MAT6298J4R1234567"
-        },
-
-        "RJ-14-CT-1234": {
-            model: "Hyundai Creta",
-            year: "2024",
-            chassis: "MALBC1BL5RM123456"
-        }
-
-    };
-
-    const v = data[reg];
-
-    if (!v) return;
-
-    document.getElementById("vehicleModel").value = v.model;
-    document.getElementById("vehicleYear").value = v.year;
-    document.getElementById("chassisNo").value = v.chassis;
-}
-
-
-/* =========================================
-   PARTS
-========================================= */
-
-function addPart() {
-
-    const part =
-        document.getElementById("partNo").value;
-
-    if (!part) {
-
-        toast("Select a part first");
-
-        return;
-    }
-
-    const qty =
-        Number(document.getElementById("partQty").value) || 1;
-
-    const mrp =
-        Number(document.getElementById("partMrp").value) || 0;
-
-    const gst =
-        Number(document.getElementById("partGst").value) || 0;
-
-    const discount =
-        Number(document.getElementById("partDiscount").value) || 0;
-
-    const description =
-        document.getElementById("partDescription").value ||
-        part;
-
-    const gross = qty * mrp;
-
-    const discountAmount =
-        gross * discount / 100;
-
-    const taxable =
-        gross - discountAmount;
-
-    parts.push({
-
-        part,
-        description,
-        qty,
-        mrp,
-        gst,
-        discount,
-        taxable
-
-    });
-
-    renderParts();
-    calculateTotals();
-}
-
-
-function renderParts() {
-
-    const container =
-        document.getElementById("partsList");
-
-    container.innerHTML = parts.map((p,index) => `
-
-        <div class="item-card">
-
-            <div class="item-header">
 
                 <div>
 
-                    <div class="item-title">
-                        ${p.part}
+                    <div class="selected-name">
+                        ${vehicle.name}
                     </div>
 
-                    <div class="item-description">
-                        ${p.description}
-                    </div>
-
-                </div>
-
-                <button
-                    class="delete-small"
-                    onclick="removePart(${index})">
-                    ×
-                </button>
-
-            </div>
-
-            <div class="item-meta">
-
-                <div class="meta-box">
-                    <div class="meta-label">Qty</div>
-                    <div class="meta-value">${p.qty}</div>
-                </div>
-
-                <div class="meta-box">
-                    <div class="meta-label">MRP</div>
-                    <div class="meta-value">₹${p.mrp}</div>
-                </div>
-
-                <div class="meta-box">
-                    <div class="meta-label">GST</div>
-                    <div class="meta-value">${p.gst}%</div>
-                </div>
-
-            </div>
-
-            <div class="total-row">
-                <span>Amount</span>
-                <strong>₹${formatMoney(p.taxable)}</strong>
-            </div>
-
-        </div>
-
-    `).join("");
-}
-
-
-function removePart(index) {
-
-    parts.splice(index,1);
-
-    renderParts();
-    calculateTotals();
-}
-
-
-/* =========================================
-   LABOR
-========================================= */
-
-function addLabor() {
-
-    const code =
-        document.getElementById("laborCode").value;
-
-    const name =
-        document.getElementById("laborName").value;
-
-    const hours =
-        Number(document.getElementById("laborHours").value) || 0;
-
-    const rate =
-        Number(document.getElementById("laborRate").value) || 0;
-
-    const gst =
-        Number(document.getElementById("laborGst").value) || 0;
-
-    if (!code) {
-
-        toast("Select labor code");
-
-        return;
-    }
-
-    labors.push({
-
-        code,
-        name: name || code,
-        hours,
-        rate,
-        gst,
-        amount: hours * rate
-
-    });
-
-    renderLabors();
-    calculateTotals();
-}
-
-
-function renderLabors() {
-
-    const container =
-        document.getElementById("laborList");
-
-    container.innerHTML = labors.map((l,index) => `
-
-        <div class="item-card">
-
-            <div class="item-header">
-
-                <div>
-
-                    <div class="item-title">
-                        ${l.code}
-                    </div>
-
-                    <div class="item-description">
-                        ${l.name}
+                    <div class="selected-price">
+                        ₹ ${vehicle.price.toLocaleString("en-IN")}
                     </div>
 
                 </div>
 
-                <button
-                    class="delete-small"
-                    onclick="removeLabor(${index})">
-                    ×
-                </button>
-
             </div>
 
-            <div class="item-meta">
-
-                <div class="meta-box">
-                    <div class="meta-label">Hours</div>
-                    <div class="meta-value">${l.hours}</div>
-                </div>
-
-                <div class="meta-box">
-                    <div class="meta-label">Rate</div>
-                    <div class="meta-value">₹${l.rate}</div>
-                </div>
-
-                <div class="meta-box">
-                    <div class="meta-label">GST</div>
-                    <div class="meta-value">${l.gst}%</div>
-                </div>
-
+            <div
+                class="remove"
+                onclick="removeVehicle(${index})">
+                ×
             </div>
 
-            <div class="total-row">
-                <span>Amount</span>
-                <strong>₹${formatMoney(l.amount)}</strong>
-            </div>
-
-        </div>
-
-    `).join("");
-}
-
-
-function removeLabor(index) {
-
-    labors.splice(index,1);
-
-    renderLabors();
-    calculateTotals();
-}
-
-
-/* =========================================
-   CALCULATIONS
-========================================= */
-
-function calculateTotals() {
-
-    let partsTotal = 0;
-    let partsGst = 0;
-
-    parts.forEach(p => {
-
-        partsTotal += p.taxable;
-
-        partsGst +=
-            p.taxable * p.gst / 100;
-
-    });
-
-    let laborTotal = 0;
-    let laborGst = 0;
-
-    labors.forEach(l => {
-
-        laborTotal += l.amount;
-
-        laborGst +=
-            l.amount * l.gst / 100;
-
-    });
-
-    const subtotal =
-        partsTotal + laborTotal;
-
-    const surveyorCharges =
-        Number(document.getElementById("surveyorCharges").value) || 0;
-
-    const surveyorTax =
-        Number(document.getElementById("surveyorTax").value) || 0;
-
-    const surveyorGst =
-        surveyorCharges * surveyorTax / 100;
-
-    const totalGst =
-        partsGst + laborGst + surveyorGst;
-
-    const depreciation =
-        Number(document.getElementById("depreciation").value) || 0;
-
-    const depreciationAmount =
-        subtotal * depreciation / 100;
-
-    const salvage =
-        Number(document.getElementById("salvage").value) || 0;
-
-    const deductible =
-        Number(document.getElementById("deductible").value) || 0;
-
-    const final =
-        subtotal +
-        totalGst +
-        surveyorCharges +
-        surveyorGst -
-        depreciationAmount -
-        salvage -
-        deductible;
-
-    document.getElementById("totalParts")
-        .innerText = "₹" + formatMoney(partsTotal);
-
-    document.getElementById("totalLabor")
-        .innerText = "₹" + formatMoney(laborTotal);
-
-    document.getElementById("subtotal")
-        .innerText = "₹" + formatMoney(subtotal);
-
-    document.getElementById("partsGstTotal")
-        .innerText = "₹" + formatMoney(partsGst);
-
-    document.getElementById("laborGstTotal")
-        .innerText = "₹" + formatMoney(laborGst);
-
-    document.getElementById("totalGst")
-        .innerText = "₹" + formatMoney(totalGst);
-
-    document.getElementById("finalAmount")
-        .innerText = "₹" + formatMoney(Math.max(final,0));
-}
-
-
-/* =========================================
-   SAVE
-========================================= */
-
-function saveEstimate(status) {
-
-    const customer =
-        document.getElementById("customer").value;
-
-    const vehicle =
-        document.getElementById("vehicleModel").value;
-
-    const reg =
-        document.getElementById("vehicle").value;
-
-    const amount =
-        Number(
-            document.getElementById("finalAmount")
-                .innerText
-                .replace(/[₹,]/g,"")
-        ) || 0;
-
-    if (!customer) {
-
-        toast("Please select customer");
-
-        return;
-    }
-
-    if (editingId) {
-
-        const e =
-            estimates.find(x => x.id === editingId);
-
-        e.customer = customer;
-        e.vehicle = vehicle;
-        e.reg = reg;
-        e.date =
-            document.getElementById("estimateDate").value;
-        e.amount = amount;
-        e.status = status;
-
-        toast("Estimate updated");
-
-    } else {
-
-        estimates.unshift({
-
-            id: Date.now(),
-
-            no:
-                document.getElementById("estimateNumber").value,
-
-            customer,
-
-            vehicle,
-
-            reg,
-
-            chassis:
-                document.getElementById("chassisNo").value,
-
-            employee:
-                document.getElementById("employee").value,
-
-            insurance:
-                document.getElementById("insuranceCompany").value,
-
-            date:
-                document.getElementById("estimateDate").value,
-
-            amount,
-
-            status
-
-        });
-
-        toast("Estimate created");
-    }
-
-    renderEstimates();
-
-    setTimeout(() => {
-        showScreen("listScreen");
-    },500);
-}
-
-
-/* =========================================
-   FILTERS
-========================================= */
-
-function openFilters() {
-
-    showScreen("filterScreen");
-}
-
-
-function applyFilters() {
-
-    const search =
-        document.getElementById("filterSearch").value.toLowerCase();
-
-    const status =
-        document.getElementById("filterStatus").value;
-
-    const from =
-        document.getElementById("filterFrom").value;
-
-    const to =
-        document.getElementById("filterTo").value;
-
-    document.getElementById("searchInput").value = search;
-
-    let result = estimates.filter(e => {
-
-        const matchesSearch =
-            !search ||
-            e.no.toLowerCase().includes(search) ||
-            e.customer.toLowerCase().includes(search) ||
-            e.vehicle.toLowerCase().includes(search);
-
-        const matchesStatus =
-            !status || e.status === status;
-
-        const matchesFrom =
-            !from || e.date >= from;
-
-        const matchesTo =
-            !to || e.date <= to;
-
-        return (
-            matchesSearch &&
-            matchesStatus &&
-            matchesFrom &&
-            matchesTo
-        );
-
-    });
-
-    const list =
-        document.getElementById("estimateList");
-
-    if (!result.length) {
-
-        list.innerHTML = `
-            <div class="empty">
-                <div class="empty-icon">🔎</div>
-                No matching estimates
-            </div>
         `;
 
-    } else {
+        container.appendChild(row);
 
-        list.innerHTML = result.map(e => `
+    });
 
-            <div class="estimate-card"
-                 onclick="openDetail(${e.id})">
+    calculateQuote();
 
-                <div class="estimate-top">
-
-                    <div class="estimate-no">
-                        ${e.no}
-                    </div>
-
-                    <span class="status ${e.status}">
-                        ${capitalize(e.status)}
-                    </span>
-
-                </div>
-
-                <div class="customer-name">
-                    ${e.customer}
-                </div>
-
-                <div class="vehicle-name">
-                    ${e.vehicle}
-                </div>
-
-                <div class="chassis">
-                    ${e.chassis}
-                </div>
-
-                <div class="estimate-bottom">
-
-                    <div class="estimate-date">
-                        ${formatDate(e.date)}
-                    </div>
-
-                    <div class="estimate-amount">
-                        ₹${formatMoney(e.amount)}
-                    </div>
-
-                </div>
-
-                <div class="arrow">›</div>
-
-            </div>
-
-        `).join("");
-
-    }
-
-    showScreen("listScreen");
 }
 
 
-function clearFilters() {
+function removeVehicle(index){
 
-    document.getElementById("filterSearch").value = "";
-    document.getElementById("filterStatus").value = "";
-    document.getElementById("filterFrom").value = "";
-    document.getElementById("filterTo").value = "";
+    selectedVehicles.splice(index,1);
 
-    document.getElementById("searchInput").value = "";
+    renderSelectedVehicles();
 
-    renderEstimates();
-
-    showScreen("listScreen");
 }
 
 
-/* =========================================
-   CUSTOMER MODAL
-========================================= */
+/* EXCHANGE */
 
-function openSimpleModal(type) {
+function toggleExchange(){
 
-    simpleModalType = type;
+    let sw =
+        document.getElementById("exchangeSwitch");
 
-    const titles = {
+    let details =
+        document.getElementById("exchangeDetails");
 
-        employee: "Add New Employee",
+    sw.classList.toggle("active");
 
-        customer: "Add New Customer",
+    details.classList.toggle("hide");
 
-        insurance: "Add Insurance Company",
-
-        surveyor: "Add New Surveyor"
-
-    };
-
-    document.getElementById("simpleModalTitle")
-        .innerText = titles[type];
-
-    document.getElementById("simpleModalLabel")
-        .innerText = titles[type];
-
-    document.getElementById("simpleModalInput")
-        .value = "";
-
-    document.getElementById("simpleModal")
-        .classList.add("show");
 }
 
 
-function saveSimpleModal() {
+/* QUOTATION */
 
-    const value =
-        document.getElementById("simpleModalInput").value.trim();
+function calculateQuote(){
 
-    if (!value) {
+    let vehicleTotal =
+        selectedVehicles.reduce(
+            (sum,v)=>sum+v.price,
+            0
+        );
 
-        toast("Enter a value");
-
-        return;
-    }
-
-    toast(value + " added");
-
-    closeModal("simpleModal");
-}
-
-
-function openVehicleModal() {
-
-    document.getElementById("newVehicleCustomer")
-        .value =
-        document.getElementById("customer").value;
-
-    document.getElementById("vehicleModal")
-        .classList.add("show");
-}
-
-
-function saveVehicle() {
-
-    const reg =
-        document.getElementById("newRegNo").value;
-
-    const chassis =
-        document.getElementById("newChassis").value;
-
-    if (!reg || !chassis) {
-
-        toast("Registration and chassis are required");
-
-        return;
-    }
-
-    const select =
-        document.getElementById("vehicle");
-
-    const option =
-        document.createElement("option");
-
-    option.value = reg;
-    option.textContent = reg;
-
-    select.appendChild(option);
-
-    select.value = reg;
-
-    document.getElementById("chassisNo").value = chassis;
-
-    closeModal("vehicleModal");
-
-    toast("Vehicle added");
-}
-
-
-function saveCustomer() {
-
-    const name =
-        document.getElementById("newCustomerName").value;
-
-    if (!name) {
-
-        toast("Customer name is required");
-
-        return;
-    }
-
-    const select =
-        document.getElementById("customer");
-
-    const option =
-        document.createElement("option");
-
-    option.value = name;
-    option.textContent = name;
-
-    select.appendChild(option);
-
-    select.value = name;
-
-    customerChanged();
-
-    closeModal("customerModal");
-
-    toast("Customer added");
-}
-
-
-/* =========================================
-   DRAWER
-========================================= */
-
-function openDrawer() {
+    let accessoryTotal = 0;
 
     document
-        .getElementById("overlay")
-        .classList.add("show");
+        .querySelectorAll(".accessory input[type='checkbox']")
+        .forEach((checkbox,index)=>{
 
-    document
-        .getElementById("drawer")
-        .classList.add("show");
-}
+            if(checkbox.checked){
 
+                /*
+                    Main accessories:
+                    Seat Cover = 1200
+                    Leg Guard = 1800
+                    Mobile Holder = 800
+                    Floor Mat = 700
+                */
 
-function closeDrawer() {
+                let values =
+                    [1200,1800,800,700];
 
-    document
-        .getElementById("overlay")
-        .classList.remove("show");
+                accessoryTotal +=
+                    values[index] || 0;
 
-    document
-        .getElementById("drawer")
-        .classList.remove("show");
-}
-
-
-/* =========================================
-   OTHER ACTIONS
-========================================= */
-
-function duplicateEstimate(id) {
-
-    const e =
-        estimates.find(x => x.id === id);
-
-    if (!e) return;
-
-    const copy = {
-        ...e,
-        id: Date.now(),
-        no: "EST-2026-" +
-            String(estimates.length + 1).padStart(3,"0"),
-        status: "draft"
-    };
-
-    estimates.unshift(copy);
-
-    renderEstimates();
-
-    toast("Estimate duplicated");
-
-    showScreen("listScreen");
-}
-
-
-function shareEstimate(id) {
-
-    const e =
-        estimates.find(x => x.id === id);
-
-    if (!e) return;
-
-    if (navigator.share) {
-
-        navigator.share({
-
-            title: e.no,
-
-            text:
-                `${e.no} - ${e.customer} - ₹${formatMoney(e.amount)}`
+            }
 
         });
 
-    } else {
 
-        toast("Estimate ready to share");
+    document.getElementById("accessoryAmount")
+        .innerText =
+        "₹ " +
+        accessoryTotal.toLocaleString("en-IN");
 
-    }
+
+    let total =
+        vehicleTotal +
+        9500 +
+        7500 +
+        accessoryTotal -
+        2000;
+
+
+    document.getElementById("totalAmount")
+        .innerText =
+        "₹ " +
+        total.toLocaleString("en-IN");
+
 }
 
 
-function deleteEstimate(id) {
+/* MODAL */
 
-    if (!confirm("Delete this estimate?")) {
-        return;
-    }
+function openModal(id){
 
-    estimates =
-        estimates.filter(x => x.id !== id);
+    document
+        .getElementById(id)
+        .classList.add("show");
 
-    renderEstimates();
-
-    toast("Estimate deleted");
-
-    showScreen("listScreen");
 }
 
 
-/* =========================================
-   MODALS
-========================================= */
-
-function closeModal(id) {
+function closeModal(id){
 
     document
         .getElementById(id)
         .classList.remove("show");
-}
-
-
-/* =========================================
-   TOAST
-========================================= */
-
-function toast(message) {
-
-    const t =
-        document.getElementById("toast");
-
-    t.innerText = message;
-
-    t.classList.add("show");
-
-    setTimeout(() => {
-
-        t.classList.remove("show");
-
-    },2200);
-}
-
-
-/* =========================================
-   HELPERS
-========================================= */
-
-function capitalize(value) {
-
-    return value.charAt(0).toUpperCase() +
-           value.slice(1);
 
 }
 
 
-function formatMoney(value) {
+/* PDF */
 
-    return Number(value || 0)
-        .toLocaleString("en-IN",{
-            minimumFractionDigits:2,
-            maximumFractionDigits:2
-        });
+function generatePDF(){
 
-}
-
-
-function formatDate(date) {
-
-    if (!date) return "";
-
-    const d = new Date(date);
-
-    return d.toLocaleDateString("en-IN",{
-        day:"2-digit",
-        month:"short",
-        year:"numeric"
-    });
+    alert(
+        "Quotation PDF generation will start here.\n\n" +
+        "Quotation No: QT-2026-000125"
+    );
 
 }
 
 
-/* =========================================
-   INIT
-========================================= */
+/* WHATSAPP */
 
-document.addEventListener("DOMContentLoaded",function(){
+function sendWhatsApp(){
 
-    renderEstimates();
+    let customer =
+        "Rahul Sharma";
 
-    document
-        .getElementById("estimateDate")
-        .value =
-        new Date().toISOString().split("T")[0];
+    let message =
+        "Hello " + customer +
+        ",%0A%0A" +
+        "Thank you for visiting Hero MotoCorp.%0A%0A" +
+        "Your vehicle quotation:%0A" +
+        "Splendor Plus%0A" +
+        "On-Road Price: ₹1,05,200%0A%0A" +
+        "Quotation No: QT-2026-000125%0A%0A" +
+        "Thank you.";
 
-});
+    window.open(
+        "https://wa.me/?text=" + message,
+        "_blank"
+    );
+
+}
+
+
+calculateQuote();
 
 </script>
 
