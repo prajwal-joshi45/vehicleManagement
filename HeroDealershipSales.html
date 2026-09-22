@@ -3328,6 +3328,12 @@ function quoteNumber(){
 
 function buildQuoteData(){
 
+    const customer =
+        convertedCustomer ||
+        currentCustomer ||
+        {};
+
+
     return {
 
         number:
@@ -3335,12 +3341,33 @@ function buildQuoteData(){
 
         date:
             new Date()
-                .toLocaleDateString(
-                    'en-IN'
-                ),
+            .toLocaleDateString('en-IN'),
 
-        customer:
-            currentCustomer,
+        customerId:
+            customer.id || '',
+
+        customer: {
+
+            id:
+                customer.id || '',
+
+            name:
+                customer.name || '',
+
+            mobile:
+                customer.mobile || '',
+
+            city:
+                customer.city || '',
+
+            address:
+                customer.address || '',
+
+            customerType:
+                customer.customerType ||
+                'Existing Customer'
+
+        },
 
         vehicles:
             selectedVehicles,
@@ -3360,9 +3387,6 @@ function buildQuoteData(){
         exchange:
             exchangeAmount(),
 
-        discount:
-            discountAmount,
-
         total:
             document.getElementById(
                 'totalAmount'
@@ -3371,7 +3395,6 @@ function buildQuoteData(){
     };
 
 }
-
 
 function saveQuotation(){
 
@@ -4510,10 +4533,10 @@ function renderReports(){
    INIT
 ===================================== */
 
+loadConvertedCustomer()
 getCustomers();
 
 renderVehicleList();
-
 renderSelectedVehicles();
 
 renderAccessories();
