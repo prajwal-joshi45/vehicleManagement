@@ -1,0 +1,4526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>Hero Dealership Sales</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --red:#e31837;
+    --red-dark:#b9142d;
+    --ink:#111827;
+    --gray:#6b7280;
+    --line:#e5e7eb;
+    --bg:#f3f5f8;
+    --green:#16a34a;
+    --green-light:#ecfdf3;
+    --orange:#f59e0b;
+    --blue:#2563eb;
+
+    --safe-t:env(safe-area-inset-top,0px);
+    --safe-b:env(safe-area-inset-bottom,0px);
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    max-width:480px;
+    margin:auto;
+    padding-top:var(--safe-t);
+    padding-bottom:var(--safe-b);
+}
+
+.app-header{
+    background:var(--red);
+    color:#fff;
+    padding:16px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    padding-top:calc(16px + var(--safe-t));
+}
+
+.header-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.header-title{
+    font-size:19px;
+    font-weight:700;
+}
+
+.header-subtitle{
+    font-size:11px;
+    opacity:.85;
+    margin-top:3px;
+}
+
+.header-icon{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#fff;
+    color:var(--red);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.page{
+    padding:14px;
+    padding-bottom:calc(90px + var(--safe-b));
+}
+
+.section{
+    margin-bottom:16px;
+}
+
+.section-title{
+    font-size:14px;
+    font-weight:700;
+    margin-bottom:9px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.card{
+    background:#fff;
+    border-radius:14px;
+    padding:14px;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+
+.customer-tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-bottom:12px;
+}
+
+.customer-tab{
+    padding:11px;
+    border:1px solid #ddd;
+    border-radius:9px;
+    background:#fff;
+    text-align:center;
+    font-size:13px;
+    cursor:pointer;
+}
+
+.customer-tab.active{
+    background:var(--red);
+    color:#fff;
+    border-color:var(--red);
+}
+
+.input-group{
+    margin-bottom:10px;
+}
+
+.input-group label{
+    font-size:11px;
+    color:var(--gray);
+    display:block;
+    margin-bottom:5px;
+}
+
+.input{
+    width:100%;
+    border:1px solid #d8dde5;
+    border-radius:9px;
+    padding:11px;
+    font-size:13px;
+    outline:none;
+}
+
+.input:focus{
+    border-color:var(--red);
+}
+
+.customer-found{
+    display:none;
+    background:#f0fdf4;
+    border:1px solid #bbf7d0;
+    padding:11px;
+    border-radius:10px;
+}
+
+.customer-name{
+    font-weight:700;
+    font-size:14px;
+}
+
+.customer-info{
+    font-size:11px;
+    color:#4b5563;
+    margin-top:4px;
+}
+
+.quick-actions{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+}
+
+.quick-action{
+    background:#fff;
+    border-radius:12px;
+    padding:10px 4px;
+    text-align:center;
+    font-size:10px;
+    box-shadow:0 2px 7px rgba(0,0,0,.05);
+    border:none;
+    cursor:pointer;
+    color:var(--ink);
+}
+
+.quick-icon{
+    font-size:20px;
+    margin-bottom:5px;
+}
+
+.vehicle-list{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding-bottom:4px;
+}
+
+.vehicle-card{
+    min-width:185px;
+    background:#fff;
+    border-radius:14px;
+    padding:10px;
+    border:1px solid var(--line);
+}
+
+.vehicle-card.selected{
+    border:2px solid var(--red);
+}
+
+.vehicle-image{
+    height:90px;
+    border-radius:10px;
+    background:linear-gradient(135deg,#f2f4f7,#e7ebf0);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:9px;
+}
+
+.vehicle-image svg{
+    width:78%;
+    height:78%;
+}
+
+.vehicle-name{
+    font-weight:700;
+    font-size:14px;
+}
+
+.vehicle-variant{
+    font-size:11px;
+    color:var(--gray);
+    margin-top:3px;
+}
+
+.vehicle-price{
+    font-weight:bold;
+    margin-top:7px;
+    font-size:13px;
+}
+
+.select-btn{
+    width:100%;
+    border:none;
+    background:var(--ink);
+    color:#fff;
+    padding:9px;
+    border-radius:8px;
+    margin-top:9px;
+    font-size:11px;
+    cursor:pointer;
+}
+
+.select-btn.is-selected{
+    background:var(--red);
+}
+
+.selected-vehicle{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:11px 0;
+    border-bottom:1px solid #eee;
+}
+
+.selected-left{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.vehicle-thumb{
+    width:50px;
+    height:42px;
+    border-radius:7px;
+    background:#edf0f3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.vehicle-thumb svg{
+    width:80%;
+    height:80%;
+}
+
+.selected-name{
+    font-size:12px;
+    font-weight:700;
+}
+
+.selected-price{
+    font-size:11px;
+    color:var(--gray);
+}
+
+.remove{
+    color:var(--red);
+    font-size:16px;
+    cursor:pointer;
+    padding:4px 8px;
+}
+
+.option-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+}
+
+.option-card{
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:11px;
+    background:white;
+}
+
+.option-card label{
+    font-size:11px;
+    color:var(--gray);
+}
+
+.option-card select,
+.option-card strong{
+    display:block;
+    margin-top:5px;
+    font-size:13px;
+}
+
+.option-card select{
+    border:none;
+    background:none;
+    padding:0;
+    width:100%;
+    font-family:inherit;
+    font-weight:700;
+}
+
+.accessory{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:10px 0;
+    border-bottom:1px solid #eee;
+}
+
+.accessory input{
+    width:18px;
+    height:18px;
+    accent-color:var(--red);
+}
+
+.accessory-name{
+    flex:1;
+    font-size:12px;
+}
+
+.accessory-price{
+    font-size:12px;
+    font-weight:bold;
+}
+
+.emi-box{
+    background:var(--ink);
+    color:white;
+    border-radius:12px;
+    padding:14px;
+    margin-top:10px;
+}
+
+.emi-label{
+    font-size:10px;
+    opacity:.7;
+}
+
+.emi-value{
+    font-size:22px;
+    font-weight:bold;
+    margin-top:4px;
+}
+
+.emi-row{
+    display:flex;
+    justify-content:space-between;
+    margin-top:10px;
+    font-size:11px;
+}
+
+.range-row{
+    margin-top:10px;
+}
+
+.range-row input[type=range]{
+    width:100%;
+    accent-color:var(--red);
+}
+
+.exchange-toggle{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.switch{
+    width:44px;
+    height:24px;
+    background:#d1d5db;
+    border-radius:20px;
+    position:relative;
+    cursor:pointer;
+}
+
+.switch.active{
+    background:var(--red);
+}
+
+.switch-circle{
+    width:20px;
+    height:20px;
+    background:white;
+    border-radius:50%;
+    position:absolute;
+    top:2px;
+    left:2px;
+    transition:.2s;
+}
+
+.switch.active .switch-circle{
+    left:22px;
+}
+
+.quote-summary{
+    background:#fff;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 2px 10px rgba(0,0,0,.07);
+}
+
+.quote-header{
+    background:var(--ink);
+    color:white;
+    padding:14px;
+}
+
+.quote-title{
+    font-size:15px;
+    font-weight:bold;
+}
+
+.quote-number{
+    font-size:10px;
+    opacity:.7;
+    margin-top:3px;
+}
+
+.quote-body{
+    padding:14px;
+}
+
+.amount-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    padding:7px 0;
+}
+
+.amount-row.total{
+    border-top:1px solid #ddd;
+    margin-top:6px;
+    padding-top:12px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.status-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:6px;
+}
+
+.status{
+    padding:9px 3px;
+    border-radius:8px;
+    text-align:center;
+    font-size:9px;
+    border:1px solid #ddd;
+    cursor:pointer;
+    background:#fff;
+}
+
+.status.active{
+    background:var(--red);
+    color:white;
+    border-color:var(--red);
+}
+
+.primary-btn{
+    width:100%;
+    background:var(--red);
+    color:white;
+    border:none;
+    padding:13px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:bold;
+    margin-top:9px;
+    cursor:pointer;
+}
+
+.primary-btn.dark{
+    background:var(--ink);
+}
+
+.primary-btn.green{
+    background:var(--green);
+}
+
+.primary-btn:disabled{
+    opacity:.5;
+}
+
+.secondary-btn{
+    width:100%;
+    background:#fff;
+    color:var(--ink);
+    border:1px solid #ddd;
+    padding:12px;
+    border-radius:10px;
+    font-size:12px;
+    margin-top:8px;
+    cursor:pointer;
+}
+
+.whatsapp-btn{
+    background:#25D366;
+    color:white;
+}
+
+.discount-row{
+    display:flex;
+    gap:8px;
+    margin-top:2px;
+    margin-bottom:4px;
+}
+
+.discount-row .input{
+    flex:1;
+}
+
+.apply-btn{
+    border:none;
+    background:var(--ink);
+    color:#fff;
+    border-radius:8px;
+    padding:0 14px;
+    font-size:12px;
+    cursor:pointer;
+}
+
+.toast{
+    position:fixed;
+    bottom:calc(80px + var(--safe-b));
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--ink);
+    color:#fff;
+    padding:10px 16px;
+    border-radius:20px;
+    font-size:12px;
+    z-index:3000;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+}
+
+.toast.show{
+    opacity:1;
+}
+
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:480px;
+    height:calc(67px + var(--safe-b));
+    padding-bottom:var(--safe-b);
+    background:white;
+    border-top:1px solid #ddd;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    z-index:1000;
+}
+
+.nav-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    font-size:9px;
+    color:var(--gray);
+    background:none;
+    border:none;
+    cursor:pointer;
+}
+
+.nav-item.active{
+    color:var(--red);
+    font-weight:bold;
+}
+
+.nav-icon{
+    font-size:18px;
+    margin-bottom:3px;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:2000;
+    align-items:flex-end;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:480px;
+    margin:auto;
+    border-radius:20px 20px 0 0;
+    padding:18px;
+    padding-bottom:calc(18px + var(--safe-b));
+    max-height:90vh;
+    overflow:auto;
+}
+
+.modal-title{
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:14px;
+}
+
+.close-btn{
+    float:right;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.hide{
+    display:none!important;
+}
+
+.badge{
+    display:inline-block;
+    padding:4px 7px;
+    border-radius:5px;
+    background:#fee2e2;
+    color:#b91c1c;
+    font-size:9px;
+}
+
+.quotes-list{
+    max-height:60vh;
+    overflow:auto;
+}
+
+.quote-item{
+    padding:10px 0;
+    border-bottom:1px solid #eee;
+    font-size:12px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.customer-row{
+    padding:11px 0;
+    border-bottom:1px solid #eee;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.customer-row .cname{
+    font-size:13px;
+    font-weight:700;
+}
+
+.customer-row .cmeta{
+    font-size:11px;
+    color:var(--gray);
+    margin-top:2px;
+}
+
+.pick-btn{
+    border:1px solid var(--red);
+    color:var(--red);
+    background:#fff;
+    border-radius:8px;
+    padding:6px 10px;
+    font-size:11px;
+    cursor:pointer;
+}
+
+.stat-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+    margin-bottom:14px;
+}
+
+.stat-card{
+    background:#f8f9fb;
+    border-radius:10px;
+    padding:12px;
+}
+
+.stat-value{
+    font-size:19px;
+    font-weight:bold;
+}
+
+.stat-label{
+    font-size:10px;
+    color:var(--gray);
+    margin-top:3px;
+}
+
+.bar-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:8px;
+}
+
+.bar-label{
+    width:70px;
+    font-size:10px;
+    color:var(--gray);
+}
+
+.bar-track{
+    flex:1;
+    background:#eee;
+    border-radius:5px;
+    height:10px;
+    overflow:hidden;
+}
+
+.bar-fill{
+    height:100%;
+    background:var(--red);
+}
+
+.bar-count{
+    width:20px;
+    font-size:10px;
+    text-align:right;
+}
+
+@media(max-width:380px){
+
+    .quick-actions{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .status-grid{
+        grid-template-columns:1fr 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="app-header">
+
+    <div class="header-row">
+
+        <div>
+            <div class="header-title">
+                Hero Dealership
+            </div>
+
+            <div class="header-subtitle">
+                Sales & Quotation
+            </div>
+        </div>
+
+        <div class="header-icon">
+            PJ
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="page">
+
+
+<!-- CUSTOMER -->
+
+<section class="section">
+
+    <div class="section-title">
+        Customer
+    </div>
+
+    <div class="card">
+
+        <div class="customer-tabs">
+
+            <div
+                class="customer-tab active"
+                onclick="customerMode('existing',this)">
+                Existing Customer
+            </div>
+
+            <div
+                class="customer-tab"
+                onclick="customerMode('new',this)">
+                + New Customer
+            </div>
+
+        </div>
+
+
+        <!-- EXISTING -->
+
+        <div id="existingCustomer">
+
+            <div class="input-group">
+
+                <label>
+                    Mobile Number
+                </label>
+
+                <input
+                    class="input"
+                    id="mobile"
+                    placeholder="Enter mobile number"
+                    maxlength="10"
+                    oninput="searchCustomer()">
+
+            </div>
+
+
+            <div
+                class="customer-found"
+                id="customerFound">
+
+                <div
+                    class="customer-name"
+                    id="foundName">
+                    —
+                </div>
+
+                <div
+                    class="customer-info"
+                    id="foundInfo">
+                    —
+                </div>
+
+                <div
+                    class="customer-info"
+                    id="foundAddress">
+                    Address: —
+                </div>
+
+                <div
+                    class="customer-info"
+                    id="foundStatus">
+                    —
+                </div>
+
+                <button
+                    class="primary-btn dark"
+                    onclick="convertExistingCustomer()">
+
+                    🚗 Convert to Vehicle Finalization
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- NEW CUSTOMER -->
+
+        <div
+            id="newCustomer"
+            class="hide">
+
+            <div class="input-group">
+
+                <label>
+                    Customer Name
+                </label>
+
+                <input
+                    class="input"
+                    id="newName"
+                    placeholder="Enter full name">
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Mobile Number
+                </label>
+
+                <input
+                    class="input"
+                    id="newMobile"
+                    placeholder="10 digit mobile number"
+                    maxlength="10">
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    City
+                </label>
+
+                <input
+                    class="input"
+                    id="newCity"
+                    placeholder="City">
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Address
+                </label>
+
+                <input
+                    class="input"
+                    id="newAddress"
+                    placeholder="House no, street, area">
+
+            </div>
+
+
+            <button
+                class="primary-btn"
+                onclick="createCustomer()">
+
+                Create Customer
+
+            </button>
+
+
+            <button
+                class="primary-btn dark"
+                onclick="convertNewCustomer()">
+
+                🚗 Create & Convert to Finalization
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- QUICK ACTIONS -->
+
+<section class="section">
+
+    <div class="quick-actions">
+
+        <button
+            class="quick-action"
+            onclick="openModal('testRideModal')">
+
+            <div class="quick-icon">🏍️</div>
+            Test Ride
+
+        </button>
+
+        <button
+            class="quick-action"
+            onclick="scrollToId('financeSection')">
+
+            <div class="quick-icon">💰</div>
+            Finance
+
+        </button>
+
+        <button
+            class="quick-action"
+            onclick="scrollToId('exchangeSection')">
+
+            <div class="quick-icon">♻️</div>
+            Exchange
+
+        </button>
+
+        <button
+            class="quick-action"
+            onclick="scrollToId('followupSection')">
+
+            <div class="quick-icon">📋</div>
+            Follow-up
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- VEHICLES -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        Select Vehicles
+
+        <span class="badge">
+            Compare up to 4
+        </span>
+
+    </div>
+
+    <div
+        class="vehicle-list"
+        id="vehicleList">
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <div class="section-title">
+        Selected Vehicles
+    </div>
+
+    <div class="card">
+
+        <div id="selectedVehicles">
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PURCHASE -->
+
+<section class="section">
+
+    <div class="section-title">
+        Purchase Details
+    </div>
+
+    <div class="card">
+
+        <div class="option-grid">
+
+            <div class="option-card">
+
+                <label>
+                    Purchase Type
+                </label>
+
+                <select
+                    id="purchaseType"
+                    onchange="calculateQuote()">
+
+                    <option>Retail</option>
+                    <option>Corporate</option>
+                    <option>Fleet</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="option-card">
+
+                <label>
+                    Usage
+                </label>
+
+                <select
+                    id="usageType"
+                    onchange="calculateQuote()">
+
+                    <option>Personal</option>
+                    <option>Commercial</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="option-card">
+
+                <label>
+                    Registration
+                </label>
+
+                <select
+                    id="regState"
+                    onchange="calculateQuote()">
+
+                    <option>Maharashtra</option>
+                    <option>Gujarat</option>
+                    <option>Karnataka</option>
+                    <option>Delhi</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="option-card">
+
+                <label>
+                    Insurance
+                </label>
+
+                <select
+                    id="insuranceType"
+                    onchange="calculateQuote()">
+
+                    <option value="7500">
+                        1 + 5 Years
+                    </option>
+
+                    <option value="4500">
+                        1 Year
+                    </option>
+
+                    <option value="9500">
+                        Zero Dep 5 Yr
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ACCESSORIES -->
+
+<section class="section">
+
+    <div class="section-title">
+        Accessories
+    </div>
+
+    <div class="card">
+
+        <div id="mainAccessories">
+        </div>
+
+        <button
+            class="secondary-btn"
+            onclick="openModal('accessoryModal')">
+
+            + Add More Accessories
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- EXCHANGE -->
+
+<section
+    class="section"
+    id="exchangeSection">
+
+    <div class="section-title">
+        Exchange Vehicle
+    </div>
+
+    <div class="card">
+
+        <div class="exchange-toggle">
+
+            <div>
+
+                <strong style="font-size:13px;">
+                    Customer wants exchange
+                </strong>
+
+                <div
+                    style="font-size:10px;color:#777;margin-top:3px;">
+
+                    Add old vehicle for valuation
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="switch"
+                id="exchangeSwitch"
+                onclick="toggleExchange()">
+
+                <div class="switch-circle"></div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="exchangeDetails"
+            class="hide"
+            style="margin-top:14px;">
+
+            <input
+                class="input"
+                id="exchangeReg"
+                placeholder="Old vehicle registration"
+                style="margin-bottom:10px;">
+
+            <input
+                class="input"
+                id="exchangeValue"
+                type="number"
+                placeholder="Expected exchange value"
+                oninput="calculateQuote()">
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FINANCE -->
+
+<section
+    class="section"
+    id="financeSection">
+
+    <div class="section-title">
+        Finance
+    </div>
+
+    <div class="card">
+
+        <div class="option-grid">
+
+            <div class="option-card">
+
+                <label>
+                    Finance Partner
+                </label>
+
+                <select id="financePartner">
+
+                    <option>HDFC Bank</option>
+                    <option>Hero FinCorp</option>
+                    <option>Bajaj Finance</option>
+                    <option>Cash Purchase</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="option-card">
+
+                <label>
+                    Down Payment
+                </label>
+
+                <strong id="downPaymentLabel">
+                    ₹ 25,000
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="range-row">
+
+            <input
+                type="range"
+                id="downPaymentSlider"
+                min="5000"
+                max="150000"
+                step="1000"
+                value="25000"
+                oninput="calculateEMI()">
+
+        </div>
+
+
+        <div class="range-row">
+
+            <label style="font-size:11px;color:var(--gray);">
+
+                Tenure:
+                <span id="tenureLabel">
+                    36
+                </span>
+                months
+
+            </label>
+
+            <input
+                type="range"
+                id="tenureSlider"
+                min="6"
+                max="48"
+                step="6"
+                value="36"
+                oninput="calculateEMI()">
+
+        </div>
+
+
+        <div class="emi-box">
+
+            <div class="emi-label">
+                Estimated Monthly EMI
+            </div>
+
+            <div
+                class="emi-value"
+                id="emiValue">
+
+                ₹ 0
+
+            </div>
+
+            <div class="emi-row">
+
+                <span id="loanAmountLabel">
+                    Loan: ₹0
+                </span>
+
+                <span id="tenureLabel2">
+                    36 Months
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="secondary-btn"
+            onclick="checkEligibility()">
+
+            Check Finance Eligibility
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- QUOTATION -->
+
+<section class="section">
+
+    <div class="section-title">
+        Quotation
+    </div>
+
+    <div class="quote-summary">
+
+        <div class="quote-header">
+
+            <div class="quote-title">
+                Hero MotoCorp Quotation
+            </div>
+
+            <div
+                class="quote-number"
+                id="quoteNumber">
+                QT-2026-000125
+            </div>
+
+        </div>
+
+
+        <div class="quote-body">
+
+            <div class="amount-row">
+                <span>Vehicle Price</span>
+                <strong id="vehicleAmount">
+                    ₹ 89,000
+                </strong>
+            </div>
+
+            <div class="amount-row">
+                <span>RTO / Registration</span>
+                <strong>₹ 9,500</strong>
+            </div>
+
+            <div class="amount-row">
+                <span>Insurance</span>
+                <strong id="insuranceAmount">
+                    ₹ 7,500
+                </strong>
+            </div>
+
+            <div class="amount-row">
+                <span>Accessories</span>
+                <strong id="accessoryAmount">
+                    ₹ 0
+                </strong>
+            </div>
+
+            <div class="amount-row">
+                <span>Exchange Value</span>
+                <strong id="exchangeAmountRow">
+                    - ₹ 0
+                </strong>
+            </div>
+
+            <div class="amount-row">
+                <span>Discount</span>
+                <strong id="discountAmountRow">
+                    - ₹ 2,000
+                </strong>
+            </div>
+
+
+            <div class="discount-row">
+
+                <input
+                    class="input"
+                    id="discountCode"
+                    placeholder="Have a promo code?">
+
+                <button
+                    class="apply-btn"
+                    onclick="applyDiscountCode()">
+
+                    Apply
+
+                </button>
+
+            </div>
+
+
+            <div
+                id="discountMsg"
+                style="font-size:10px;color:var(--gray);margin-bottom:6px;">
+            </div>
+
+
+            <div class="amount-row total">
+
+                <span>
+                    On-Road Price
+                </span>
+
+                <span id="totalAmount">
+                    ₹ 0
+                </span>
+
+            </div>
+
+
+            <button
+                class="primary-btn"
+                id="pdfBtn"
+                onclick="generatePDF()">
+
+                📄 Generate PDF Quotation
+
+            </button>
+
+
+            <button
+                class="primary-btn whatsapp-btn"
+                onclick="sendWhatsApp()">
+
+                WhatsApp Quotation
+
+            </button>
+
+
+            <button
+                class="secondary-btn"
+                onclick="saveQuotation()">
+
+                Save Quotation
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STATUS -->
+
+<section class="section">
+
+    <div class="section-title">
+        Lead Status
+    </div>
+
+    <div class="card">
+
+        <div
+            class="status-grid"
+            id="statusGrid">
+
+            <div
+                class="status active"
+                onclick="setStatus(this)">
+                Enquiry
+            </div>
+
+            <div
+                class="status"
+                onclick="setStatus(this)">
+                Quotation
+            </div>
+
+            <div
+                class="status"
+                onclick="setStatus(this)">
+                Test Ride
+            </div>
+
+            <div
+                class="status"
+                onclick="setStatus(this)">
+                Booking
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FOLLOWUP -->
+
+<section
+    class="section"
+    id="followupSection">
+
+    <div class="section-title">
+        Follow-up
+    </div>
+
+    <div class="card">
+
+        <div class="input-group">
+
+            <label>
+                Next Follow-up
+            </label>
+
+            <input
+                class="input"
+                id="followDate"
+                type="date">
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label>
+                Follow-up Remark
+            </label>
+
+            <input
+                class="input"
+                id="followRemark"
+                placeholder="Customer interested in Xtreme 125R...">
+
+        </div>
+
+
+        <button
+            class="primary-btn"
+            onclick="saveFollowup()">
+
+            Save Follow-up
+
+        </button>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- ACCESSORY MODAL -->
+
+<div
+    class="modal"
+    id="accessoryModal">
+
+    <div class="modal-box">
+
+        <span
+            class="close-btn"
+            onclick="closeModal('accessoryModal')">
+            ×
+        </span>
+
+        <div class="modal-title">
+            Add Accessories
+        </div>
+
+        <div id="extraAccessories">
+        </div>
+
+        <button
+            class="primary-btn"
+            onclick="closeModal('accessoryModal')">
+
+            Add Selected
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- TEST RIDE -->
+
+<div
+    class="modal"
+    id="testRideModal">
+
+    <div class="modal-box">
+
+        <span
+            class="close-btn"
+            onclick="closeModal('testRideModal')">
+            ×
+        </span>
+
+        <div class="modal-title">
+            Schedule Test Ride
+        </div>
+
+        <div class="input-group">
+
+            <label>Vehicle</label>
+
+            <select
+                class="input"
+                id="rideVehicle">
+            </select>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Date</label>
+
+            <input
+                class="input"
+                id="rideDate"
+                type="date">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Time</label>
+
+            <input
+                class="input"
+                id="rideTime"
+                type="time">
+
+        </div>
+
+        <button
+            class="primary-btn"
+            onclick="scheduleTestRide()">
+
+            Confirm Test Ride
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- QUOTES -->
+
+<div
+    class="modal"
+    id="quotesModal">
+
+    <div class="modal-box">
+
+        <span
+            class="close-btn"
+            onclick="closeModal('quotesModal')">
+            ×
+        </span>
+
+        <div class="modal-title">
+            Saved Quotations
+        </div>
+
+        <div
+            class="quotes-list"
+            id="quotesList">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CUSTOMERS -->
+
+<div
+    class="modal"
+    id="customersModal">
+
+    <div class="modal-box">
+
+        <span
+            class="close-btn"
+            onclick="closeModal('customersModal')">
+            ×
+        </span>
+
+        <div class="modal-title">
+            Customers
+        </div>
+
+        <input
+            class="input"
+            id="customerSearch"
+            placeholder="Search by name or mobile"
+            oninput="renderCustomersList()"
+            style="margin-bottom:10px;">
+
+        <div
+            class="quotes-list"
+            id="customersList">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- REPORTS -->
+
+<div
+    class="modal"
+    id="reportsModal">
+
+    <div class="modal-box">
+
+        <span
+            class="close-btn"
+            onclick="closeModal('reportsModal')">
+            ×
+        </span>
+
+        <div class="modal-title">
+            Dashboard
+        </div>
+
+        <div
+            class="stat-grid"
+            id="statGrid">
+        </div>
+
+        <div class="section-title">
+            Leads by Status
+        </div>
+
+        <div id="statusBars">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- NAV -->
+
+<nav class="bottom-nav">
+
+    <button
+        class="nav-item active"
+        onclick="setNav(this)">
+
+        <div class="nav-icon">🏠</div>
+        Home
+
+    </button>
+
+
+    <button
+        class="nav-item"
+        onclick="
+            setNav(this);
+            openModal('customersModal');
+            renderCustomersList();
+        ">
+
+        <div class="nav-icon">👥</div>
+        Customers
+
+    </button>
+
+
+    <button
+        class="nav-item"
+        onclick="
+            setNav(this);
+            scrollToId('vehicleList');
+        ">
+
+        <div class="nav-icon">➕</div>
+        New Sale
+
+    </button>
+
+
+    <button
+        class="nav-item"
+        onclick="
+            setNav(this);
+            openModal('quotesModal');
+            renderQuotesList();
+        ">
+
+        <div class="nav-icon">📄</div>
+        Quotes
+
+    </button>
+
+
+    <button
+        class="nav-item"
+        onclick="
+            setNav(this);
+            openModal('reportsModal');
+            renderReports();
+        ">
+
+        <div class="nav-icon">📊</div>
+        Reports
+
+    </button>
+
+</nav>
+
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
+
+<script>
+
+const FINALIZATION_PAGE =
+    'VehicleFinalization.html';
+
+
+const VEHICLES = [
+
+    {
+        id:'splendor-plus',
+        name:'Splendor Plus',
+        variant:'XTEC 2.0',
+        price:89000,
+        color:'#e31837'
+    },
+
+    {
+        id:'xtreme-125r',
+        name:'Xtreme 125R',
+        variant:'Disc Variant',
+        price:98000,
+        color:'#111827'
+    },
+
+    {
+        id:'super-splendor',
+        name:'Super Splendor',
+        variant:'Disc',
+        price:94000,
+        color:'#0f766e'
+    },
+
+    {
+        id:'glamour',
+        name:'Glamour',
+        variant:'XTEC',
+        price:91000,
+        color:'#1d4ed8'
+    }
+
+];
+
+
+const MAIN_ACCESSORIES = [
+
+    {
+        name:'Seat Cover',
+        price:1200,
+        checked:true
+    },
+
+    {
+        name:'Leg Guard',
+        price:1800,
+        checked:false
+    },
+
+    {
+        name:'Mobile Holder',
+        price:800,
+        checked:false
+    },
+
+    {
+        name:'Floor Mat',
+        price:700,
+        checked:false
+    }
+
+];
+
+
+const EXTRA_ACCESSORIES = [
+
+    {
+        name:'Helmet',
+        price:1500,
+        checked:false
+    },
+
+    {
+        name:'Chrome Kit',
+        price:1200,
+        checked:false
+    },
+
+    {
+        name:'Saree Guard',
+        price:900,
+        checked:false
+    }
+
+];
+
+
+let selectedVehicles = [
+    {...VEHICLES[0]}
+];
+
+
+let currentCustomer = null;
+
+let discountAmount = 2000;
+
+
+/* =====================================
+   CUSTOMER STORAGE
+===================================== */
+
+function getCustomers(){
+
+    let list =
+        JSON.parse(
+            localStorage.getItem('hero_customers') || 'null'
+        );
+
+
+    if(!list){
+
+        list = [
+
+            {
+                id:'CUS-1001',
+                name:'Rahul Sharma',
+                mobile:'9812345621',
+                city:'Pune',
+                address:'12 FC Road, Shivajinagar'
+            },
+
+            {
+                id:'CUS-1002',
+                name:'Priya Deshmukh',
+                mobile:'9876501234',
+                city:'Pune',
+                address:'45 Baner Road, Baner'
+            },
+
+            {
+                id:'CUS-1003',
+                name:'Sanjay Patil',
+                mobile:'9765432109',
+                city:'Nashik',
+                address:'8 College Road, Nashik'
+            }
+
+        ];
+
+
+        localStorage.setItem(
+            'hero_customers',
+            JSON.stringify(list)
+        );
+
+    }
+
+
+    return list;
+}
+
+
+function saveCustomers(list){
+
+    localStorage.setItem(
+        'hero_customers',
+        JSON.stringify(list)
+    );
+
+}
+
+
+/* =====================================
+   CUSTOMER CONVERSION
+===================================== */
+
+function saveCustomerForConversion(customer){
+
+    const conversionData = {
+
+        customerId:customer.id,
+
+        customer:customer,
+
+        source:'DEALERSHIP_SALES',
+
+        sourcePage:'HeroDealershipSales.html',
+
+        status:'FINALIZATION_PENDING',
+
+        createdAt:new Date().toISOString()
+
+    };
+
+
+    /*
+       Main customer object
+    */
+
+    localStorage.setItem(
+        'hero_selected_customer',
+        JSON.stringify(customer)
+    );
+
+
+    /*
+       Conversion object
+    */
+
+    localStorage.setItem(
+        'hero_customer_conversion',
+        JSON.stringify(conversionData)
+    );
+
+
+    /*
+       Also keep an easy flag
+    */
+
+    localStorage.setItem(
+        'hero_conversion_customer_id',
+        customer.id
+    );
+
+
+    /*
+       Remember last customer
+    */
+
+    localStorage.setItem(
+        'hero_last_customer',
+        JSON.stringify(customer)
+    );
+
+}
+
+
+function openFinalization(customer){
+
+    saveCustomerForConversion(customer);
+
+
+    toast(
+        'Customer saved. Opening finalization...'
+    );
+
+
+    setTimeout(function(){
+
+        window.location.href =
+            FINALIZATION_PAGE;
+
+    },500);
+
+}
+
+
+/* =====================================
+   NEW CUSTOMER
+===================================== */
+
+function createCustomer(){
+
+    const name =
+        document.getElementById('newName')
+        .value
+        .trim();
+
+
+    const mobile =
+        document.getElementById('newMobile')
+        .value
+        .trim();
+
+
+    const city =
+        document.getElementById('newCity')
+        .value
+        .trim();
+
+
+    const address =
+        document.getElementById('newAddress')
+        .value
+        .trim();
+
+
+    if(!name){
+
+        toast('Enter customer name');
+
+        return;
+
+    }
+
+
+    if(!/^\d{10}$/.test(mobile)){
+
+        toast(
+            'Enter valid 10 digit mobile number'
+        );
+
+        return;
+
+    }
+
+
+    let customers =
+        getCustomers();
+
+
+    let existing =
+        customers.find(
+            c => c.mobile === mobile
+        );
+
+
+    if(existing){
+
+        toast(
+            'Customer already exists'
+        );
+
+        currentCustomer =
+            existing;
+
+        return;
+
+    }
+
+
+    const customer = {
+
+        id:
+            'CUS-' +
+            Date.now(),
+
+        name:name,
+
+        mobile:mobile,
+
+        city:city || '—',
+
+        address:address || '—',
+
+        customerType:'New Customer',
+
+        createdAt:
+            new Date().toISOString()
+
+    };
+
+
+    customers.unshift(customer);
+
+    saveCustomers(customers);
+
+
+    currentCustomer =
+        customer;
+
+
+    localStorage.setItem(
+        'hero_last_customer',
+        JSON.stringify(customer)
+    );
+
+
+    toast(
+        'Customer '+name+' created'
+    );
+
+
+    document.querySelector(
+        '.customer-tab'
+    ).click();
+
+
+    document.getElementById(
+        'mobile'
+    ).value = mobile;
+
+
+    searchCustomer();
+
+}
+
+
+/* =====================================
+   CREATE + CONVERT
+===================================== */
+
+function convertNewCustomer(){
+
+    const name =
+        document.getElementById('newName')
+        .value
+        .trim();
+
+
+    const mobile =
+        document.getElementById('newMobile')
+        .value
+        .trim();
+
+
+    const city =
+        document.getElementById('newCity')
+        .value
+        .trim();
+
+
+    const address =
+        document.getElementById('newAddress')
+        .value
+        .trim();
+
+
+    if(!name){
+
+        toast('Enter customer name');
+
+        return;
+
+    }
+
+
+    if(!/^\d{10}$/.test(mobile)){
+
+        toast(
+            'Enter valid 10 digit mobile number'
+        );
+
+        return;
+
+    }
+
+
+    let customers =
+        getCustomers();
+
+
+    let customer =
+        customers.find(
+            c => c.mobile === mobile
+        );
+
+
+    if(customer){
+
+        customer.name =
+            name || customer.name;
+
+        customer.city =
+            city || customer.city;
+
+        customer.address =
+            address || customer.address;
+
+    }
+    else{
+
+        customer = {
+
+            id:
+                'CUS-' +
+                Date.now(),
+
+            name:name,
+
+            mobile:mobile,
+
+            city:city || '—',
+
+            address:address || '—',
+
+            customerType:'New Customer',
+
+            createdAt:
+                new Date().toISOString()
+
+        };
+
+
+        customers.unshift(customer);
+
+    }
+
+
+    saveCustomers(customers);
+
+
+    currentCustomer =
+        customer;
+
+
+    openFinalization(
+        customer
+    );
+
+}
+
+
+/* =====================================
+   EXISTING CUSTOMER
+===================================== */
+
+function searchCustomer(){
+
+    const mobile =
+        document.getElementById(
+            'mobile'
+        ).value.trim();
+
+
+    const found =
+        document.getElementById(
+            'customerFound'
+        );
+
+
+    if(mobile.length < 10){
+
+        found.style.display =
+            'none';
+
+        return;
+
+    }
+
+
+    const match =
+        getCustomers().find(
+            c => c.mobile === mobile
+        );
+
+
+    if(match){
+
+        currentCustomer =
+            match;
+
+    }
+    else{
+
+        currentCustomer = {
+
+            id:
+                'CUS-' +
+                Date.now(),
+
+            name:'New Walk-in',
+
+            mobile:mobile,
+
+            city:'—',
+
+            address:'—',
+
+            customerType:'New Customer'
+
+        };
+
+    }
+
+
+    document.getElementById(
+        'foundName'
+    ).textContent =
+        currentCustomer.name;
+
+
+    document.getElementById(
+        'foundInfo'
+    ).textContent =
+
+        mobile.substring(0,2) +
+        'XXXXXX' +
+        mobile.substring(8) +
+        ' · ' +
+        currentCustomer.city;
+
+
+    document.getElementById(
+        'foundAddress'
+    ).textContent =
+
+        'Address: ' +
+        (currentCustomer.address || '—');
+
+
+    document.getElementById(
+        'foundStatus'
+    ).textContent =
+
+        match
+            ? 'Registered customer'
+            : 'No previous record — create customer first';
+
+
+    found.style.display =
+        'block';
+
+
+    const convertBtn =
+        found.querySelector(
+            'button'
+        );
+
+
+    if(convertBtn){
+
+        convertBtn.style.display =
+            match ? 'block' : 'none';
+
+    }
+
+}
+
+
+function convertExistingCustomer(){
+
+    if(!currentCustomer){
+
+        toast(
+            'Select a customer first'
+        );
+
+        return;
+
+    }
+
+
+    openFinalization(
+        currentCustomer
+    );
+
+}
+
+
+/* =====================================
+   CUSTOMER TAB
+===================================== */
+
+function customerMode(mode,el){
+
+    document
+        .querySelectorAll(
+            '.customer-tab'
+        )
+        .forEach(
+            x =>
+            x.classList.remove('active')
+        );
+
+
+    el.classList.add('active');
+
+
+    document
+        .getElementById(
+            'newCustomer'
+        )
+        .classList.toggle(
+            'hide',
+            mode !== 'new'
+        );
+
+
+    document
+        .getElementById(
+            'existingCustomer'
+        )
+        .classList.toggle(
+            'hide',
+            mode === 'new'
+        );
+
+}
+
+
+/* =====================================
+   VEHICLES
+===================================== */
+
+function bikeSVG(color){
+
+    return `
+
+    <svg
+        viewBox="0 0 120 70"
+        xmlns="http://www.w3.org/2000/svg">
+
+        <circle
+            cx="24"
+            cy="52"
+            r="15"
+            fill="none"
+            stroke="${color}"
+            stroke-width="4"/>
+
+        <circle
+            cx="92"
+            cy="52"
+            r="15"
+            fill="none"
+            stroke="${color}"
+            stroke-width="4"/>
+
+        <path
+            d="M24 52 L48 30 L70 30 L92 52"
+            fill="none"
+            stroke="${color}"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+
+        <path
+            d="M48 30 L40 18 L54 18"
+            fill="none"
+            stroke="${color}"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+
+        <path
+            d="M70 30 L78 40"
+            fill="none"
+            stroke="${color}"
+            stroke-width="4"
+            stroke-linecap="round"/>
+
+        <rect
+            x="60"
+            y="24"
+            width="18"
+            height="7"
+            rx="2"
+            fill="${color}"/>
+
+    </svg>`;
+
+}
+
+
+function renderVehicleList(){
+
+    const list =
+        document.getElementById(
+            'vehicleList'
+        );
+
+
+    list.innerHTML = '';
+
+
+    VEHICLES.forEach(v => {
+
+        const isSel =
+            selectedVehicles.some(
+                s => s.id === v.id
+            );
+
+
+        const card =
+            document.createElement(
+                'div'
+            );
+
+
+        card.className =
+            'vehicle-card' +
+            (isSel ? ' selected' : '');
+
+
+        card.innerHTML = `
+
+            <div class="vehicle-image">
+
+                ${bikeSVG(v.color)}
+
+            </div>
+
+            <div class="vehicle-name">
+                ${v.name}
+            </div>
+
+            <div class="vehicle-variant">
+                ${v.variant}
+            </div>
+
+            <div class="vehicle-price">
+                ₹ ${v.price.toLocaleString('en-IN')}
+            </div>
+
+            <button
+                class="select-btn ${isSel ? 'is-selected' : ''}"
+                onclick="toggleVehicle('${v.id}')">
+
+                ${isSel ? 'Selected ✓' : 'Select'}
+
+            </button>
+
+        `;
+
+
+        list.appendChild(card);
+
+    });
+
+
+    const rideSelect =
+        document.getElementById(
+            'rideVehicle'
+        );
+
+
+    if(rideSelect){
+
+        rideSelect.innerHTML =
+            VEHICLES
+                .map(
+                    v =>
+                    `<option value="${v.id}">
+                        ${v.name}
+                    </option>`
+                )
+                .join('');
+
+    }
+
+}
+
+
+function toggleVehicle(id){
+
+    const exists =
+        selectedVehicles.some(
+            v => v.id === id
+        );
+
+
+    if(exists){
+
+        selectedVehicles =
+            selectedVehicles.filter(
+                v => v.id !== id
+            );
+
+    }
+    else{
+
+        if(
+            selectedVehicles.length >= 4
+        ){
+
+            toast(
+                'Maximum 4 vehicles can be compared'
+            );
+
+            return;
+
+        }
+
+
+        const v =
+            VEHICLES.find(
+                v => v.id === id
+            );
+
+
+        selectedVehicles.push(
+            {...v}
+        );
+
+    }
+
+
+    renderVehicleList();
+
+    renderSelectedVehicles();
+
+}
+
+
+function renderSelectedVehicles(){
+
+    const container =
+        document.getElementById(
+            'selectedVehicles'
+        );
+
+
+    container.innerHTML = '';
+
+
+    if(
+        selectedVehicles.length === 0
+    ){
+
+        container.innerHTML = `
+
+            <div
+                style="
+                    font-size:12px;
+                    color:var(--gray);
+                    padding:10px 0;
+                ">
+
+                No vehicle selected yet.
+
+            </div>
+
+        `;
+
+    }
+
+
+    selectedVehicles.forEach(v => {
+
+        const row =
+            document.createElement(
+                'div'
+            );
+
+
+        row.className =
+            'selected-vehicle';
+
+
+        row.innerHTML = `
+
+            <div class="selected-left">
+
+                <div class="vehicle-thumb">
+
+                    ${bikeSVG(v.color)}
+
+                </div>
+
+                <div>
+
+                    <div class="selected-name">
+                        ${v.name}
+                    </div>
+
+                    <div class="selected-price">
+                        ${v.variant}
+                        ·
+                        ₹ ${v.price.toLocaleString('en-IN')}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div
+                class="remove"
+                onclick="toggleVehicle('${v.id}')">
+
+                ×
+
+            </div>
+
+        `;
+
+
+        container.appendChild(row);
+
+    });
+
+
+    calculateQuote();
+
+}
+
+
+/* =====================================
+   ACCESSORIES
+===================================== */
+
+function renderAccessories(){
+
+    const main =
+        document.getElementById(
+            'mainAccessories'
+        );
+
+
+    main.innerHTML =
+        MAIN_ACCESSORIES
+            .map(
+                (a,i) => `
+
+                <div class="accessory">
+
+                    <input
+                        type="checkbox"
+                        ${a.checked ? 'checked' : ''}
+                        onchange="
+                            MAIN_ACCESSORIES[${i}].checked=this.checked;
+                            calculateQuote();
+                        ">
+
+                    <div class="accessory-name">
+                        ${a.name}
+                    </div>
+
+                    <div class="accessory-price">
+                        ₹ ${a.price.toLocaleString('en-IN')}
+                    </div>
+
+                </div>
+
+                `
+            )
+            .join('');
+
+
+    const extra =
+        document.getElementById(
+            'extraAccessories'
+        );
+
+
+    extra.innerHTML =
+        EXTRA_ACCESSORIES
+            .map(
+                (a,i) => `
+
+                <div class="accessory">
+
+                    <input
+                        type="checkbox"
+                        ${a.checked ? 'checked' : ''}
+                        onchange="
+                            EXTRA_ACCESSORIES[${i}].checked=this.checked;
+                            calculateQuote();
+                        ">
+
+                    <div class="accessory-name">
+                        ${a.name}
+                    </div>
+
+                    <div class="accessory-price">
+                        ₹ ${a.price.toLocaleString('en-IN')}
+                    </div>
+
+                </div>
+
+                `
+            )
+            .join('');
+
+}
+
+
+/* =====================================
+   CALCULATIONS
+===================================== */
+
+function accessoryTotal(){
+
+    return [
+        ...MAIN_ACCESSORIES,
+        ...EXTRA_ACCESSORIES
+    ]
+    .filter(a => a.checked)
+    .reduce(
+        (sum,a) => sum + a.price,
+        0
+    );
+
+}
+
+
+function insuranceValue(){
+
+    return parseInt(
+        document.getElementById(
+            'insuranceType'
+        ).value,
+        10
+    ) || 7500;
+
+}
+
+
+function exchangeAmount(){
+
+    const sw =
+        document.getElementById(
+            'exchangeSwitch'
+        );
+
+
+    if(
+        !sw.classList.contains('active')
+    ){
+
+        return 0;
+
+    }
+
+
+    return parseInt(
+        document.getElementById(
+            'exchangeValue'
+        ).value,
+        10
+    ) || 0;
+
+}
+
+
+function calculateQuote(){
+
+    const vehicleTotal =
+        selectedVehicles.reduce(
+            (s,v) => s + v.price,
+            0
+        );
+
+
+    const accTotal =
+        accessoryTotal();
+
+
+    const ins =
+        insuranceValue();
+
+
+    const exch =
+        exchangeAmount();
+
+
+    const total =
+        vehicleTotal +
+        9500 +
+        ins +
+        accTotal -
+        discountAmount -
+        exch;
+
+
+    document.getElementById(
+        'vehicleAmount'
+    ).textContent =
+        '₹ ' +
+        vehicleTotal.toLocaleString('en-IN');
+
+
+    document.getElementById(
+        'insuranceAmount'
+    ).textContent =
+        '₹ ' +
+        ins.toLocaleString('en-IN');
+
+
+    document.getElementById(
+        'accessoryAmount'
+    ).textContent =
+        '₹ ' +
+        accTotal.toLocaleString('en-IN');
+
+
+    document.getElementById(
+        'exchangeAmountRow'
+    ).textContent =
+        '- ₹ ' +
+        exch.toLocaleString('en-IN');
+
+
+    document.getElementById(
+        'discountAmountRow'
+    ).textContent =
+        '- ₹ ' +
+        discountAmount.toLocaleString('en-IN');
+
+
+    document.getElementById(
+        'totalAmount'
+    ).textContent =
+        '₹ ' +
+        Math.max(
+            total,
+            0
+        ).toLocaleString('en-IN');
+
+
+    calculateEMI();
+
+}
+
+
+/* =====================================
+   EMI
+===================================== */
+
+function calculateEMI(){
+
+    const vehicleTotal =
+        selectedVehicles.reduce(
+            (s,v) => s + v.price,
+            0
+        );
+
+
+    const down =
+        parseInt(
+            document.getElementById(
+                'downPaymentSlider'
+            ).value,
+            10
+        );
+
+
+    const tenure =
+        parseInt(
+            document.getElementById(
+                'tenureSlider'
+            ).value,
+            10
+        );
+
+
+    document.getElementById(
+        'downPaymentLabel'
+    ).textContent =
+        '₹ ' +
+        down.toLocaleString('en-IN');
+
+
+    document.getElementById(
+        'tenureLabel'
+    ).textContent =
+        tenure;
+
+
+    document.getElementById(
+        'tenureLabel2'
+    ).textContent =
+        tenure +
+        ' Months';
+
+
+    const loan =
+        Math.max(
+            vehicleTotal - down,
+            0
+        );
+
+
+    document.getElementById(
+        'loanAmountLabel'
+    ).textContent =
+        'Loan: ₹' +
+        loan.toLocaleString('en-IN');
+
+
+    const annualRate =
+        0.11;
+
+
+    const r =
+        annualRate / 12;
+
+
+    const emi =
+        loan <= 0
+        ? 0
+        :
+        (
+            loan *
+            r *
+            Math.pow(
+                1+r,
+                tenure
+            )
+        )
+        /
+        (
+            Math.pow(
+                1+r,
+                tenure
+            ) - 1
+        );
+
+
+    document.getElementById(
+        'emiValue'
+    ).textContent =
+        '₹ ' +
+        Math.round(
+            emi
+        ).toLocaleString('en-IN');
+
+}
+
+
+/* =====================================
+   EXCHANGE
+===================================== */
+
+function toggleExchange(){
+
+    const sw =
+        document.getElementById(
+            'exchangeSwitch'
+        );
+
+
+    const details =
+        document.getElementById(
+            'exchangeDetails'
+        );
+
+
+    sw.classList.toggle(
+        'active'
+    );
+
+
+    details.classList.toggle(
+        'hide'
+    );
+
+
+    calculateQuote();
+
+}
+
+
+/* =====================================
+   PROMO
+===================================== */
+
+const PROMO_CODES = {
+
+    HERO500:500,
+
+    FESTIVE2000:2000,
+
+    WELCOME1000:1000
+
+};
+
+
+function applyDiscountCode(){
+
+    const code =
+        document.getElementById(
+            'discountCode'
+        ).value
+        .trim()
+        .toUpperCase();
+
+
+    const msg =
+        document.getElementById(
+            'discountMsg'
+        );
+
+
+    if(PROMO_CODES[code]){
+
+        discountAmount =
+            PROMO_CODES[code];
+
+
+        msg.textContent =
+            'Code applied: extra ₹' +
+            discountAmount.toLocaleString('en-IN') +
+            ' off';
+
+
+        msg.style.color =
+            '#0f766e';
+
+
+        toast(
+            'Promo code applied'
+        );
+
+    }
+    else{
+
+        discountAmount =
+            2000;
+
+
+        msg.textContent =
+            code
+            ? 'Invalid code — standard discount restored'
+            : '';
+
+
+        msg.style.color =
+            '#b91c1c';
+
+    }
+
+
+    calculateQuote();
+
+}
+
+
+/* =====================================
+   QUOTATION
+===================================== */
+
+function quoteNumber(){
+
+    return document.getElementById(
+        'quoteNumber'
+    ).textContent;
+
+}
+
+
+function buildQuoteData(){
+
+    return {
+
+        number:
+            quoteNumber(),
+
+        date:
+            new Date()
+                .toLocaleDateString(
+                    'en-IN'
+                ),
+
+        customer:
+            currentCustomer,
+
+        vehicles:
+            selectedVehicles,
+
+        accessories:
+            [
+                ...MAIN_ACCESSORIES,
+                ...EXTRA_ACCESSORIES
+            ]
+            .filter(
+                a => a.checked
+            ),
+
+        insurance:
+            insuranceValue(),
+
+        exchange:
+            exchangeAmount(),
+
+        discount:
+            discountAmount,
+
+        total:
+            document.getElementById(
+                'totalAmount'
+            ).textContent
+
+    };
+
+}
+
+
+function saveQuotation(){
+
+    if(
+        selectedVehicles.length === 0
+    ){
+
+        toast(
+            'Select a vehicle first'
+        );
+
+        return;
+
+    }
+
+
+    if(!currentCustomer){
+
+        toast(
+            'Select customer first'
+        );
+
+        return;
+
+    }
+
+
+    const data =
+        buildQuoteData();
+
+
+    const list =
+        JSON.parse(
+            localStorage.getItem(
+                'hero_quotes'
+            ) || '[]'
+        );
+
+
+    list.unshift(data);
+
+
+    localStorage.setItem(
+        'hero_quotes',
+        JSON.stringify(list)
+    );
+
+
+    toast(
+        'Quotation ' +
+        data.number +
+        ' saved'
+    );
+
+}
+
+
+/* =====================================
+   FOLLOWUP
+===================================== */
+
+function saveFollowup(){
+
+    const date =
+        document.getElementById(
+            'followDate'
+        ).value;
+
+
+    const remark =
+        document.getElementById(
+            'followRemark'
+        ).value
+        .trim();
+
+
+    if(!date){
+
+        toast(
+            'Pick a follow-up date'
+        );
+
+        return;
+
+    }
+
+
+    const list =
+        JSON.parse(
+            localStorage.getItem(
+                'hero_followups'
+            ) || '[]'
+        );
+
+
+    list.push({
+
+        customer:
+            currentCustomer
+            ? currentCustomer
+            : null,
+
+        date:
+
+            date,
+
+        remark:
+
+            remark,
+
+        createdAt:
+
+            new Date()
+                .toISOString()
+
+    });
+
+
+    localStorage.setItem(
+        'hero_followups',
+        JSON.stringify(list)
+    );
+
+
+    toast(
+        'Follow-up saved for ' +
+        date
+    );
+
+}
+
+
+/* =====================================
+   TEST RIDE
+===================================== */
+
+function scheduleTestRide(){
+
+    const v =
+        VEHICLES.find(
+            v =>
+            v.id ===
+            document.getElementById(
+                'rideVehicle'
+            ).value
+        );
+
+
+    const date =
+        document.getElementById(
+            'rideDate'
+        ).value;
+
+
+    const time =
+        document.getElementById(
+            'rideTime'
+        ).value;
+
+
+    if(!date || !time){
+
+        toast(
+            'Pick a date and time'
+        );
+
+        return;
+
+    }
+
+
+    const list =
+        JSON.parse(
+            localStorage.getItem(
+                'hero_rides'
+            ) || '[]'
+        );
+
+
+    list.push({
+
+        customer:
+            currentCustomer,
+
+        vehicle:
+            v.name,
+
+        date:
+            date,
+
+        time:
+            time
+
+    });
+
+
+    localStorage.setItem(
+        'hero_rides',
+        JSON.stringify(list)
+    );
+
+
+    toast(
+        'Test ride booked'
+    );
+
+
+    closeModal(
+        'testRideModal'
+    );
+
+}
+
+
+/* =====================================
+   CUSTOMER LIST
+===================================== */
+
+function renderCustomersList(){
+
+    const q =
+        (
+            document.getElementById(
+                'customerSearch'
+            )?.value || ''
+        )
+        .toLowerCase();
+
+
+    const list =
+        getCustomers()
+        .filter(
+            c =>
+                c.name
+                .toLowerCase()
+                .includes(q)
+                ||
+                c.mobile.includes(q)
+        );
+
+
+    const el =
+        document.getElementById(
+            'customersList'
+        );
+
+
+    el.innerHTML =
+        list.length
+
+        ?
+
+        list.map(
+            c => `
+
+            <div class="customer-row">
+
+                <div>
+
+                    <div class="cname">
+                        ${c.name}
+                    </div>
+
+                    <div class="cmeta">
+                        ${c.mobile}
+                        ·
+                        ${c.city}
+                    </div>
+
+                    <div class="cmeta">
+                        ${c.address || '—'}
+                    </div>
+
+                </div>
+
+                <button
+                    class="pick-btn"
+                    onclick="pickCustomer('${c.mobile}')">
+
+                    Use
+
+                </button>
+
+            </div>
+
+            `
+        ).join('')
+
+        :
+
+        `
+        <div
+            style="
+                font-size:12px;
+                color:var(--gray);
+                padding:10px 0;
+            ">
+
+            No customers found.
+
+        </div>
+        `;
+
+}
+
+
+function pickCustomer(mobile){
+
+    document.getElementById(
+        'mobile'
+    ).value =
+        mobile;
+
+
+    searchCustomer();
+
+
+    closeModal(
+        'customersModal'
+    );
+
+
+    toast(
+        'Customer loaded'
+    );
+
+}
+
+
+/* =====================================
+   STATUS
+===================================== */
+
+function setStatus(el){
+
+    document
+        .querySelectorAll(
+            '.status'
+        )
+        .forEach(
+            s =>
+            s.classList.remove(
+                'active'
+            )
+        );
+
+
+    el.classList.add(
+        'active'
+    );
+
+
+    const stage =
+        el.textContent.trim();
+
+
+    const leads =
+        JSON.parse(
+            localStorage.getItem(
+                'hero_leads'
+            ) || '[]'
+        );
+
+
+    leads.push({
+
+        customer:
+            currentCustomer,
+
+        stage:
+            stage,
+
+        at:
+            new Date()
+                .toISOString()
+
+    });
+
+
+    localStorage.setItem(
+        'hero_leads',
+        JSON.stringify(
+            leads.slice(-100)
+        )
+    );
+
+
+    toast(
+        'Lead status set to ' +
+        stage
+    );
+
+}
+
+
+/* =====================================
+   PDF
+===================================== */
+
+function generatePDF(){
+
+    if(
+        !selectedVehicles.length
+    ){
+
+        toast(
+            'Select a vehicle first'
+        );
+
+        return;
+
+    }
+
+
+    const {
+        jsPDF
+    } =
+        window.jspdf;
+
+
+    const doc =
+        new jsPDF();
+
+
+    const data =
+        buildQuoteData();
+
+
+    let y = 20;
+
+
+    doc.setFontSize(18);
+
+    doc.setTextColor(
+        227,
+        24,
+        55
+    );
+
+    doc.text(
+        'Hero MotoCorp',
+        14,
+        y
+    );
+
+
+    y += 8;
+
+
+    doc.setFontSize(11);
+
+    doc.setTextColor(
+        30,
+        30,
+        30
+    );
+
+
+    doc.text(
+        'Sales Quotation',
+        14,
+        y
+    );
+
+
+    y += 8;
+
+
+    doc.setFontSize(9);
+
+    doc.setTextColor(
+        100,
+        100,
+        100
+    );
+
+
+    doc.text(
+        'Quotation No: ' +
+        data.number +
+        '   Date: ' +
+        data.date,
+        14,
+        y
+    );
+
+
+    y += 10;
+
+
+    doc.line(
+        14,
+        y,
+        196,
+        y
+    );
+
+
+    y += 8;
+
+
+    doc.setFontSize(11);
+
+    doc.text(
+        'Customer Details',
+        14,
+        y
+    );
+
+
+    y += 7;
+
+
+    doc.setFontSize(10);
+
+
+    doc.text(
+        'Name: ' +
+        data.customer.name,
+        14,
+        y
+    );
+
+
+    y += 6;
+
+
+    doc.text(
+        'Mobile: ' +
+        data.customer.mobile,
+        14,
+        y
+    );
+
+
+    y += 6;
+
+
+    doc.text(
+        'City: ' +
+        (data.customer.city || '—'),
+        14,
+        y
+    );
+
+
+    y += 6;
+
+
+    doc.text(
+        'Address: ' +
+        (data.customer.address || '—'),
+        14,
+        y
+    );
+
+
+    y += 10;
+
+
+    doc.text(
+        'Vehicles',
+        14,
+        y
+    );
+
+
+    y += 7;
+
+
+    data.vehicles.forEach(v => {
+
+        doc.text(
+            v.name +
+            ' (' +
+            v.variant +
+            ')',
+            14,
+            y
+        );
+
+
+        doc.text(
+            '₹ ' +
+            v.price.toLocaleString('en-IN'),
+            160,
+            y
+        );
+
+
+        y += 6;
+
+    });
+
+
+    y += 5;
+
+
+    doc.line(
+        14,
+        y,
+        196,
+        y
+    );
+
+
+    y += 8;
+
+
+    doc.text(
+        'RTO / Registration',
+        14,
+        y
+    );
+
+
+    doc.text(
+        '₹ 9,500',
+        160,
+        y
+    );
+
+
+    y += 6;
+
+
+    doc.text(
+        'Insurance',
+        14,
+        y
+    );
+
+
+    doc.text(
+        '₹ ' +
+        data.insurance.toLocaleString('en-IN'),
+        160,
+        y
+    );
+
+
+    y += 6;
+
+
+    doc.text(
+        'Discount',
+        14,
+        y
+    );
+
+
+    doc.text(
+        '- ₹ ' +
+        data.discount.toLocaleString('en-IN'),
+        160,
+        y
+    );
+
+
+    y += 8;
+
+
+    doc.line(
+        14,
+        y,
+        196,
+        y
+    );
+
+
+    y += 8;
+
+
+    doc.setFontSize(13);
+
+    doc.setTextColor(
+        227,
+        24,
+        55
+    );
+
+
+    doc.text(
+        'On-Road Price',
+        14,
+        y
+    );
+
+
+    doc.text(
+        data.total,
+        150,
+        y
+    );
+
+
+    doc.save(
+        data.number +
+        '.pdf'
+    );
+
+
+    toast(
+        'PDF downloaded'
+    );
+
+}
+
+
+/* =====================================
+   WHATSAPP
+===================================== */
+
+function sendWhatsApp(){
+
+    if(!currentCustomer){
+
+        toast(
+            'Select customer first'
+        );
+
+        return;
+
+    }
+
+
+    const data =
+        buildQuoteData();
+
+
+    const vehicleLines =
+        data.vehicles
+        .map(
+            v =>
+            v.name +
+            ' — ₹' +
+            v.price.toLocaleString('en-IN')
+        )
+        .join('%0A');
+
+
+    const message =
+
+        'Hello ' +
+        data.customer.name +
+        ',%0A%0A' +
+
+        'Thank you for visiting Hero MotoCorp.%0A%0A' +
+
+        'Your vehicle quotation:%0A' +
+
+        vehicleLines +
+
+        '%0A%0A' +
+
+        'On-Road Price: ' +
+        data.total +
+
+        '%0A' +
+
+        'Quotation No: ' +
+        data.number +
+
+        '%0A%0AThank you.';
+
+
+    window.open(
+        'https://wa.me/?text=' +
+        message,
+        '_blank'
+    );
+
+}
+
+
+/* =====================================
+   FINANCE
+===================================== */
+
+function checkEligibility(){
+
+    const partner =
+        document.getElementById(
+            'financePartner'
+        ).value;
+
+
+    if(
+        partner === 'Cash Purchase'
+    ){
+
+        toast(
+            'Cash purchase — no eligibility check needed'
+        );
+
+        return;
+
+    }
+
+
+    toast(
+        'Pre-approved with ' +
+        partner +
+        ' based on profile'
+    );
+
+}
+
+
+/* =====================================
+   UI
+===================================== */
+
+function toast(msg){
+
+    const t =
+        document.getElementById(
+            'toast'
+        );
+
+
+    t.textContent =
+        msg;
+
+
+    t.classList.add(
+        'show'
+    );
+
+
+    clearTimeout(
+        toast._h
+    );
+
+
+    toast._h =
+        setTimeout(
+            () =>
+            t.classList.remove(
+                'show'
+            ),
+            2500
+        );
+
+}
+
+
+function scrollToId(id){
+
+    const el =
+        document.getElementById(id);
+
+
+    if(el){
+
+        el.scrollIntoView({
+            behavior:'smooth',
+            block:'start'
+        });
+
+    }
+
+}
+
+
+function openModal(id){
+
+    document
+        .getElementById(id)
+        .classList.add('show');
+
+}
+
+
+function closeModal(id){
+
+    document
+        .getElementById(id)
+        .classList.remove('show');
+
+}
+
+
+function setNav(el){
+
+    document
+        .querySelectorAll(
+            '.nav-item'
+        )
+        .forEach(
+            n =>
+            n.classList.remove(
+                'active'
+            )
+        );
+
+
+    el.classList.add(
+        'active'
+    );
+
+}
+
+
+function renderQuotesList(){
+
+    const list =
+        JSON.parse(
+            localStorage.getItem(
+                'hero_quotes'
+            ) || '[]'
+        );
+
+
+    const el =
+        document.getElementById(
+            'quotesList'
+        );
+
+
+    el.innerHTML =
+        list.length
+
+        ?
+
+        list.map(
+            q => `
+
+            <div class="quote-item">
+
+                <span>
+                    ${q.number}
+                    —
+                    ${q.customer.name}
+                </span>
+
+                <span>
+                    ${q.total}
+                </span>
+
+            </div>
+
+            `
+        ).join('')
+
+        :
+
+        `
+        <div
+            style="
+                font-size:12px;
+                color:var(--gray);
+                padding:10px 0;
+            ">
+
+            No saved quotations yet.
+
+        </div>
+        `;
+
+}
+
+
+function renderReports(){
+
+    const quotes =
+        JSON.parse(
+            localStorage.getItem(
+                'hero_quotes'
+            ) || '[]'
+        );
+
+
+    const followups =
+        JSON.parse(
+            localStorage.getItem(
+                'hero_followups'
+            ) || '[]'
+        );
+
+
+    const rides =
+        JSON.parse(
+            localStorage.getItem(
+                'hero_rides'
+            ) || '[]'
+        );
+
+
+    const leads =
+        JSON.parse(
+            localStorage.getItem(
+                'hero_leads'
+            ) || '[]'
+        );
+
+
+    const totalValue =
+        quotes.reduce(
+            (s,q) =>
+                s +
+                (
+                    parseInt(
+                        q.total
+                        .replace(
+                            /[^0-9]/g,
+                            ''
+                        ),
+                        10
+                    ) || 0
+                ),
+            0
+        );
+
+
+    document.getElementById(
+        'statGrid'
+    ).innerHTML = `
+
+        <div class="stat-card">
+
+            <div class="stat-value">
+                ${quotes.length}
+            </div>
+
+            <div class="stat-label">
+                Quotations saved
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-value">
+                ₹ ${totalValue.toLocaleString('en-IN')}
+            </div>
+
+            <div class="stat-label">
+                Total quoted value
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-value">
+                ${rides.length}
+            </div>
+
+            <div class="stat-label">
+                Test rides booked
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-value">
+                ${followups.length}
+            </div>
+
+            <div class="stat-label">
+                Follow-ups scheduled
+            </div>
+
+        </div>
+
+    `;
+
+
+    const stages = [
+        'Enquiry',
+        'Quotation',
+        'Test Ride',
+        'Booking'
+    ];
+
+
+    const counts =
+        stages.map(
+            s =>
+            leads.filter(
+                l =>
+                l.stage === s
+            ).length
+        );
+
+
+    const max =
+        Math.max(
+            1,
+            ...counts
+        );
+
+
+    document.getElementById(
+        'statusBars'
+    ).innerHTML =
+
+        stages.map(
+            (s,i) => `
+
+            <div class="bar-row">
+
+                <div class="bar-label">
+                    ${s}
+                </div>
+
+                <div class="bar-track">
+
+                    <div
+                        class="bar-fill"
+                        style="
+                            width:${counts[i]/max*100}%;
+                        ">
+                    </div>
+
+                </div>
+
+                <div class="bar-count">
+                    ${counts[i]}
+                </div>
+
+            </div>
+
+            `
+        ).join('');
+
+}
+
+
+/* =====================================
+   INIT
+===================================== */
+
+getCustomers();
+
+renderVehicleList();
+
+renderSelectedVehicles();
+
+renderAccessories();
+
+calculateQuote();
+
+</script>
+
+</body>
+</html>
