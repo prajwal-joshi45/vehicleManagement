@@ -1,1 +1,3800 @@
 
+ html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Hero Dealership - Vehicle Finalization</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --red:#e31837;
+    --red-dark:#b9142d;
+    --ink:#111827;
+    --gray:#6b7280;
+    --light-gray:#f3f5f8;
+    --line:#e5e7eb;
+    --white:#ffffff;
+    --green:#16a34a;
+    --green-light:#ecfdf3;
+    --orange:#f59e0b;
+    --orange-light:#fff7ed;
+    --blue:#2563eb;
+    --blue-light:#eff6ff;
+    --danger:#dc2626;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--light-gray);
+    color:var(--ink);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.app-header{
+    background:var(--red);
+    color:#fff;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+
+.header-inner{
+    max-width:1200px;
+    margin:auto;
+    padding:14px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.brand-title{
+    font-size:19px;
+    font-weight:700;
+}
+
+.brand-subtitle{
+    font-size:11px;
+    opacity:.85;
+    margin-top:3px;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.header-info{
+    text-align:right;
+}
+
+.header-info strong{
+    display:block;
+    font-size:13px;
+}
+
+.header-info span{
+    font-size:10px;
+    opacity:.85;
+}
+
+.profile-circle{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#fff;
+    color:var(--red);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.page{
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+    padding-bottom:100px;
+}
+
+/* =========================
+   TOP SUMMARY
+========================= */
+
+.top-summary{
+    background:#fff;
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:18px;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:15px;
+}
+
+.summary-item label{
+    display:block;
+    color:var(--gray);
+    font-size:10px;
+    margin-bottom:5px;
+}
+
+.summary-item strong{
+    font-size:13px;
+}
+
+.status-badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:6px;
+    background:var(--orange-light);
+    color:#c2410c;
+    font-size:10px;
+    font-weight:bold;
+}
+
+/* =========================
+   STEPPER
+========================= */
+
+.stepper-wrapper{
+    background:#fff;
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:18px;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+    overflow-x:auto;
+}
+
+.stepper{
+    display:flex;
+    min-width:900px;
+    justify-content:space-between;
+    position:relative;
+}
+
+.stepper:before{
+    content:"";
+    position:absolute;
+    top:17px;
+    left:4%;
+    right:4%;
+    height:2px;
+    background:#e5e7eb;
+    z-index:0;
+}
+
+.step{
+    position:relative;
+    z-index:1;
+    text-align:center;
+    min-width:80px;
+    cursor:pointer;
+}
+
+.step-circle{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    margin:auto;
+    background:#e5e7eb;
+    color:#6b7280;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:bold;
+    border:3px solid #fff;
+}
+
+.step-label{
+    margin-top:7px;
+    font-size:10px;
+    color:var(--gray);
+    font-weight:600;
+}
+
+.step.active .step-circle{
+    background:var(--red);
+    color:#fff;
+}
+
+.step.active .step-label{
+    color:var(--red);
+}
+
+.step.completed .step-circle{
+    background:var(--green);
+    color:#fff;
+}
+
+.step.completed .step-label{
+    color:var(--green);
+}
+
+/* =========================
+   STEP CONTENT
+========================= */
+
+.step-content{
+    display:none;
+}
+
+.step-content.active{
+    display:block;
+}
+
+.section{
+    margin-bottom:18px;
+}
+
+.section-title{
+    font-size:15px;
+    font-weight:700;
+    margin-bottom:9px;
+}
+
+.section-subtitle{
+    font-size:11px;
+    color:var(--gray);
+    margin-top:-5px;
+    margin-bottom:12px;
+}
+
+.card{
+    background:#fff;
+    border-radius:14px;
+    padding:17px;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+
+/* =========================
+   GRID
+========================= */
+
+.grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.grid-3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.grid-4{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-group{
+    margin-bottom:12px;
+}
+
+.form-group label{
+    display:block;
+    font-size:10px;
+    color:var(--gray);
+    margin-bottom:5px;
+    font-weight:600;
+}
+
+.input,
+select,
+textarea{
+    width:100%;
+    border:1px solid #d8dde5;
+    border-radius:8px;
+    padding:10px;
+    font-size:12px;
+    outline:none;
+    background:#fff;
+}
+
+.input:focus,
+select:focus,
+textarea:focus{
+    border-color:var(--red);
+}
+
+textarea{
+    resize:vertical;
+    min-height:70px;
+}
+
+/* =========================
+   CUSTOMER CARD
+========================= */
+
+.customer-card{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.customer-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.customer-avatar{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:#fee2e2;
+    color:var(--red);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.customer-name{
+    font-weight:bold;
+    font-size:14px;
+}
+
+.customer-meta{
+    font-size:10px;
+    color:var(--gray);
+    margin-top:4px;
+}
+
+/* =========================
+   VEHICLE TABLE
+========================= */
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+.data-table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:700px;
+}
+
+.data-table th{
+    background:#f8fafc;
+    color:var(--gray);
+    font-size:10px;
+    text-align:left;
+    padding:11px;
+    border-bottom:1px solid var(--line);
+}
+
+.data-table td{
+    padding:11px;
+    border-bottom:1px solid #eee;
+    font-size:11px;
+    vertical-align:middle;
+}
+
+.data-table tr:hover{
+    background:#fafafa;
+}
+
+.data-table tr.selected{
+    background:#fff5f6;
+}
+
+.radio{
+    width:17px;
+    height:17px;
+    accent-color:var(--red);
+}
+
+.vehicle-name{
+    font-weight:bold;
+    font-size:12px;
+}
+
+.vehicle-sub{
+    font-size:10px;
+    color:var(--gray);
+    margin-top:3px;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.badge{
+    display:inline-block;
+    padding:5px 8px;
+    border-radius:6px;
+    font-size:9px;
+    font-weight:bold;
+}
+
+.badge-green{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.badge-orange{
+    background:#ffedd5;
+    color:#c2410c;
+}
+
+.badge-blue{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.badge-red{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+/* =========================
+   ALLOCATION
+========================= */
+
+.allocation-box{
+    background:#111827;
+    color:#fff;
+    border-radius:12px;
+    padding:16px;
+    margin-top:15px;
+}
+
+.allocation-title{
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:12px;
+}
+
+.allocation-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.allocation-item label{
+    display:block;
+    font-size:9px;
+    opacity:.65;
+    margin-bottom:4px;
+}
+
+.allocation-item strong{
+    font-size:12px;
+}
+
+/* =========================
+   INFO BOX
+========================= */
+
+.info-box{
+    padding:12px;
+    border-radius:9px;
+    font-size:11px;
+    margin-bottom:12px;
+}
+
+.info-blue{
+    background:var(--blue-light);
+    color:#1e40af;
+    border:1px solid #bfdbfe;
+}
+
+.info-green{
+    background:var(--green-light);
+    color:#166534;
+    border:1px solid #bbf7d0;
+}
+
+.info-orange{
+    background:var(--orange-light);
+    color:#9a3412;
+    border:1px solid #fed7aa;
+}
+
+/* =========================
+   RADIO OPTIONS
+========================= */
+
+.payment-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.payment-option{
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:14px;
+    text-align:center;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.payment-option.active{
+    border:2px solid var(--red);
+    background:#fff5f6;
+    color:var(--red);
+}
+
+/* =========================
+   AMOUNT SUMMARY
+========================= */
+
+.amount-box{
+    background:#111827;
+    color:#fff;
+    border-radius:14px;
+    padding:17px;
+}
+
+.amount-row{
+    display:flex;
+    justify-content:space-between;
+    padding:7px 0;
+    font-size:12px;
+}
+
+.amount-row.total{
+    border-top:1px solid #374151;
+    margin-top:7px;
+    padding-top:14px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.amount-row.total span:last-child{
+    color:#fff;
+}
+
+/* =========================
+   DOCUMENTS
+========================= */
+
+.document-row{
+    display:grid;
+    grid-template-columns:1.5fr 1fr 100px 100px;
+    align-items:center;
+    gap:10px;
+    padding:12px 0;
+    border-bottom:1px solid #eee;
+}
+
+.document-name{
+    font-weight:bold;
+    font-size:11px;
+}
+
+.document-meta{
+    font-size:9px;
+    color:var(--gray);
+    margin-top:3px;
+}
+
+.upload-btn{
+    border:1px solid #ddd;
+    background:#fff;
+    border-radius:7px;
+    padding:7px;
+    cursor:pointer;
+    font-size:10px;
+}
+
+/* =========================
+   CHECKLIST
+========================= */
+
+.checklist{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.check-item{
+    border:1px solid var(--line);
+    border-radius:9px;
+    padding:11px;
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-size:11px;
+}
+
+.check-icon{
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:#dcfce7;
+    color:#166534;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:bold;
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.navigation{
+    position:sticky;
+    bottom:0;
+    z-index:500;
+    background:#fff;
+    border-top:1px solid #ddd;
+    padding:12px 20px;
+    margin-top:20px;
+    box-shadow:0 -3px 12px rgba(0,0,0,.07);
+}
+
+.navigation-inner{
+    max-width:1160px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.nav-status{
+    font-size:10px;
+    color:var(--gray);
+}
+
+.nav-buttons{
+    display:flex;
+    gap:8px;
+}
+
+.btn{
+    border:none;
+    border-radius:8px;
+    padding:11px 18px;
+    font-size:11px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.btn-primary{
+    background:var(--red);
+    color:#fff;
+}
+
+.btn-primary:hover{
+    background:var(--red-dark);
+}
+
+.btn-secondary{
+    background:#fff;
+    color:var(--ink);
+    border:1px solid #d5d9df;
+}
+
+.btn-success{
+    background:var(--green);
+    color:#fff;
+}
+
+.btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+/* =========================
+   FINAL REVIEW
+========================= */
+
+.review-section{
+    margin-bottom:15px;
+}
+
+.review-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-bottom:9px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:8px;
+}
+
+.review-header strong{
+    font-size:13px;
+}
+
+.review-edit{
+    color:var(--red);
+    font-size:10px;
+    cursor:pointer;
+}
+
+.review-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.review-table td{
+    padding:7px 3px;
+    font-size:11px;
+}
+
+.review-table td:first-child{
+    color:var(--gray);
+    width:40%;
+}
+
+.review-table td:last-child{
+    font-weight:bold;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.6);
+    z-index:3000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    background:#fff;
+    width:100%;
+    max-width:480px;
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 10px 40px rgba(0,0,0,.25);
+}
+
+.modal-title{
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.modal-subtitle{
+    font-size:11px;
+    color:var(--gray);
+    margin-bottom:15px;
+}
+
+.modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-top:18px;
+}
+
+/* =========================
+   SUCCESS
+========================= */
+
+.success-icon{
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    background:#dcfce7;
+    color:#16a34a;
+    margin:0 auto 15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+}
+
+.success-title{
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.success-subtitle{
+    text-align:center;
+    color:var(--gray);
+    font-size:11px;
+    margin-top:5px;
+}
+
+.booking-number{
+    background:#f8fafc;
+    border-radius:10px;
+    padding:14px;
+    text-align:center;
+    margin-top:15px;
+}
+
+.booking-number label{
+    display:block;
+    color:var(--gray);
+    font-size:9px;
+}
+
+.booking-number strong{
+    display:block;
+    font-size:20px;
+    margin-top:5px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:800px){
+
+    .page{
+        padding:12px;
+        padding-bottom:100px;
+    }
+
+    .top-summary{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .allocation-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .payment-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .document-row{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+@media(max-width:520px){
+
+    .header-inner{
+        padding:12px 14px;
+    }
+
+    .brand-title{
+        font-size:17px;
+    }
+
+    .header-info{
+        display:none;
+    }
+
+    .top-summary{
+        grid-template-columns:1fr 1fr;
+        gap:12px;
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4{
+        grid-template-columns:1fr;
+    }
+
+    .payment-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .allocation-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .checklist{
+        grid-template-columns:1fr;
+    }
+
+    .navigation{
+        padding:10px 12px;
+    }
+
+    .navigation-inner{
+        flex-direction:column;
+        gap:8px;
+    }
+
+    .nav-status{
+        width:100%;
+        text-align:center;
+    }
+
+    .nav-buttons{
+        width:100%;
+    }
+
+    .nav-buttons .btn{
+        flex:1;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="app-header">
+
+    <div class="header-inner">
+
+        <div>
+            <div class="brand-title">
+                Hero Dealership
+            </div>
+
+            <div class="brand-subtitle">
+                Vehicle Finalization & Booking
+            </div>
+        </div>
+
+        <div class="header-right">
+
+          <div class="header-info">
+    <strong id="headerCustomerName">—</strong>
+    <span id="headerCustomerMobile">—</span>
+</div>
+
+            <div class="profile-circle">
+                PJ
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="page">
+
+
+<!-- =========================
+     TOP SUMMARY
+========================= -->
+
+<div class="top-summary">
+
+    <div class="summary-item">
+        <label>BOOKING</label>
+        <strong id="bookingNo">
+            BK-2026-00125
+        </strong>
+    </div>
+
+    <div class="summary-item">
+        <label>QUOTATION</label>
+        <strong>
+            QT-2026-000125
+        </strong>
+    </div>
+
+  <div class="summary-item">
+    <label>CUSTOMER</label>
+    <strong id="summaryCustomerName">
+        —
+    </strong>
+</div>
+
+    <div class="summary-item">
+        <label>SALES EXECUTIVE</label>
+        <strong>
+            Prajwal Joshi
+        </strong>
+    </div>
+
+    <div class="summary-item">
+        <label>STATUS</label>
+        <span class="status-badge">
+            FINALIZATION IN PROGRESS
+        </span>
+    </div>
+
+</div>
+
+
+<!-- =========================
+     STEPPER
+========================= -->
+
+<div class="stepper-wrapper">
+
+    <div class="stepper">
+
+        <div class="step active" data-step="1">
+            <div class="step-circle">1</div>
+            <div class="step-label">Customer</div>
+        </div>
+
+        <div class="step" data-step="2">
+            <div class="step-circle">2</div>
+            <div class="step-label">Vehicle</div>
+        </div>
+
+        <div class="step" data-step="3">
+            <div class="step-circle">3</div>
+            <div class="step-label">VIN</div>
+        </div>
+
+        <div class="step" data-step="4">
+            <div class="step-circle">4</div>
+            <div class="step-label">RTO</div>
+        </div>
+
+        <div class="step" data-step="5">
+            <div class="step-circle">5</div>
+            <div class="step-label">Payment</div>
+        </div>
+
+        <div class="step" data-step="6">
+            <div class="step-circle">6</div>
+            <div class="step-label">Exchange</div>
+        </div>
+
+        <div class="step" data-step="7">
+            <div class="step-circle">7</div>
+            <div class="step-label">Insurance</div>
+        </div>
+
+        <div class="step" data-step="8">
+            <div class="step-circle">8</div>
+            <div class="step-label">Documents</div>
+        </div>
+
+        <div class="step" data-step="9">
+            <div class="step-circle">9</div>
+            <div class="step-label">Review</div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     STEP 1
+===================================================== -->
+
+<section class="step-content active" id="step1">
+
+    <div class="section">
+
+        <div class="section-title">
+            Customer Confirmation
+        </div>
+
+        <div class="section-subtitle">
+            Verify the customer from the quotation before proceeding.
+        </div>
+
+        <div class="card">
+
+            <div class="customer-card">
+
+                <div class="customer-left">
+<div
+    class="customer-avatar"
+    id="finalCustomerAvatar">
+    C
+</div>
+
+<div>
+
+    <div
+        class="customer-name"
+        id="finalCustomerName">
+        —
+    </div>
+
+    <div
+        class="customer-meta"
+        id="finalCustomerMobileCity">
+        —
+    </div>
+
+    <div
+        class="customer-meta"
+        id="finalCustomerAddress">
+        —
+    </div>
+
+</div>
+                </div>
+
+                <button class="btn btn-secondary">
+                    Change Customer
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Quotation Details
+        </div>
+
+        <div class="card">
+
+            <div class="grid-4">
+
+                <div class="form-group">
+                    <label>Quotation Number</label>
+                    <input class="input" value="QT-2026-000125" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Quotation Date</label>
+                    <input class="input" value="21/09/2026" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Quotation Amount</label>
+                    <input class="input" value="₹1,04,500" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Customer Type</label>
+                    <input class="input" value="Existing Customer" readonly>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="info-box info-green">
+            ✓ Customer has confirmed that he wants to proceed with vehicle purchase.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 2
+===================================================== -->
+
+<section class="step-content" id="step2">
+
+    <div class="section">
+
+        <div class="section-title">
+            Final Vehicle Selection
+        </div>
+
+        <div class="section-subtitle">
+            Select the single vehicle that the customer has finalized.
+        </div>
+
+        <div class="card">
+
+            <div class="table-wrapper">
+
+                <table class="data-table">
+
+                    <thead>
+
+                    <tr>
+                        <th>Select</th>
+                        <th>Vehicle</th>
+                        <th>Variant</th>
+                        <th>Colour</th>
+                        <th>Ex-Showroom</th>
+                        <th>Availability</th>
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr class="selected">
+
+                        <td>
+                            <input
+                                type="radio"
+                                name="vehicle"
+                                class="radio"
+                                checked
+                                onchange="selectVehicle('Xtreme 125R','Disc Variant','Black',98000)">
+                        </td>
+
+                        <td>
+                            <div class="vehicle-name">
+                                Xtreme 125R
+                            </div>
+                            <div class="vehicle-sub">
+                                Hero MotoCorp
+                            </div>
+                        </td>
+
+                        <td>
+                            Disc Variant
+                        </td>
+
+                        <td>
+                            Black
+                        </td>
+
+                        <td>
+                            ₹98,000
+                        </td>
+
+                        <td>
+                            <span class="badge badge-green">
+                                Available
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <input
+                                type="radio"
+                                name="vehicle"
+                                class="radio"
+                                onchange="selectVehicle('Splendor Plus','XTEC 2.0','Red',89000)">
+                        </td>
+
+                        <td>
+                            <div class="vehicle-name">
+                                Splendor Plus
+                            </div>
+                            <div class="vehicle-sub">
+                                Hero MotoCorp
+                            </div>
+                        </td>
+
+                        <td>
+                            XTEC 2.0
+                        </td>
+
+                        <td>
+                            Red
+                        </td>
+
+                        <td>
+                            ₹89,000
+                        </td>
+
+                        <td>
+                            <span class="badge badge-green">
+                                Available
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <input
+                                type="radio"
+                                name="vehicle"
+                                class="radio"
+                                onchange="selectVehicle('Glamour','XTEC','Blue',91000)">
+                        </td>
+
+                        <td>
+                            <div class="vehicle-name">
+                                Glamour
+                            </div>
+                            <div class="vehicle-sub">
+                                Hero MotoCorp
+                            </div>
+                        </td>
+
+                        <td>
+                            XTEC
+                        </td>
+
+                        <td>
+                            Blue
+                        </td>
+
+                        <td>
+                            ₹91,000
+                        </td>
+
+                        <td>
+                            <span class="badge badge-green">
+                                Available
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="card">
+
+            <div class="section-title">
+                Selected Vehicle
+            </div>
+
+            <div class="grid-4">
+
+                <div class="form-group">
+                    <label>MODEL</label>
+                    <input class="input" id="selectedModel" value="Xtreme 125R" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>VARIANT</label>
+                    <input class="input" id="selectedVariant" value="Disc Variant" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>COLOUR</label>
+                    <input class="input" id="selectedColour" value="Black" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>EX-SHOWROOM</label>
+                    <input class="input" id="selectedPrice" value="₹98,000" readonly>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 3
+===================================================== -->
+
+<section class="step-content" id="step3">
+
+    <div class="section">
+
+        <div class="section-title">
+            VIN / Vehicle Allocation
+        </div>
+
+        <div class="section-subtitle">
+            Select an available physical vehicle from inventory.
+        </div>
+
+        <div class="info-box info-blue">
+            Only vehicles matching the selected model, variant and colour are displayed.
+        </div>
+
+        <div class="card">
+
+            <div class="table-wrapper">
+
+                <table class="data-table">
+
+                    <thead>
+
+                    <tr>
+                        <th>Select</th>
+                        <th>VIN</th>
+                        <th>Chassis No</th>
+                        <th>Engine No</th>
+                        <th>Colour</th>
+                        <th>Mfg Date</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr class="selected">
+
+                        <td>
+                            <input
+                                type="radio"
+                                name="vin"
+                                class="radio"
+                                checked
+                                onchange="selectVIN('MBHXXXX001','MBLHA123456789','EGN987654321')">
+                        </td>
+
+                        <td>
+                            <strong>MBHXXXX001</strong>
+                        </td>
+
+                        <td>
+                            MBLHA123456789
+                        </td>
+
+                        <td>
+                            EGN987654321
+                        </td>
+
+                        <td>
+                            Black
+                        </td>
+
+                        <td>
+                            09/2026
+                        </td>
+
+                        <td>
+                            Pune Yard
+                        </td>
+
+                        <td>
+                            <span class="badge badge-green">
+                                Available
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <input
+                                type="radio"
+                                name="vin"
+                                class="radio"
+                                onchange="selectVIN('MBHXXXX002','MBLHA123456790','EGN987654322')">
+                        </td>
+
+                        <td>
+                            <strong>MBHXXXX002</strong>
+                        </td>
+
+                        <td>
+                            MBLHA123456790
+                        </td>
+
+                        <td>
+                            EGN987654322
+                        </td>
+
+                        <td>
+                            Black
+                        </td>
+
+                        <td>
+                            09/2026
+                        </td>
+
+                        <td>
+                            Pune Yard
+                        </td>
+
+                        <td>
+                            <span class="badge badge-green">
+                                Available
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <input
+                                type="radio"
+                                name="vin"
+                                class="radio"
+                                onchange="selectVIN('MBHXXXX003','MBLHA123456791','EGN987654323')">
+                        </td>
+
+                        <td>
+                            <strong>MBHXXXX003</strong>
+                        </td>
+
+                        <td>
+                            MBLHA123456791
+                        </td>
+
+                        <td>
+                            EGN987654323
+                        </td>
+
+                        <td>
+                            Black
+                        </td>
+
+                        <td>
+                            08/2026
+                        </td>
+
+                        <td>
+                            Main Yard
+                        </td>
+
+                        <td>
+                            <span class="badge badge-green">
+                                Available
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="allocation-box">
+
+                <div class="allocation-title">
+                    Selected Vehicle Allocation
+                </div>
+
+                <div class="allocation-grid">
+
+                    <div class="allocation-item">
+                        <label>VIN</label>
+                        <strong id="vinValue">
+                            MBHXXXX001
+                        </strong>
+                    </div>
+
+                    <div class="allocation-item">
+                        <label>CHASSIS</label>
+                        <strong id="chassisValue">
+                            MBLHA123456789
+                        </strong>
+                    </div>
+
+                    <div class="allocation-item">
+                        <label>ENGINE</label>
+                        <strong id="engineValue">
+                            EGN987654321
+                        </strong>
+                    </div>
+
+                    <div class="allocation-item">
+                        <label>STATUS</label>
+                        <strong>
+                            READY TO RESERVE
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 4
+===================================================== -->
+
+<section class="step-content" id="step4">
+
+    <div class="section">
+
+        <div class="section-title">
+            RTO & Registration
+        </div>
+
+        <div class="card">
+
+            <div class="grid-3">
+
+                <div class="form-group">
+                    <label>Registration Type</label>
+
+                    <select id="registrationType">
+
+                        <option>Permanent Registration</option>
+                        <option>Temporary Registration</option>
+                        <option>BH Series</option>
+                        <option>Company Registration</option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Registration State</label>
+
+                    <select>
+                        <option>Maharashtra</option>
+                        <option>Gujarat</option>
+                        <option>Karnataka</option>
+                        <option>Delhi</option>
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label>RTO</label>
+
+                    <select>
+
+                        <option>MH-12 Pune</option>
+                        <option>MH-14 Pimpri-Chinchwad</option>
+                        <option>MH-01 Mumbai</option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Owner Name</label>
+                    <input class="input" value="Rahul Sharma">
+                </div>
+
+                <div class="form-group">
+                    <label>Mobile</label>
+                    <input class="input" value="9812345621">
+                </div>
+
+                <div class="form-group">
+                    <label>Pincode</label>
+                    <input class="input" value="411005">
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Registration Address</label>
+
+                <textarea>
+12 FC Road, Shivajinagar, Pune, Maharashtra
+                </textarea>
+
+            </div>
+
+
+            <div class="grid-4">
+
+                <div class="form-group">
+                    <label>Hypothecation</label>
+
+                    <select id="hypothecation" onchange="toggleFinancier()">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+
+                </div>
+
+                <div class="form-group" id="financierGroup">
+                    <label>Financier</label>
+
+                    <select>
+                        <option>HDFC Bank</option>
+                        <option>Hero FinCorp</option>
+                        <option>Bajaj Finance</option>
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label>RTO Agent</label>
+                    <input class="input" placeholder="Agent name">
+                </div>
+
+                <div class="form-group">
+                    <label>Expected Registration Date</label>
+                    <input class="input" type="date">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            RTO Charges
+        </div>
+
+        <div class="card">
+
+            <div class="table-wrapper">
+
+                <table class="data-table">
+
+                    <tr>
+                        <td>Registration Fee</td>
+                        <td>₹600</td>
+                    </tr>
+
+                    <tr>
+                        <td>Road Tax</td>
+                        <td>₹7,800</td>
+                    </tr>
+
+                    <tr>
+                        <td>Smart Card</td>
+                        <td>₹200</td>
+                    </tr>
+
+                    <tr>
+                        <td>HSRP</td>
+                        <td>₹450</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Total RTO</strong></td>
+                        <td><strong>₹9,050</strong></td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="info-box info-orange">
+
+        RTO verification will be triggered after the customer and payment details are confirmed.
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 5
+===================================================== -->
+
+<section class="step-content" id="step5">
+
+    <div class="section">
+
+        <div class="section-title">
+            Payment & Finance
+        </div>
+
+        <div class="card">
+
+            <div class="section-subtitle">
+                Select the customer's actual payment structure.
+            </div>
+
+            <div class="payment-grid">
+
+                <div class="payment-option active"
+                     onclick="selectPayment(this,'Cash')">
+                    CASH
+                </div>
+
+                <div class="payment-option"
+                     onclick="selectPayment(this,'UPI')">
+                    UPI
+                </div>
+
+                <div class="payment-option"
+                     onclick="selectPayment(this,'Card')">
+                    CARD
+                </div>
+
+                <div class="payment-option"
+                     onclick="selectPayment(this,'Bank Transfer')">
+                    BANK TRANSFER
+                </div>
+
+                <div class="payment-option"
+                     onclick="selectPayment(this,'Finance')">
+                    FINANCE
+                </div>
+
+                <div class="payment-option"
+                     onclick="selectPayment(this,'Mixed')">
+                    MIXED
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section" id="financeDetails">
+
+        <div class="section-title">
+            Finance Details
+        </div>
+
+        <div class="card">
+
+            <div class="grid-3">
+
+                <div class="form-group">
+                    <label>Finance Partner</label>
+
+                    <select>
+                        <option>HDFC Bank</option>
+                        <option>Hero FinCorp</option>
+                        <option>Bajaj Finance</option>
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Loan Amount</label>
+
+                    <input
+                        class="input"
+                        id="loanAmount"
+                        value="85000"
+                        type="number"
+                        oninput="calculatePayment()">
+
+                </div>
+
+                <div class="form-group">
+                    <label>Down Payment</label>
+
+                    <input
+                        class="input"
+                        id="downPayment"
+                        value="31800"
+                        type="number"
+                        oninput="calculatePayment()">
+
+                </div>
+
+                <div class="form-group">
+                    <label>Tenure</label>
+
+                    <select>
+                        <option>24 Months</option>
+                        <option selected>36 Months</option>
+                        <option>48 Months</option>
+                        <option>60 Months</option>
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Interest Rate</label>
+
+                    <input class="input" value="11%" type="text">
+                </div>
+
+                <div class="form-group">
+                    <label>Finance Application No</label>
+
+                    <input class="input" placeholder="Application number">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Payment Schedule
+        </div>
+
+        <div class="card">
+
+            <div class="table-wrapper">
+
+                <table class="data-table">
+
+                    <thead>
+                    <tr>
+                        <th>Payment</th>
+                        <th>Mode</th>
+                        <th>Amount</th>
+                        <th>Reference</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr>
+                        <td>Booking Amount</td>
+                        <td>UPI</td>
+                        <td>₹10,000</td>
+                        <td>UPI12345</td>
+                        <td>21/09/2026</td>
+                        <td>
+                            <span class="badge badge-green">
+                                Paid
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Down Payment</td>
+                        <td>Bank Transfer</td>
+                        <td>₹21,800</td>
+                        <td>NEFT12345</td>
+                        <td>21/09/2026</td>
+                        <td>
+                            <span class="badge badge-green">
+                                Paid
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Finance</td>
+                        <td>HDFC Bank</td>
+                        <td>₹85,000</td>
+                        <td>FIN12345</td>
+                        <td>—</td>
+                        <td>
+                            <span class="badge badge-blue">
+                                Approved
+                            </span>
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="amount-box">
+
+            <div class="amount-row">
+                <span>Total Vehicle Value</span>
+                <strong>₹1,16,800</strong>
+            </div>
+
+            <div class="amount-row">
+                <span>Paid</span>
+                <strong>₹31,800</strong>
+            </div>
+
+            <div class="amount-row">
+                <span>Finance</span>
+                <strong>₹85,000</strong>
+            </div>
+
+            <div class="amount-row total">
+                <span>Balance</span>
+                <span id="balanceAmount">₹0</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 6
+===================================================== -->
+
+<section class="step-content" id="step6">
+
+    <div class="section">
+
+        <div class="section-title">
+            Exchange Vehicle
+        </div>
+
+        <div class="section-subtitle">
+            Capture details of the customer's old vehicle.
+        </div>
+
+        <div class="card">
+
+            <div class="grid-3">
+
+                <div class="form-group">
+                    <label>Registration Number</label>
+                    <input class="input" value="MH12AB1234">
+                </div>
+
+                <div class="form-group">
+                    <label>Make</label>
+                    <input class="input" value="Hero">
+                </div>
+
+                <div class="form-group">
+                    <label>Model</label>
+                    <input class="input" value="Splendor">
+                </div>
+
+                <div class="form-group">
+                    <label>Manufacturing Year</label>
+                    <input class="input" value="2021">
+                </div>
+
+                <div class="form-group">
+                    <label>KM Reading</label>
+                    <input class="input" value="32500">
+                </div>
+
+                <div class="form-group">
+                    <label>Owner Name</label>
+                    <input class="input" value="Rahul Sharma">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Exchange Valuation
+        </div>
+
+        <div class="card">
+
+            <div class="grid-3">
+
+                <div class="form-group">
+                    <label>Customer Expected Value</label>
+                    <input class="input" value="45000">
+                </div>
+
+                <div class="form-group">
+                    <label>Evaluator Value</label>
+                    <input class="input" value="42000">
+                </div>
+
+                <div class="form-group">
+                    <label>Approved Exchange Value</label>
+                    <input class="input" value="42000">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Exchange Documents
+        </div>
+
+        <div class="card">
+
+            <div class="checklist">
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    RC
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    Insurance
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    PUC
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    Aadhaar
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    Transfer Form
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    NOC
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 7
+===================================================== -->
+
+<section class="step-content" id="step7">
+
+    <div class="section">
+
+        <div class="section-title">
+            Insurance
+        </div>
+
+        <div class="card">
+
+            <div class="grid-3">
+
+                <div class="form-group">
+                    <label>Insurance Company</label>
+
+                    <select>
+                        <option>HDFC Ergo</option>
+                        <option>ICICI Lombard</option>
+                        <option>Bajaj Allianz</option>
+                        <option>United India</option>
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Policy Type</label>
+
+                    <select>
+                        <option>Comprehensive</option>
+                        <option>Third Party</option>
+                        <option>Own Damage</option>
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label>IDV</label>
+                    <input class="input" value="85000">
+                </div>
+
+                <div class="form-group">
+                    <label>Policy Start Date</label>
+                    <input class="input" type="date">
+                </div>
+
+                <div class="form-group">
+                    <label>Premium</label>
+                    <input class="input" value="7500">
+                </div>
+
+                <div class="form-group">
+                    <label>Policy Number</label>
+                    <input class="input" placeholder="Policy number">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Add-ons
+        </div>
+
+        <div class="card">
+
+            <div class="checklist">
+
+                <div class="check-item">
+                    <input type="checkbox" checked>
+                    Zero Depreciation
+                </div>
+
+                <div class="check-item">
+                    <input type="checkbox">
+                    Engine Protection
+                </div>
+
+                <div class="check-item">
+                    <input type="checkbox">
+                    Return to Invoice
+                </div>
+
+                <div class="check-item">
+                    <input type="checkbox">
+                    Roadside Assistance
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Accessories
+        </div>
+
+        <div class="card">
+
+            <div class="table-wrapper">
+
+                <table class="data-table">
+
+                    <thead>
+
+                    <tr>
+                        <th>Accessory</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Discount</th>
+                        <th>Final</th>
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr>
+                        <td>Seat Cover</td>
+                        <td>1</td>
+                        <td>₹1,200</td>
+                        <td>₹0</td>
+                        <td>₹1,200</td>
+                    </tr>
+
+                    <tr>
+                        <td>Leg Guard</td>
+                        <td>1</td>
+                        <td>₹1,800</td>
+                        <td>₹200</td>
+                        <td>₹1,600</td>
+                    </tr>
+
+                    <tr>
+                        <td>Helmet</td>
+                        <td>1</td>
+                        <td>₹1,500</td>
+                        <td>₹0</td>
+                        <td>₹1,500</td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 8
+===================================================== -->
+
+<section class="step-content" id="step8">
+
+    <div class="section">
+
+        <div class="section-title">
+            Customer KYC & Documents
+        </div>
+
+        <div class="section-subtitle">
+            Verify all mandatory documents before final booking.
+        </div>
+
+        <div class="card">
+
+            <div class="document-row">
+
+                <div>
+                    <div class="document-name">
+                        Aadhaar Card
+                    </div>
+
+                    <div class="document-meta">
+                        XXXX-XXXX-1234
+                    </div>
+                </div>
+
+                <span class="badge badge-green">
+                    VERIFIED
+                </span>
+
+                <button class="upload-btn">
+                    View
+                </button>
+
+                <span class="badge badge-green">
+                    ✓
+                </span>
+
+            </div>
+
+
+            <div class="document-row">
+
+                <div>
+                    <div class="document-name">
+                        PAN Card
+                    </div>
+
+                    <div class="document-meta">
+                        ABCDE1234F
+                    </div>
+                </div>
+
+                <span class="badge badge-green">
+                    VERIFIED
+                </span>
+
+                <button class="upload-btn">
+                    View
+                </button>
+
+                <span class="badge badge-green">
+                    ✓
+                </span>
+
+            </div>
+
+
+            <div class="document-row">
+
+                <div>
+                    <div class="document-name">
+                        Address Proof
+                    </div>
+
+                    <div class="document-meta">
+                        Electricity Bill
+                    </div>
+                </div>
+
+                <span class="badge badge-green">
+                    VERIFIED
+                </span>
+
+                <button class="upload-btn">
+                    View
+                </button>
+
+                <span class="badge badge-green">
+                    ✓
+                </span>
+
+            </div>
+
+
+            <div class="document-row">
+
+                <div>
+                    <div class="document-name">
+                        Driving Licence
+                    </div>
+
+                    <div class="document-meta">
+                        Required
+                    </div>
+                </div>
+
+                <span class="badge badge-orange">
+                    PENDING
+                </span>
+
+                <button class="upload-btn">
+                    Upload
+                </button>
+
+                <span class="badge badge-orange">
+                    !
+                </span>
+
+            </div>
+
+
+            <div class="document-row">
+
+                <div>
+                    <div class="document-name">
+                        Customer Photograph
+                    </div>
+
+                    <div class="document-meta">
+                        Recent photograph
+                    </div>
+                </div>
+
+                <span class="badge badge-green">
+                    VERIFIED
+                </span>
+
+                <button class="upload-btn">
+                    View
+                </button>
+
+                <span class="badge badge-green">
+                    ✓
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Internal Verification
+        </div>
+
+        <div class="card">
+
+            <div class="checklist">
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    Customer details verified
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    Vehicle details verified
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    VIN verified
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    Price approved
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    Finance verified
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    Payment verified
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 9
+===================================================== -->
+
+<section class="step-content" id="step9">
+
+    <div class="section">
+
+        <div class="section-title">
+            Final Review
+        </div>
+
+        <div class="section-subtitle">
+            Review all information before permanently assigning the vehicle.
+        </div>
+
+    </div>
+
+
+    <!-- CUSTOMER -->
+
+    <div class="card review-section">
+
+        <div class="review-header">
+
+            <strong>
+                Customer
+            </strong>
+
+            <span class="review-edit"
+                  onclick="goToStep(1)">
+                Edit
+            </span>
+
+        </div>
+
+        <table class="review-table">
+
+            <tr>
+                <td>Name</td>
+                <td>Rahul Sharma</td>
+            </tr>
+
+            <tr>
+                <td>Mobile</td>
+                <td>9812345621</td>
+            </tr>
+
+            <tr>
+                <td>Address</td>
+                <td>12 FC Road, Shivajinagar, Pune</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+
+    <!-- VEHICLE -->
+
+    <div class="card review-section">
+
+        <div class="review-header">
+
+            <strong>
+                Vehicle & VIN
+            </strong>
+
+            <span class="review-edit"
+                  onclick="goToStep(3)">
+                Edit
+            </span>
+
+        </div>
+
+        <table class="review-table">
+
+            <tr>
+                <td>Model</td>
+                <td>Xtreme 125R</td>
+            </tr>
+
+            <tr>
+                <td>Variant</td>
+                <td>Disc Variant</td>
+            </tr>
+
+            <tr>
+                <td>Colour</td>
+                <td>Black</td>
+            </tr>
+
+            <tr>
+                <td>VIN</td>
+                <td>MBHXXXX001</td>
+            </tr>
+
+            <tr>
+                <td>Chassis</td>
+                <td>MBLHA123456789</td>
+            </tr>
+
+            <tr>
+                <td>Engine</td>
+                <td>EGN987654321</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+
+    <!-- COMMERCIAL -->
+
+    <div class="card review-section">
+
+        <div class="review-header">
+
+            <strong>
+                Commercial Summary
+            </strong>
+
+            <span class="review-edit"
+                  onclick="goToStep(5)">
+                Edit
+            </span>
+
+        </div>
+
+        <table class="review-table">
+
+            <tr>
+                <td>Vehicle</td>
+                <td>₹98,000</td>
+            </tr>
+
+            <tr>
+                <td>RTO</td>
+                <td>₹9,050</td>
+            </tr>
+
+            <tr>
+                <td>Insurance</td>
+                <td>₹7,500</td>
+            </tr>
+
+            <tr>
+                <td>Accessories</td>
+                <td>₹4,300</td>
+            </tr>
+
+            <tr>
+                <td>Discount</td>
+                <td>- ₹2,000</td>
+            </tr>
+
+            <tr>
+                <td>Exchange</td>
+                <td>- ₹42,000</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+
+    <!-- FINAL AMOUNT -->
+
+    <div class="section">
+
+        <div class="amount-box">
+
+            <div class="amount-row">
+                <span>Vehicle</span>
+                <span>₹98,000</span>
+            </div>
+
+            <div class="amount-row">
+                <span>RTO</span>
+                <span>₹9,050</span>
+            </div>
+
+            <div class="amount-row">
+                <span>Insurance</span>
+                <span>₹7,500</span>
+            </div>
+
+            <div class="amount-row">
+                <span>Accessories</span>
+                <span>₹4,300</span>
+            </div>
+
+            <div class="amount-row">
+                <span>Discount</span>
+                <span>- ₹2,000</span>
+            </div>
+
+            <div class="amount-row">
+                <span>Exchange</span>
+                <span>- ₹42,000</span>
+            </div>
+
+            <div class="amount-row total">
+                <span>NET ON-ROAD</span>
+                <span>₹74,850</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CHECKLIST -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Finalization Checklist
+        </div>
+
+        <div class="card">
+
+            <div class="checklist">
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    Customer Verified
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    Vehicle Selected
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    VIN Allocated
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    RTO Details
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    Payment Captured
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    Insurance Selected
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    Documents Verified
+                </div>
+
+                <div class="check-item">
+                    <div class="check-icon">✓</div>
+                    Final Amount Confirmed
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="info-box info-orange">
+
+        ⚠ Once you confirm the booking, the selected VIN will be reserved against this customer and will no longer be available for another booking.
+
+    </div>
+
+
+    <button
+        class="btn btn-success"
+        style="width:100%;padding:15px;font-size:13px;"
+        onclick="openBookingConfirmation()">
+
+        ✓ CONFIRM VEHICLE BOOKING
+
+    </button>
+
+</section>
+
+
+</main>
+
+
+<!-- =========================
+     BOTTOM NAVIGATION
+========================= -->
+
+<div class="navigation">
+
+    <div class="navigation-inner">
+
+        <div class="nav-status">
+
+            Step <strong id="currentStepLabel">1</strong>
+            of 9
+            ·
+            <span id="stepStatus">
+                Customer Confirmation
+            </span>
+
+        </div>
+
+        <div class="nav-buttons">
+
+            <button
+                class="btn btn-secondary"
+                id="backBtn"
+                onclick="previousStep()"
+                disabled>
+
+                ← Back
+
+            </button>
+
+            <button
+                class="btn btn-primary"
+                id="nextBtn"
+                onclick="nextStep()">
+
+                Next →
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     BOOKING CONFIRMATION MODAL
+========================= -->
+
+<div class="modal" id="bookingModal">
+
+    <div class="modal-box">
+
+        <div class="modal-title">
+            Confirm Vehicle Booking
+        </div>
+
+        <div class="modal-subtitle">
+
+            Please verify the final details before booking.
+
+        </div>
+
+
+        <div class="info-box info-orange">
+
+            ⚠ This vehicle will be reserved against the customer after confirmation.
+
+        </div>
+
+
+        <table class="review-table">
+
+            <tr>
+                <td>Customer</td>
+                <td>Rahul Sharma</td>
+            </tr>
+
+            <tr>
+                <td>Vehicle</td>
+                <td>Xtreme 125R</td>
+            </tr>
+
+            <tr>
+                <td>VIN</td>
+                <td>MBHXXXX001</td>
+            </tr>
+
+            <tr>
+                <td>Chassis</td>
+                <td>MBLHA123456789</td>
+            </tr>
+
+            <tr>
+                <td>Net Amount</td>
+                <td>₹74,850</td>
+            </tr>
+
+        </table>
+
+
+        <div class="modal-actions">
+
+            <button
+                class="btn btn-secondary"
+                onclick="closeBookingConfirmation()">
+
+                Cancel
+
+            </button>
+
+            <button
+                class="btn btn-success"
+                onclick="confirmBooking()">
+
+                Confirm Booking
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     SUCCESS MODAL
+========================= -->
+
+<div class="modal" id="successModal">
+
+    <div class="modal-box">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <div class="success-title">
+            Booking Confirmed
+        </div>
+
+        <div class="success-subtitle">
+
+            Vehicle has been successfully assigned to the customer.
+
+        </div>
+
+
+        <div class="booking-number">
+
+            <label>
+                BOOKING NUMBER
+            </label>
+
+            <strong id="finalBookingNo">
+                BK-2026-00125
+            </strong>
+
+        </div>
+
+
+        <div class="info-box info-green"
+             style="margin-top:15px;">
+
+            ✓ VIN has been reserved.<br>
+            ✓ Customer assignment completed.<br>
+            ✓ Booking created successfully.
+
+        </div>
+
+
+        <div class="modal-actions">
+
+            <button
+                class="btn btn-secondary"
+                onclick="closeSuccess()">
+
+                Close
+
+            </button>
+
+            <button
+                class="btn btn-primary"
+                onclick="printBooking()">
+
+                Print Booking
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   GLOBAL STATE
+========================================= */
+
+let currentStep = 1;
+
+const totalSteps = 9;
+
+let selectedVehicle = {
+    model:"Xtreme 125R",
+    variant:"Disc Variant",
+    colour:"Black",
+    price:98000
+};
+
+let selectedVIN = {
+    vin:"MBHXXXX001",
+    chassis:"MBLHA123456789",
+    engine:"EGN987654321"
+};
+
+
+/* =========================================
+   STEP TITLES
+========================================= */
+
+const stepTitles = {
+
+    1:"Customer Confirmation",
+    2:"Vehicle Selection",
+    3:"VIN Allocation",
+    4:"RTO & Registration",
+    5:"Payment & Finance",
+    6:"Exchange Vehicle",
+    7:"Insurance & Accessories",
+    8:"Documents & KYC",
+    9:"Final Review"
+
+};
+
+
+/* =========================================
+   UPDATE STEPPER
+========================================= */
+
+function updateStepper(){
+
+    document.querySelectorAll(".step").forEach(step => {
+
+        const number = parseInt(step.dataset.step);
+
+        step.classList.remove("active");
+        step.classList.remove("completed");
+
+        if(number === currentStep){
+
+            step.classList.add("active");
+
+        }
+        else if(number < currentStep){
+
+            step.classList.add("completed");
+
+            const circle =
+                step.querySelector(".step-circle");
+
+            circle.innerHTML = "✓";
+
+        }
+        else{
+
+            const circle =
+                step.querySelector(".step-circle");
+
+            circle.innerHTML = number;
+
+        }
+
+    });
+
+
+    document.querySelectorAll(".step-content")
+        .forEach(content => {
+
+            content.classList.remove("active");
+
+        });
+
+
+    const activeContent =
+        document.getElementById("step"+currentStep);
+
+    if(activeContent){
+
+        activeContent.classList.add("active");
+
+    }
+
+
+    document.getElementById("currentStepLabel")
+        .textContent = currentStep;
+
+    document.getElementById("stepStatus")
+        .textContent = stepTitles[currentStep];
+
+
+    document.getElementById("backBtn")
+        .disabled = currentStep === 1;
+
+
+    const nextBtn =
+        document.getElementById("nextBtn");
+
+
+    if(currentStep === totalSteps){
+
+        nextBtn.style.display = "none";
+
+    }
+    else{
+
+        nextBtn.style.display = "block";
+        nextBtn.textContent = "Next →";
+
+    }
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================================
+   NEXT
+========================================= */
+
+function nextStep(){
+
+    if(currentStep < totalSteps){
+
+        currentStep++;
+
+        updateStepper();
+
+    }
+
+}
+
+
+/* =========================================
+   PREVIOUS
+========================================= */
+
+function previousStep(){
+
+    if(currentStep > 1){
+
+        currentStep--;
+
+        updateStepper();
+
+    }
+
+}
+
+/* ==========================================================
+   LOAD CUSTOMER FROM DEALERSHIP SALES PAGE
+========================================================== */
+
+ 
+
+
+ /* ==========================================================
+   LOAD CUSTOMER FROM DEALERSHIP SALES PAGE
+========================================================== */
+
+let convertedCustomer = null;
+
+
+function loadConvertedCustomer(){
+
+    const customerJSON =
+        localStorage.getItem(
+            'hero_selected_customer'
+        );
+
+
+    /*
+       If no customer was transferred,
+       keep the normal page behaviour.
+    */
+
+    if(!customerJSON){
+
+        console.log(
+            'No customer transferred from sales page.'
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const customer =
+            JSON.parse(
+                customerJSON
+            );
+
+
+        if(!customer){
+
+            return;
+
+        }
+
+
+        convertedCustomer =
+            customer;
+
+
+        /*
+           Update currentCustomer if
+           the variable already exists.
+        */
+
+        if(
+            typeof currentCustomer !==
+            'undefined'
+        ){
+
+            currentCustomer =
+                customer;
+
+        }
+
+
+        /*
+           HEADER
+        */
+
+        const headerName =
+            document.getElementById(
+                'headerCustomerName'
+            );
+
+
+        const headerMobile =
+            document.getElementById(
+                'headerCustomerMobile'
+            );
+
+
+        if(headerName){
+
+            headerName.textContent =
+                customer.name || '—';
+
+        }
+
+
+        if(headerMobile){
+
+            headerMobile.textContent =
+                customer.mobile || '—';
+
+        }
+
+
+        /*
+           TOP SUMMARY
+        */
+
+        const summaryName =
+            document.getElementById(
+                'summaryCustomerName'
+            );
+
+
+        if(summaryName){
+
+            summaryName.textContent =
+                customer.name || '—';
+
+        }
+
+
+        /*
+           CUSTOMER CARD
+        */
+
+        const avatar =
+            document.getElementById(
+                'finalCustomerAvatar'
+            );
+
+
+        const name =
+            document.getElementById(
+                'finalCustomerName'
+            );
+
+
+        const mobileCity =
+            document.getElementById(
+                'finalCustomerMobileCity'
+            );
+
+
+        const address =
+            document.getElementById(
+                'finalCustomerAddress'
+            );
+
+
+        if(name){
+
+            name.textContent =
+                customer.name || '—';
+
+        }
+
+
+        if(mobileCity){
+
+            mobileCity.textContent =
+                (
+                    customer.mobile || '—'
+                ) +
+                ' · ' +
+                (
+                    customer.city || '—'
+                );
+
+        }
+
+
+        if(address){
+
+            address.textContent =
+                customer.address || '—';
+
+        }
+
+
+        /*
+           CREATE INITIALS
+        */
+
+        if(avatar){
+
+            const initials =
+                (customer.name || 'C')
+                .split(' ')
+                .filter(Boolean)
+                .slice(0,2)
+                .map(
+                    x =>
+                    x
+                    .charAt(0)
+                    .toUpperCase()
+                )
+                .join('');
+
+
+            avatar.textContent =
+                initials || 'C';
+
+        }
+
+
+        /*
+           UPDATE CONVERSION STATUS
+        */
+
+        const conversion =
+            JSON.parse(
+                localStorage.getItem(
+                    'hero_customer_conversion'
+                ) || 'null'
+            );
+
+
+        if(conversion){
+
+            conversion.status =
+                'FINALIZATION_IN_PROGRESS';
+
+
+            conversion.openedAt =
+                new Date()
+                .toISOString();
+
+
+            localStorage.setItem(
+                'hero_customer_conversion',
+                JSON.stringify(
+                    conversion
+                )
+            );
+
+        }
+
+
+        /*
+           IMPORTANT:
+           Keep the same customer ID
+           throughout finalization.
+        */
+
+        window.DEALERSHIP_CUSTOMER_ID =
+            customer.id || '';
+
+
+        console.log(
+            'Customer loaded for finalization:',
+            customer
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            'Unable to load converted customer',
+            error
+        );
+
+    }
+
+}
+
+/* =========================================
+   DIRECT STEP
+========================================= */
+
+function goToStep(step){
+
+    if(step < 1 || step > totalSteps){
+
+        return;
+
+    }
+
+    currentStep = step;
+
+    updateStepper();
+
+}
+
+
+/* =========================================
+   VEHICLE SELECTION
+========================================= */
+
+function selectVehicle(
+    model,
+    variant,
+    colour,
+    price
+){
+
+    selectedVehicle = {
+
+        model:model,
+        variant:variant,
+        colour:colour,
+        price:price
+
+    };
+
+
+    document.getElementById("selectedModel")
+        .value = model;
+
+    document.getElementById("selectedVariant")
+        .value = variant;
+
+    document.getElementById("selectedColour")
+        .value = colour;
+
+    document.getElementById("selectedPrice")
+        .value =
+        "₹" + price.toLocaleString("en-IN");
+
+}
+
+
+/* =========================================
+   VIN SELECTION
+========================================= */
+
+function selectVIN(
+    vin,
+    chassis,
+    engine
+){
+
+    selectedVIN = {
+
+        vin:vin,
+        chassis:chassis,
+        engine:engine
+
+    };
+
+
+    document.getElementById("vinValue")
+        .textContent = vin;
+
+    document.getElementById("chassisValue")
+        .textContent = chassis;
+
+    document.getElementById("engineValue")
+        .textContent = engine;
+
+}
+
+
+/* =========================================
+   PAYMENT MODE
+========================================= */
+
+function selectPayment(element, mode){
+
+    document
+        .querySelectorAll(".payment-option")
+        .forEach(option => {
+
+            option.classList.remove("active");
+
+        });
+
+
+    element.classList.add("active");
+
+
+    if(mode === "Finance"){
+
+        document.getElementById("financeDetails")
+            .style.display = "block";
+
+    }
+    else{
+
+        document.getElementById("financeDetails")
+            .style.display = "block";
+
+    }
+
+}
+
+
+/* =========================================
+   PAYMENT CALCULATION
+========================================= */
+
+function calculatePayment(){
+
+    const total = 116800;
+
+    const down =
+        parseFloat(
+            document.getElementById("downPayment").value
+        ) || 0;
+
+    const loan =
+        parseFloat(
+            document.getElementById("loanAmount").value
+        ) || 0;
+
+    const balance =
+        Math.max(total - down - loan,0);
+
+
+    document.getElementById("balanceAmount")
+        .textContent =
+        "₹" + balance.toLocaleString("en-IN");
+
+}
+
+
+/* =========================================
+   FINANCIER
+========================================= */
+
+function toggleFinancier(){
+
+    const value =
+        document.getElementById("hypothecation").value;
+
+    const group =
+        document.getElementById("financierGroup");
+
+    if(value === "Yes"){
+
+        group.style.display = "block";
+
+    }
+    else{
+
+        group.style.display = "none";
+
+    }
+
+}
+
+
+/* =========================================
+   BOOKING MODAL
+========================================= */
+
+function openBookingConfirmation(){
+
+    document
+        .getElementById("bookingModal")
+        .classList.add("show");
+
+}
+
+
+function closeBookingConfirmation(){
+
+    document
+        .getElementById("bookingModal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================================
+   CONFIRM BOOKING
+========================================= */
+
+function confirmBooking(){
+
+    closeBookingConfirmation();
+
+
+    document
+        .getElementById("successModal")
+        .classList.add("show");
+
+
+    /*
+        REAL IMPLEMENTATION:
+
+        $.ajax({
+            type:"POST",
+            url:"DealershipBooking.aspx/CreateBooking",
+            data:JSON.stringify({
+                CustomerID:customerID,
+                QuotationID:quotationID,
+                VehicleID:vehicleID,
+                VIN:selectedVIN.vin,
+                ChassisNo:selectedVIN.chassis,
+                EngineNo:selectedVIN.engine,
+                ...
+            }),
+            contentType:"application/json; charset=utf-8",
+            success:function(response){
+                ...
+            }
+        });
+
+    */
+
+}
+
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+function closeSuccess(){
+
+    document
+        .getElementById("successModal")
+        .classList.remove("show");
+
+}
+
+
+function printBooking(){
+
+    window.print();
+
+}
+
+
+/* =========================================
+   STEPPER CLICK
+========================================= */
+
+document
+    .querySelectorAll(".step")
+    .forEach(step => {
+
+        step.addEventListener("click",function(){
+
+            const number =
+                parseInt(this.dataset.step);
+
+            /*
+                Allow navigation to completed
+                or current steps.
+            */
+
+            if(number <= currentStep){
+
+                goToStep(number);
+
+            }
+
+        });
+
+    });
+
+
+/* =========================================
+   INITIALIZATION
+========================================= */
+
+updateStepper();
+
+calculatePayment();
+
+toggleFinancier();
+
+</script>
+
+</body>
+</html>
+ 
