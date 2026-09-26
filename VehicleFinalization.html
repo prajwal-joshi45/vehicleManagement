@@ -875,6 +875,10 @@ textarea{
         grid-template-columns:1fr 1fr;
     }
 
+    [style*="grid-column:span 2"]{
+        grid-column:span 2 !important;
+    }
+
     .allocation-grid{
         grid-template-columns:1fr 1fr;
     }
@@ -912,6 +916,10 @@ textarea{
     .grid-3,
     .grid-4{
         grid-template-columns:1fr;
+    }
+
+    [style*="grid-column:span 2"]{
+        grid-column:span 1 !important;
     }
 
     .payment-grid{
@@ -1088,6 +1096,11 @@ textarea{
 
         <div class="step" data-step="9">
             <div class="step-circle">9</div>
+            <div class="step-label">Delivery</div>
+        </div>
+
+        <div class="step" data-step="10">
+            <div class="step-circle">10</div>
             <div class="step-label">Review</div>
         </div>
 
@@ -2573,6 +2586,222 @@ textarea{
 <section class="step-content" id="step9">
 
     <div class="section">
+        <div class="section-title">Delivery Receipt</div>
+        <div class="section-subtitle">Capture the complete delivery receipt information before handing over the vehicle.</div>
+
+        <div class="card">
+            <div class="section-title">Receipt & Customer Details</div>
+            <div class="grid-4">
+
+                <div class="form-group">
+                    <label>DELIVERY RECEIPT NO</label>
+                    <input class="input" id="deliveryReceiptNo" value="DR-2026-000125" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>DATE</label>
+                    <input class="input" id="deliveryDate" type="date">
+                </div>
+
+                <div class="form-group">
+                    <label>DSE NAME</label>
+                    <select id="deliveryDSE">
+                        <option value="">Select DSE</option>
+                        <option>Prajwal Joshi</option>
+                        <option>Sales Executive 1</option>
+                        <option>Sales Executive 2</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>RELATION</label>
+                    <select id="deliveryRelation">
+                        <option value="">Select</option>
+                        <option>S/O</option>
+                        <option>D/O</option>
+                        <option>W/O</option>
+                        <option>C/O</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>CUSTOMER (FIRST NAME)</label>
+                    <input class="input" id="deliveryFirstName" placeholder="First name">
+                </div>
+
+                <div class="form-group">
+                    <label>CUSTOMER (LAST NAME)</label>
+                    <input class="input" id="deliveryLastName" placeholder="Last name">
+                </div>
+
+                <div class="form-group">
+                    <label>RELATION NAME</label>
+                    <input class="input" id="deliveryRelationName" placeholder="Relation name">
+                </div>
+
+                <div class="form-group">
+                    <label>CONTACT NO</label>
+                    <input class="input" id="deliveryContactNo" maxlength="10" inputmode="numeric" placeholder="10 digit mobile">
+                </div>
+
+                <div class="form-group">
+                    <label>MAIL ID</label>
+                    <input class="input" id="deliveryMailId" type="email" placeholder="Email address">
+                </div>
+
+                <div class="form-group">
+                    <label>OCCUPATION</label>
+                    <input class="input" id="deliveryOccupation" placeholder="Occupation">
+                </div>
+
+                <div class="form-group" style="grid-column:span 2;">
+                    <label>ADDRESS</label>
+                    <input class="input" id="deliveryAddress" placeholder="Complete address">
+                </div>
+
+                <div class="form-group">
+                    <label>TAHSIL</label>
+                    <select id="deliveryTahsil">
+                        <option value="">Select Tahsil</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>DISTRICT</label>
+                    <select id="deliveryDistrict">
+                        <option value="">Select District</option>
+                        <option>Pune</option>
+                        <option>Mumbai</option>
+                        <option>Nashik</option>
+                        <option>Nagpur</option>
+                        <option>Satara</option>
+                        <option>Kolhapur</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>PINCODE</label>
+                    <input class="input" id="deliveryPincode" maxlength="6" inputmode="numeric" placeholder="6 digit pincode">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="card">
+            <div class="section-title">Nominee Details</div>
+            <div class="grid-3">
+                <div class="form-group">
+                    <label>NOMINEE NAME</label>
+                    <input class="input" id="nomineeName" placeholder="Nominee name">
+                </div>
+                <div class="form-group">
+                    <label>NOMINEE RELATION</label>
+                    <input class="input" id="nomineeRelation" placeholder="Nominee relation">
+                </div>
+                <div class="form-group">
+                    <label>NOMINEE AGE</label>
+                    <input class="input" id="nomineeAge" type="number" min="0" max="120" placeholder="Age">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="card">
+            <div class="section-title">Vehicle Details</div>
+            <div class="grid-4">
+
+                <div class="form-group">
+                    <label>VIN NO (LAST 7 CHARACTER)</label>
+                    <input class="input" id="deliveryVinLast7" readonly>
+                </div>
+
+                <div class="form-group" style="grid-column:span 2;">
+                    <label>VIN NO</label>
+                    <input class="input" id="deliveryVinNo" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>ENGINE NO</label>
+                    <input class="input" id="deliveryEngineNo" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>SKU</label>
+                    <input class="input" id="deliverySKU" placeholder="SKU / stock code">
+                </div>
+
+                <div class="form-group">
+                    <label>MODEL</label>
+                    <input class="input" id="deliveryModel" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>EX-PRICE</label>
+                    <input class="input" id="deliveryExPrice" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>BATTERY NO</label>
+                    <input class="input" id="batteryNo" placeholder="Battery number">
+                </div>
+
+                <div class="form-group">
+                    <label>KEY NO</label>
+                    <input class="input" id="keyNo" placeholder="Key number">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="card">
+            <div class="section-title">Purchase & Registration</div>
+            <div class="grid-3">
+                <div class="form-group">
+                    <label>PURCHASE TYPE</label>
+                    <select id="deliveryPurchaseType" onchange="toggleDeliveryFinancier()">
+                        <option value="">Select Purchase Type</option>
+                        <option value="CASH">CASH</option>
+                        <option value="FINANCE">FINANCE</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="deliveryFinancierGroup">
+                    <label>FINANCIER NAME</label>
+                    <select id="deliveryFinancierName">
+                        <option value="">Select Financier</option>
+                        <option>HDFC Bank</option>
+                        <option>ICICI Bank</option>
+                        <option>Bajaj Finance</option>
+                        <option>SBI</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>RTO APPLICATION NUMBER</label>
+                    <input class="input" id="rtoApplicationNumber" placeholder="RTO application number">
+                </div>
+            </div>
+
+            <div class="info-box info-blue" style="margin-top:8px;">
+                VIN, Engine No, Model and Ex-Price are automatically taken from the allocated vehicle. VIN last 7 characters are calculated automatically.
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 10
+===================================================== -->
+
+<section class="step-content" id="step10">
+
+    <div class="section">
 
         <div class="section-title">
             Final Review
@@ -3066,7 +3295,7 @@ textarea{
 
 let currentStep = 1;
 
-const totalSteps = 9;
+const totalSteps = 10;
 
 let selectedVehicle = {
     model:"Xtreme 125R",
@@ -3096,7 +3325,8 @@ const stepTitles = {
     6:"Exchange Vehicle",
     7:"Insurance & Accessories",
     8:"Documents & KYC",
-    9:"Final Review"
+    9:"Delivery Receipt",
+    10:"Final Review"
 
 };
 
@@ -3549,6 +3779,8 @@ function selectVehicle(
         .value =
         "₹" + price.toLocaleString("en-IN");
 
+    populateDeliveryVehicleFields();
+
 }
 
 
@@ -3579,6 +3811,8 @@ function selectVIN(
 
     document.getElementById("engineValue")
         .textContent = engine;
+
+    populateDeliveryVehicleFields();
 
 }
 
@@ -3673,6 +3907,150 @@ function toggleFinancier(){
 
 
 /* =========================================
+   DELIVERY RECEIPT
+========================================= */
+
+function initDeliveryReceipt(){
+
+    const date = document.getElementById("deliveryDate");
+    if(date && !date.value){
+        date.value = new Date().toISOString().slice(0,10);
+    }
+
+    const receipt = document.getElementById("deliveryReceiptNo");
+    if(receipt && !receipt.value){
+        const year = new Date().getFullYear();
+        const count = String(
+            JSON.parse(localStorage.getItem("hero_delivery_receipts") || "[]").length + 1
+        ).padStart(6,"0");
+        receipt.value = `DR-${year}-${count}`;
+    }
+
+    populateDeliveryVehicleFields();
+
+    const customer = window.convertedCustomer || window.currentCustomer || null;
+    if(customer){
+        populateDeliveryCustomer(customer);
+    }
+}
+
+function populateDeliveryVehicleFields(){
+    const vin = selectedVIN?.vin || "";
+    const engine = selectedVIN?.engine || "";
+    const model = selectedVehicle?.model || "";
+    const price = selectedVehicle?.price || 0;
+
+    const set = (id,value) => {
+        const el = document.getElementById(id);
+        if(el) el.value = value;
+    };
+
+    set("deliveryVinNo", vin);
+    set("deliveryVinLast7", vin.slice(-7));
+    set("deliveryEngineNo", engine);
+    set("deliveryModel", model);
+    set("deliveryExPrice", price ? "₹" + Number(price).toLocaleString("en-IN") : "");
+}
+
+function populateDeliveryCustomer(customer){
+    const fullName = (customer.name || "").trim().split(/\s+/);
+    const first = fullName.shift() || "";
+    const last = fullName.join(" ");
+
+    const set = (id,value) => {
+        const el = document.getElementById(id);
+        if(el && value !== undefined && value !== null) el.value = value;
+    };
+
+    set("deliveryFirstName", customer.firstName || first);
+    set("deliveryLastName", customer.lastName || last);
+    set("deliveryContactNo", customer.mobile || customer.contactNo || "");
+    set("deliveryMailId", customer.email || customer.mailId || "");
+    set("deliveryOccupation", customer.occupation || "");
+    set("deliveryAddress", customer.address || "");
+    set("deliveryPincode", customer.pincode || "");
+    set("deliveryRelationName", customer.relationName || "");
+    set("deliveryDistrict", customer.district || customer.city || "");
+    set("deliveryTahsil", customer.tahsil || "");
+    set("deliveryRelation", customer.relation || "");
+}
+
+function toggleDeliveryFinancier(){
+    const type = document.getElementById("deliveryPurchaseType")?.value;
+    const group = document.getElementById("deliveryFinancierGroup");
+    if(group){
+        group.style.opacity = type === "FINANCE" ? "1" : ".55";
+    }
+    const financier = document.getElementById("deliveryFinancierName");
+    if(financier){
+        financier.disabled = type !== "FINANCE";
+        if(type !== "FINANCE") financier.value = "";
+    }
+}
+
+function saveDeliveryReceipt(){
+    const get = id => document.getElementById(id)?.value || "";
+
+    const receipt = {
+        deliveryReceiptNo:get("deliveryReceiptNo"),
+        date:get("deliveryDate"),
+        dseName:get("deliveryDSE"),
+        customerFirstName:get("deliveryFirstName"),
+        customerLastName:get("deliveryLastName"),
+        relation:get("deliveryRelation"),
+        relationName:get("deliveryRelationName"),
+        contactNo:get("deliveryContactNo"),
+        mailId:get("deliveryMailId"),
+        occupation:get("deliveryOccupation"),
+        address:get("deliveryAddress"),
+        tahsil:get("deliveryTahsil"),
+        district:get("deliveryDistrict"),
+        pincode:get("deliveryPincode"),
+        nomineeName:get("nomineeName"),
+        nomineeRelation:get("nomineeRelation"),
+        nomineeAge:get("nomineeAge"),
+        vinLast7:get("deliveryVinLast7"),
+        vinNo:get("deliveryVinNo"),
+        engineNo:get("deliveryEngineNo"),
+        sku:get("deliverySKU"),
+        model:get("deliveryModel"),
+        exPrice:get("deliveryExPrice"),
+        batteryNo:get("batteryNo"),
+        keyNo:get("keyNo"),
+        purchaseType:get("deliveryPurchaseType"),
+        financierName:get("deliveryFinancierName"),
+        rtoApplicationNumber:get("rtoApplicationNumber"),
+        savedAt:new Date().toISOString()
+    };
+
+    if(!receipt.customerFirstName || !receipt.contactNo){
+        alert("Please enter Customer First Name and Contact No.");
+        return false;
+    }
+
+    if(!/^\d{10}$/.test(receipt.contactNo)){
+        alert("Contact No must contain exactly 10 digits.");
+        return false;
+    }
+
+    if(receipt.pincode && !/^\d{6}$/.test(receipt.pincode)){
+        alert("Pincode must contain exactly 6 digits.");
+        return false;
+    }
+
+    if(receipt.purchaseType === "FINANCE" && !receipt.financierName){
+        alert("Please select Financier Name for Finance purchase.");
+        return false;
+    }
+
+    const list = JSON.parse(localStorage.getItem("hero_delivery_receipts") || "[]");
+    list.push(receipt);
+    localStorage.setItem("hero_delivery_receipts", JSON.stringify(list));
+    window.currentDeliveryReceipt = receipt;
+    return true;
+}
+
+/* =========================================
    BOOKING MODAL
 ========================================= */
 
@@ -3699,6 +4077,10 @@ function closeBookingConfirmation(){
 ========================================= */
 
 function confirmBooking(){
+
+    if(!saveDeliveryReceipt()){
+        return;
+    }
 
     closeBookingConfirmation();
 
@@ -3793,6 +4175,11 @@ calculatePayment();
 
 toggleFinancier();
 
+
+
+document.addEventListener("DOMContentLoaded", function(){
+    initDeliveryReceipt();
+});
 </script>
 
 </body>
