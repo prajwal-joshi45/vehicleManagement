@@ -39,7 +39,7 @@ body{
     font-family:Arial,Helvetica,sans-serif;
     background:var(--bg);
     color:var(--ink);
-    max-width:480px;
+    max-width:1100px;
     margin:auto;
     padding-top:var(--safe-t);
     padding-bottom:var(--safe-b);
@@ -772,6 +772,114 @@ body{
     text-align:right;
 }
 
+
+/* =====================================
+   EXCEL ENQUIRY FORM
+===================================== */
+
+.excel-form{
+    background:#fff;
+    border-radius:14px;
+    padding:16px;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+
+.excel-form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px 14px;
+}
+
+.excel-field{
+    min-width:0;
+}
+
+.excel-field.full{
+    grid-column:1 / -1;
+}
+
+.excel-field label{
+    display:block;
+    font-size:11px;
+    color:var(--gray);
+    margin-bottom:5px;
+    font-weight:600;
+}
+
+.excel-field .input,
+.excel-field select,
+.excel-field textarea{
+    width:100%;
+    border:1px solid #d8dde5;
+    border-radius:9px;
+    padding:10px 11px;
+    font-size:13px;
+    outline:none;
+    background:#fff;
+    color:var(--ink);
+    font-family:inherit;
+}
+
+.excel-field textarea{
+    min-height:72px;
+    resize:vertical;
+}
+
+.excel-field .input:focus,
+.excel-field select:focus,
+.excel-field textarea:focus{
+    border-color:var(--red);
+    box-shadow:0 0 0 2px rgba(227,24,55,.08);
+}
+
+.excel-field .input[readonly]{
+    background:#f7f8fa;
+    color:#4b5563;
+}
+
+.excel-section-caption{
+    margin:2px 0 12px;
+    padding-bottom:8px;
+    border-bottom:1px solid #eee;
+    font-size:12px;
+    font-weight:700;
+    color:var(--ink);
+}
+
+.excel-required{
+    color:var(--red);
+}
+
+.excel-hint{
+    font-size:9px;
+    color:#9ca3af;
+    margin-top:4px;
+}
+
+.excel-form-actions{
+    display:flex;
+    gap:8px;
+    margin-top:14px;
+}
+
+.excel-form-actions button{
+    flex:1;
+}
+
+@media(max-width:700px){
+    body{
+        max-width:480px;
+    }
+
+    .excel-form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .excel-field.full{
+        grid-column:auto;
+    }
+}
+
 @media(max-width:380px){
 
     .quick-actions{
@@ -981,6 +1089,357 @@ body{
 
             </button>
 
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!--
+    EXCEL FIELD MAPPING
+    Date, Quotation No, Enquiry Type, Enquiry Source, DSE Name,
+    Customer First & Middle Name, Customer Last Name, Relation,
+    Relation Name, Contact No, Mail ID, Occupation, Address,
+    Tahsil, District, State, Pincode, Model, Variant, Color,
+    Ex-Price, On-Road Price, Purchase Type, Financier Name,
+    E-Fin Process, Exchange, Exchange Value, Expected Purchase Date,
+    Visit Remark, If Booking, Receipt No, Booking Amount, Enquiry Status
+-->
+<!-- EXCEL ENQUIRY / CUSTOMER DETAILS -->
+<section class="section" id="excelEnquirySection">
+
+    <div class="section-title">
+        Enquiry & Customer Details
+    </div>
+
+    <div class="excel-form">
+
+        <div class="excel-section-caption">
+            Enquiry Details
+        </div>
+
+        <div class="excel-form-grid">
+
+            <div class="excel-field">
+                <label for="enquiryDate">Date</label>
+                <input class="input" id="enquiryDate" type="date" readonly>
+            </div>
+
+            <div class="excel-field">
+                <label for="excelQuotationNo">Quotation No</label>
+                <input class="input" id="excelQuotationNo" type="text" readonly>
+            </div>
+
+            <div class="excel-field">
+                <label for="enquiryType">Enquiry Type</label>
+                <select id="enquiryType">
+                    <option value="">Select Enquiry Type</option>
+                    <option value="FRESH">Fresh</option>
+                    <option value="REPEAT">Repeat</option>
+                </select>
+            </div>
+
+            <div class="excel-field">
+                <label for="enquirySource">Enquiry Source</label>
+                <select id="enquirySource">
+                    <option value="">Select Source</option>
+                    <option value="WALK-IN">Walk-in</option>
+                    <option value="TELEPHONIC">Telephonic</option>
+                    <option value="DIGITAL">Digital</option>
+                    <option value="BIKE WALE CAMPAIGN">Bike Wale Campaign</option>
+                    <option value="FIELD">Field</option>
+                </select>
+            </div>
+
+            <div class="excel-field">
+                <label for="dseName">DSE Name</label>
+                <select id="dseName">
+                    <option value="">Select DSE Name</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="excel-section-caption" style="margin-top:18px;">
+            Customer Details
+        </div>
+
+        <div class="excel-form-grid">
+
+            <div class="excel-field">
+                <label for="customerFirstMiddleName">
+                    Customer (First & Middle Name)
+                </label>
+                <input class="input"
+                       id="customerFirstMiddleName"
+                       type="text"
+                       placeholder="Enter first & middle name">
+            </div>
+
+            <div class="excel-field">
+                <label for="customerLastName">Customer (Last Name)</label>
+                <input class="input"
+                       id="customerLastName"
+                       type="text"
+                       placeholder="Enter last name">
+            </div>
+
+            <div class="excel-field">
+                <label for="relation">Relation</label>
+                <select id="relation">
+                    <option value="">Select Relation</option>
+                    <option value="S/O">S/O</option>
+                    <option value="D/O">D/O</option>
+                    <option value="W/O">W/O</option>
+                    <option value="C/O">C/O</option>
+                </select>
+            </div>
+
+            <div class="excel-field">
+                <label for="relationName">Relation Name</label>
+                <input class="input"
+                       id="relationName"
+                       type="text"
+                       placeholder="Enter relation name">
+            </div>
+
+            <div class="excel-field">
+                <label for="contactNo">Contact No <span class="excel-required">*</span></label>
+                <input class="input"
+                       id="contactNo"
+                       type="tel"
+                       inputmode="numeric"
+                       maxlength="10"
+                       pattern="[0-9]{10}"
+                       placeholder="10 digit mobile number">
+                <div class="excel-hint">10 digit</div>
+            </div>
+
+            <div class="excel-field">
+                <label for="mailId">Mail ID</label>
+                <input class="input"
+                       id="mailId"
+                       type="email"
+                       placeholder="customer@example.com">
+            </div>
+
+            <div class="excel-field">
+                <label for="occupation">Occupation</label>
+                <input class="input"
+                       id="occupation"
+                       type="text"
+                       placeholder="Enter occupation">
+            </div>
+
+            <div class="excel-field full">
+                <label for="customerAddress">Address</label>
+                <textarea id="customerAddress"
+                          placeholder="House no, street, area"></textarea>
+            </div>
+
+            <div class="excel-field">
+                <label for="tahsil">Tahsil</label>
+                <select id="tahsil">
+                    <option value="">Select Tahsil</option>
+                </select>
+            </div>
+
+            <div class="excel-field">
+                <label for="district">District</label>
+                <select id="district">
+                    <option value="">Select District</option>
+                </select>
+            </div>
+
+            <div class="excel-field">
+                <label for="state">State</label>
+                <select id="state">
+                    <option value="">Select State</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Delhi">Delhi</option>
+                </select>
+            </div>
+
+            <div class="excel-field">
+                <label for="pincode">Pincode</label>
+                <input class="input"
+                       id="pincode"
+                       type="tel"
+                       inputmode="numeric"
+                       maxlength="6"
+                       pattern="[0-9]{6}"
+                       placeholder="6 digit pincode">
+                <div class="excel-hint">6 digit</div>
+            </div>
+
+        </div>
+
+        <div class="excel-section-caption" style="margin-top:18px;">
+            Vehicle & Pricing
+        </div>
+
+        <div class="excel-form-grid">
+
+            <div class="excel-field">
+                <label for="excelModel">Model</label>
+                <select id="excelModel" onchange="onExcelModelChange()">
+                    <option value="">Select Model</option>
+                </select>
+            </div>
+
+            <div class="excel-field">
+                <label for="excelVariant">Variant</label>
+                <select id="excelVariant" onchange="onExcelVariantChange()">
+                    <option value="">Select Variant</option>
+                </select>
+            </div>
+
+            <div class="excel-field">
+                <label for="excelColor">Color</label>
+                <input class="input"
+                       id="excelColor"
+                       type="text"
+                       placeholder="Enter color">
+            </div>
+
+            <div class="excel-field">
+                <label for="excelExPrice">Ex-Price</label>
+                <input class="input"
+                       id="excelExPrice"
+                       type="number"
+                       readonly
+                       placeholder="Auto">
+                <div class="excel-hint">Auto from selected model</div>
+            </div>
+
+            <div class="excel-field">
+                <label for="excelOnRoadPrice">On-Road Price</label>
+                <input class="input"
+                       id="excelOnRoadPrice"
+                       type="number"
+                       min="0"
+                       step="1"
+                       placeholder="Enter on-road price"
+                       oninput="syncManualOnRoadPrice()">
+            </div>
+
+            <div class="excel-field">
+                <label for="excelPurchaseType">Purchase Type</label>
+                <select id="excelPurchaseType" onchange="toggleExcelFinanceFields()">
+                    <option value="">Select Purchase Type</option>
+                    <option value="CASH">Cash</option>
+                    <option value="FINANCE">Finance</option>
+                </select>
+            </div>
+
+            <div class="excel-field">
+                <label for="financierName">Financier Name</label>
+                <select id="financierName">
+                    <option value="">Select Financier</option>
+                </select>
+            </div>
+
+            <div class="excel-field">
+                <label for="eFinProcess">E-Fin Process</label>
+                <select id="eFinProcess">
+                    <option value="">Select</option>
+                    <option value="YES">Yes</option>
+                    <option value="NO">No</option>
+                </select>
+            </div>
+
+            <div class="excel-field">
+                <label for="exchange">Exchange</label>
+                <select id="exchange" onchange="toggleExcelExchangeFields()">
+                    <option value="">Select</option>
+                    <option value="YES">Yes</option>
+                    <option value="NO">No</option>
+                </select>
+            </div>
+
+            <div class="excel-field">
+                <label for="excelExchangeValue">Exchange Value</label>
+                <input class="input"
+                       id="excelExchangeValue"
+                       type="number"
+                       min="0"
+                       step="1"
+                       placeholder="Enter exchange value">
+            </div>
+
+            <div class="excel-field">
+                <label for="expectedPurchaseDate">Expected Purchase Date</label>
+                <input class="input"
+                       id="expectedPurchaseDate"
+                       type="date">
+            </div>
+
+            <div class="excel-field full">
+                <label for="visitRemark">Visit Remark</label>
+                <textarea id="visitRemark"
+                          placeholder="Enter visit remark"></textarea>
+            </div>
+
+        </div>
+
+        <div class="excel-section-caption" style="margin-top:18px;">
+            Booking Details
+        </div>
+
+        <div class="excel-form-grid">
+
+            <div class="excel-field">
+                <label for="ifBooking">If Booking</label>
+                <select id="ifBooking">
+                    <option value="">Select</option>
+                    <option value="CASH">Cash</option>
+                    <option value="ONLINE">Online</option>
+                    <option value="DIGITAL">Digital</option>
+                </select>
+            </div>
+
+            <div class="excel-field">
+                <label for="receiptNo">Receipt No</label>
+                <input class="input"
+                       id="receiptNo"
+                       type="text"
+                       placeholder="Enter receipt no">
+            </div>
+
+            <div class="excel-field">
+                <label for="bookingAmount">Booking Amount</label>
+                <input class="input"
+                       id="bookingAmount"
+                       type="number"
+                       min="0"
+                       step="1"
+                       placeholder="Enter booking amount">
+            </div>
+
+            <div class="excel-field">
+                <label for="enquiryStatus">Enquiry Status</label>
+                <select id="enquiryStatus">
+                    <option value="">Select Status</option>
+                    <option value="OPEN">Open</option>
+                    <option value="SOLD">Sold</option>
+                    <option value="BOOKING">Booking</option>
+                    <option value="CLOSED">Closed</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="excel-form-actions">
+            <button class="secondary-btn" type="button" onclick="saveExcelEnquiry()">
+                Save Enquiry
+            </button>
+            <button class="primary-btn" type="button" onclick="copyExcelCustomerToMain()">
+                Use Customer Details
+            </button>
         </div>
 
     </div>
@@ -2266,6 +2725,8 @@ function createCustomer(){
     currentCustomer =
         customer;
 
+    loadExcelEnquiryFromCustomer(customer);
+
 
     localStorage.setItem(
         'hero_last_customer',
@@ -2400,6 +2861,8 @@ function convertNewCustomer(){
     currentCustomer =
         customer;
 
+    loadExcelEnquiryFromCustomer(customer);
+
 
     openFinalization(
         customer
@@ -2446,6 +2909,8 @@ function searchCustomer(){
 
         currentCustomer =
             match;
+
+        loadExcelEnquiryFromCustomer(match);
 
     }
     else{
@@ -3313,6 +3778,449 @@ function applyDiscountCode(){
 }
 
 
+
+/* =====================================
+   EXCEL ENQUIRY FORM
+===================================== */
+
+function excelEl(id){
+    return document.getElementById(id);
+}
+
+function excelValue(id){
+    return excelEl(id)?.value?.trim() || '';
+}
+
+function setExcelValue(id,value){
+    const el = excelEl(id);
+    if(el) el.value = value ?? '';
+}
+
+function todayISO(){
+    const d = new Date();
+    const offset = d.getTimezoneOffset();
+    return new Date(d.getTime() - offset * 60000)
+        .toISOString()
+        .slice(0,10);
+}
+
+function generateExcelQuotationNo(){
+    const year = new Date().getFullYear();
+    const key = 'hero_excel_quote_sequence';
+    let seq = parseInt(localStorage.getItem(key) || '0',10) + 1;
+    localStorage.setItem(key,String(seq));
+
+    return 'QT-' + year + '-' + String(seq).padStart(6,'0');
+}
+
+function initialiseExcelEnquiryForm(){
+
+    if(!excelValue('enquiryDate')){
+        setExcelValue('enquiryDate',todayISO());
+    }
+
+    if(!excelValue('excelQuotationNo')){
+
+        const existingQuote =
+            document.getElementById('quoteNumber')?.textContent?.trim();
+
+        setExcelValue(
+            'excelQuotationNo',
+            existingQuote || generateExcelQuotationNo()
+        );
+    }
+
+    const model = excelEl('excelModel');
+
+    if(model && model.options.length === 1){
+
+        VEHICLES.forEach(v => {
+
+            const option =
+                document.createElement('option');
+
+            option.value = v.id;
+            option.textContent = v.name;
+
+            model.appendChild(option);
+
+        });
+
+    }
+
+    const financier =
+        excelEl('financierName');
+
+    /*
+       The Excel says LIST / DROPDOWN but does not provide
+       the actual financier master values. Keep the master
+       dropdown ready for the dealership's actual list.
+    */
+    if(financier && financier.options.length === 1){
+
+        [
+            'Select from Financier Master'
+        ].forEach(name => {
+
+            const option =
+                document.createElement('option');
+
+            option.value = '';
+            option.textContent = name;
+            option.disabled = true;
+
+            financier.appendChild(option);
+
+        });
+
+    }
+
+    if(!excelValue('enquiryStatus')){
+        setExcelValue('enquiryStatus','OPEN');
+    }
+
+    onExcelModelChange();
+    toggleExcelFinanceFields();
+    toggleExcelExchangeFields();
+}
+
+function onExcelModelChange(){
+
+    const modelId =
+        excelValue('excelModel');
+
+    const variant =
+        excelEl('excelVariant');
+
+    if(!variant) return;
+
+    variant.innerHTML =
+        '<option value="">Select Variant</option>';
+
+    const selected =
+        VEHICLES.find(v => v.id === modelId);
+
+    if(selected){
+
+        const option =
+            document.createElement('option');
+
+        option.value = selected.variant;
+        option.textContent = selected.variant;
+
+        variant.appendChild(option);
+
+        variant.value = selected.variant;
+
+        setExcelValue(
+            'excelExPrice',
+            selected.price
+        );
+
+        setExcelValue(
+            'excelColor',
+            selected.color || ''
+        );
+    }
+    else{
+
+        setExcelValue('excelExPrice','');
+    }
+}
+
+function onExcelVariantChange(){
+
+    const modelId =
+        excelValue('excelModel');
+
+    const selected =
+        VEHICLES.find(v => v.id === modelId);
+
+    if(selected){
+
+        setExcelValue(
+            'excelExPrice',
+            selected.price
+        );
+    }
+}
+
+function syncManualOnRoadPrice(){
+
+    const value =
+        parseFloat(
+            excelValue('excelOnRoadPrice')
+        );
+
+    if(!Number.isNaN(value) && value >= 0){
+
+        const total =
+            document.getElementById('totalAmount');
+
+        if(total){
+            total.textContent =
+                '₹ ' + value.toLocaleString('en-IN');
+        }
+    }
+}
+
+function toggleExcelFinanceFields(){
+
+    const finance =
+        excelValue('excelPurchaseType') === 'FINANCE';
+
+    const financier =
+        excelEl('financierName');
+
+    const efin =
+        excelEl('eFinProcess');
+
+    if(financier) financier.disabled = !finance;
+    if(efin) efin.disabled = !finance;
+
+    if(!finance){
+
+        if(financier) financier.value = '';
+        if(efin) efin.value = '';
+    }
+}
+
+function toggleExcelExchangeFields(){
+
+    const exchange =
+        excelValue('exchange') === 'YES';
+
+    const value =
+        excelEl('excelExchangeValue');
+
+    if(value) value.disabled = !exchange;
+
+    if(!exchange && value){
+        value.value = '';
+    }
+}
+
+function getExcelEnquiryData(){
+
+    return {
+        date:excelValue('enquiryDate'),
+        quotationNo:excelValue('excelQuotationNo'),
+
+        enquiryType:excelValue('enquiryType'),
+        enquirySource:excelValue('enquirySource'),
+        dseName:excelValue('dseName'),
+
+        customerFirstMiddleName:
+            excelValue('customerFirstMiddleName'),
+
+        customerLastName:
+            excelValue('customerLastName'),
+
+        relation:excelValue('relation'),
+        relationName:excelValue('relationName'),
+
+        contactNo:excelValue('contactNo'),
+        mailId:excelValue('mailId'),
+        occupation:excelValue('occupation'),
+
+        address:excelValue('customerAddress'),
+        tahsil:excelValue('tahsil'),
+        district:excelValue('district'),
+        state:excelValue('state'),
+        pincode:excelValue('pincode'),
+
+        model:excelValue('excelModel'),
+        modelName:
+            excelEl('excelModel')?.selectedOptions?.[0]?.textContent?.trim() || '',
+
+        variant:excelValue('excelVariant'),
+        color:excelValue('excelColor'),
+
+        exPrice:
+            parseFloat(excelValue('excelExPrice')) || 0,
+
+        onRoadPrice:
+            parseFloat(excelValue('excelOnRoadPrice')) || 0,
+
+        purchaseType:
+            excelValue('excelPurchaseType'),
+
+        financierName:
+            excelValue('financierName'),
+
+        eFinProcess:
+            excelValue('eFinProcess'),
+
+        exchange:
+            excelValue('exchange'),
+
+        exchangeValue:
+            parseFloat(excelValue('excelExchangeValue')) || 0,
+
+        expectedPurchaseDate:
+            excelValue('expectedPurchaseDate'),
+
+        visitRemark:
+            excelValue('visitRemark'),
+
+        ifBooking:
+            excelValue('ifBooking'),
+
+        receiptNo:
+            excelValue('receiptNo'),
+
+        bookingAmount:
+            parseFloat(excelValue('bookingAmount')) || 0,
+
+        enquiryStatus:
+            excelValue('enquiryStatus')
+    };
+}
+
+function validateExcelEnquiry(){
+
+    const contact =
+        excelValue('contactNo');
+
+    if(contact && !/^\d{10}$/.test(contact)){
+
+        toast('Contact No must be 10 digits');
+        excelEl('contactNo')?.focus();
+
+        return false;
+    }
+
+    const pin =
+        excelValue('pincode');
+
+    if(pin && !/^\d{6}$/.test(pin)){
+
+        toast('Pincode must be 6 digits');
+        excelEl('pincode')?.focus();
+
+        return false;
+    }
+
+    return true;
+}
+
+function saveExcelEnquiry(){
+
+    if(!validateExcelEnquiry()) return;
+
+    const data =
+        getExcelEnquiryData();
+
+    const list =
+        JSON.parse(
+            localStorage.getItem('hero_enquiries') || '[]'
+        );
+
+    data.savedAt =
+        new Date().toISOString();
+
+    list.unshift(data);
+
+    localStorage.setItem(
+        'hero_enquiries',
+        JSON.stringify(list)
+    );
+
+    toast(
+        'Enquiry ' +
+        (data.quotationNo || '') +
+        ' saved'
+    );
+}
+
+function copyExcelCustomerToMain(){
+
+    const first =
+        excelValue('customerFirstMiddleName');
+
+    const last =
+        excelValue('customerLastName');
+
+    const fullName =
+        [first,last]
+        .filter(Boolean)
+        .join(' ')
+        .trim();
+
+    const mobile =
+        excelValue('contactNo');
+
+    const address =
+        excelValue('customerAddress');
+
+    const state =
+        excelValue('state');
+
+    const district =
+        excelValue('district');
+
+    const city =
+        district || state || '';
+
+    if(fullName){
+        setExcelValue('newName',fullName);
+    }
+
+    if(mobile){
+        setExcelValue('newMobile',mobile);
+    }
+
+    if(city){
+        setExcelValue('newCity',city);
+    }
+
+    if(address){
+        setExcelValue('newAddress',address);
+    }
+
+    toast('Customer details copied to customer form');
+}
+
+function loadExcelEnquiryFromCustomer(customer){
+
+    if(!customer) return;
+
+    const parts =
+        String(customer.name || '')
+        .trim()
+        .split(/\s+/);
+
+    if(parts.length > 1){
+
+        setExcelValue(
+            'customerLastName',
+            parts.pop()
+        );
+
+        setExcelValue(
+            'customerFirstMiddleName',
+            parts.join(' ')
+        );
+    }
+    else{
+        setExcelValue(
+            'customerFirstMiddleName',
+            parts[0] || ''
+        );
+    }
+
+    setExcelValue(
+        'contactNo',
+        customer.mobile || ''
+    );
+
+    setExcelValue(
+        'customerAddress',
+        customer.address || ''
+    );
+}
+
+
 /* =====================================
    QUOTATION
 ===================================== */
@@ -3390,7 +4298,10 @@ function buildQuoteData(){
         total:
             document.getElementById(
                 'totalAmount'
-            ).textContent
+            ).textContent,
+
+        excelEnquiry:
+            getExcelEnquiryData()
 
     };
 
@@ -4533,11 +5444,25 @@ function renderReports(){
    INIT
 ===================================== */
 
-loadConvertedCustomer()
+loadConvertedCustomer();
 getCustomers();
+
+initialiseExcelEnquiryForm();
+
+if(typeof convertedCustomer !== 'undefined' && convertedCustomer){
+    loadExcelEnquiryFromCustomer(convertedCustomer);
+}
+else if(currentCustomer){
+    loadExcelEnquiryFromCustomer(currentCustomer);
+}
 
 renderVehicleList();
 renderSelectedVehicles();
+
+if(selectedVehicles.length){
+    setExcelValue('excelModel',selectedVehicles[0].id);
+    onExcelModelChange();
+}
 
 renderAccessories();
 
