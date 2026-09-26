@@ -1,5 +1,4 @@
-
- html
+ 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -959,6 +958,7 @@ textarea{
 }
 
 </style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 
 <body>
@@ -3280,6 +3280,14 @@ textarea{
 
             </button>
 
+            <button
+                class="btn btn-success"
+                onclick="exportAllDataToExcel()">
+
+                Export Excel
+
+            </button>
+
         </div>
 
     </div>
@@ -4089,6 +4097,12 @@ function confirmBooking(){
         .getElementById("successModal")
         .classList.add("show");
 
+    // Automatically generate the Excel workbook after successful finalization.
+    // The user can also download it again from the success modal.
+    setTimeout(function(){
+        exportAllDataToExcel();
+    }, 150);
+
 
     /*
         REAL IMPLEMENTATION:
@@ -4115,6 +4129,181 @@ function confirmBooking(){
 
 }
 
+
+/* =========================================
+   EXCEL EXPORT
+========================================= */
+
+function getControlValue(id){
+    const el = document.getElementById(id);
+    return el ? (el.value || "") : "";
+}
+
+function collectAllFormData(){
+    const rows = [];
+
+    // Collect every input/select/textarea that exists on the page.
+    document.querySelectorAll("input, select, textarea").forEach(el => {
+        if(!el.id) return;
+
+        let value = el.value || "";
+
+        // Convert checkbox/radio state into useful Excel values.
+        if(el.type === "checkbox"){
+            value = el.checked ? "Yes" : "No";
+        } else if(el.type === "radio"){
+            if(!el.checked) return;
+            value = el.value || "Selected";
+        }
+
+        const label = el.closest(".form-group")?.querySelector("label")?.innerText
+            ?.replace(/\s+/g, " ")
+            ?.trim() || el.id;
+
+        rows.push({
+            Section: getExcelSection(el),
+            Field: label,
+            Value: value
+        });
+    });
+
+    // Always include important calculated values, even when they are not
+    // represented by normal form controls.
+    rows.push(
+        {Section:"Vehicle Allocation", Field:"Selected Model", Value:selectedVehicle?.model || ""},
+        {Section:"Vehicle Allocation", Field:"Selected Variant", Value:selectedVehicle?.variant || ""},
+        {Section:"Vehicle Allocation", Field:"Selected Colour", Value:selectedVehicle?.colour || ""},
+        {Section:"Vehicle Allocation", Field:"Selected Ex-Price", Value:selectedVehicle?.price || ""},
+        {Section:"VIN Allocation", Field:"VIN No", Value:selectedVIN?.vin || ""},
+        {Section:"VIN Allocation", Field:"Chassis No", Value:selectedVIN?.chassis || ""},
+        {Section:"VIN Allocation", Field:"Engine No", Value:selectedVIN?.engine || ""},
+        {Section:"Booking", Field:"Booking Number", Value:getControlValue("finalBookingNo")},
+        {Section:"Booking", Field:"Exported At", Value:new Date().toLocaleString("en-IN")}
+    );
+
+    return rows;
+}
+
+function getExcelSection(el){
+    const step = el.closest(".step-content");
+    if(step){
+        const id = step.id;
+        const map = {
+            step1:"Customer / Enquiry",
+            step2:"Vehicle Selection",
+            step3:"VIN Allocation",
+            step4:"RTO & Registration",
+            step5:"Payment & Finance",
+            step6:"Exchange Vehicle",
+            step7:"Insurance & Accessories",
+            step8:"Documents & KYC",
+            step9:"Delivery Receipt",
+            step10:"Final Review"
+        };
+        return map[id] || id;
+    }
+    return "General";
+}
+
+function exportAllDataToExcel(){
+    try{
+        const rows = collectAllFormData();
+
+        // Prevent duplicate fields from making the workbook unnecessarily large.
+        const uniqueRows = [];
+        const seen = new Set();
+        rows.forEach(row => {
+            const key = `${row.Section}|${row.Field}`;
+            if(!seen.has(key)){
+                seen.add(key);
+                uniqueRows.push(row);
+            }
+        });
+
+        const receiptNo = getControlValue("deliveryReceiptNo") || "DeliveryReceipt";
+        const safeReceiptNo = receiptNo.replace(/[^a-zA-Z0-9_-]/g, "_");
+        const fileName = `Hero_Delivery_${safeReceiptNo}.xlsx`;
+
+        // Sheet 1: all fields in one easy-to-filter list.
+        const allSheet = XLSX.utils.json_to_sheet(uniqueRows);
+        allSheet["!cols"] = [
+            {wch:28},
+            {wch:34},
+            {wch:45}
+        ];
+
+        // Sheet 2: delivery receipt in the exact order of the Excel format.
+        const deliveryFields = [
+            ["DELIVERY RECEIPT NO", getControlValue("deliveryReceiptNo")],
+            ["DATE", getControlValue("deliveryDate")],
+            ["DSE NAME", getControlValue("deliveryDSE")],
+            ["CUSTOMER (FIRST NAME)", getControlValue("deliveryFirstName")],
+            ["CUSTOMER (LAST NAME)", getControlValue("deliveryLastName")],
+            ["RELATION", getControlValue("deliveryRelation")],
+            ["RELATION NAME", getControlValue("deliveryRelationName")],
+            ["CONTACT NO", getControlValue("deliveryContactNo")],
+            ["MAIL ID", getControlValue("deliveryMailId")],
+            ["OCCUPATION", getControlValue("deliveryOccupation")],
+            ["ADDRESS", getControlValue("deliveryAddress")],
+            ["TAHSIL", getControlValue("deliveryTahsil")],
+            ["DISTRICT", getControlValue("deliveryDistrict")],
+            ["PINCODE", getControlValue("deliveryPincode")],
+            ["NOMINEE NAME", getControlValue("nomineeName")],
+            ["NOMINEE RELATION", getControlValue("nomineeRelation")],
+            ["NOMINEE AGE", getControlValue("nomineeAge")],
+            ["VIN NO (LAST 7 CHARACTER)", getControlValue("deliveryVinLast7")],
+            ["VIN NO", getControlValue("deliveryVinNo")],
+            ["ENGINE NO", getControlValue("deliveryEngineNo")],
+            ["SKU", getControlValue("deliverySKU")],
+            ["MODEL", getControlValue("deliveryModel")],
+            ["EX-PRICE", getControlValue("deliveryExPrice")],
+            ["BATTERY NO", getControlValue("batteryNo")],
+            ["KEY NO", getControlValue("keyNo")],
+            ["PURCHASE TYPE", getControlValue("deliveryPurchaseType")],
+            ["FINANCIER NAME", getControlValue("deliveryFinancierName")],
+            ["RTO APPLICATION NUMBER", getControlValue("rtoApplicationNumber")]
+        ];
+        const deliverySheet = XLSX.utils.aoa_to_sheet([["FIELD","VALUE"], ...deliveryFields]);
+        deliverySheet["!cols"] = [{wch:34},{wch:55}];
+
+        // Sheet 3: key vehicle/VIN information.
+        const vehicleSheet = XLSX.utils.aoa_to_sheet([
+            ["FIELD","VALUE"],
+            ["MODEL", selectedVehicle?.model || ""],
+            ["VARIANT", selectedVehicle?.variant || ""],
+            ["COLOUR", selectedVehicle?.colour || ""],
+            ["EX-PRICE", selectedVehicle?.price || ""],
+            ["VIN NO", selectedVIN?.vin || ""],
+            ["VIN LAST 7", (selectedVIN?.vin || "").slice(-7)],
+            ["CHASSIS NO", selectedVIN?.chassis || ""],
+            ["ENGINE NO", selectedVIN?.engine || ""],
+            ["SKU", getControlValue("deliverySKU")],
+            ["BATTERY NO", getControlValue("batteryNo")],
+            ["KEY NO", getControlValue("keyNo")]
+        ]);
+        vehicleSheet["!cols"] = [{wch:25},{wch:45}];
+
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, allSheet, "Complete Data");
+        XLSX.utils.book_append_sheet(workbook, deliverySheet, "Delivery Receipt");
+        XLSX.utils.book_append_sheet(workbook, vehicleSheet, "Vehicle & VIN");
+
+        XLSX.writeFile(workbook, fileName);
+
+        localStorage.setItem("hero_last_excel_export", JSON.stringify({
+            fileName:fileName,
+            exportedAt:new Date().toISOString(),
+            deliveryReceiptNo:receiptNo
+        }));
+
+        return true;
+    }
+    catch(error){
+        console.error("Excel export failed:", error);
+        alert("Excel export failed. Please try the Export Excel button again.");
+        return false;
+    }
+}
 
 /* =========================================
    SUCCESS
