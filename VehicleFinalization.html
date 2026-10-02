@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>Hero Dealership - Vehicle Finalization</title>
+<title>Hero Dealership - Delivery Challan, Receipt &amp; Gate Pass</title>
 
 <style>
 
@@ -169,7 +169,7 @@ body{
 
 .stepper{
     display:flex;
-    min-width:900px;
+    min-width:1050px;
     justify-content:space-between;
     position:relative;
 }
@@ -957,7 +957,60 @@ textarea{
 
 }
 
-</style>
+
+.req{color:#dc2626;font-weight:700}
+.hint{font-size:9px;color:#6b7280;margin-top:3px}
+input[readonly]{background:#f3f5f8}
+input:disabled,select:disabled,textarea:disabled{background:#f3f5f8;color:#6b7280}
+/* ===== Delivery Challan document ===== */
+#docModal{overflow-y:auto;align-items:flex-start}
+#docModal .modal-box{margin:auto;max-width:800px;padding:18px}
+.doc-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+.dc{font-family:'Segoe UI',Arial,Helvetica,sans-serif;font-size:12px;color:#1f2937;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:26px 28px 20px;position:relative;overflow:hidden;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.dc *{box-sizing:border-box}
+.dc:before{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:#e31837}
+.dc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding-top:6px}
+.dc-brand{display:flex;align-items:center;gap:12px}
+.dc-logo{width:46px;height:46px;border-radius:12px;background:#e31837;color:#fff;font-size:26px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.dc-name{font-size:20px;font-weight:800;color:#111827;line-height:1.1}
+.dc-tag{font-size:10.5px;color:#6b7280;margin-top:3px}
+.dc-meta{text-align:right}
+.dc-title{font-size:21px;font-weight:800;letter-spacing:1.5px;color:#111827;line-height:1.1}
+.dc-pills{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
+.dc-pill{background:#f3f4f6;border-radius:20px;padding:4px 12px;font-size:11px;color:#6b7280}
+.dc-pill b{color:#111827;margin-left:4px}
+.dc-vehicle{margin:20px 0 14px;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden}
+.dc-vhead{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 18px;background:#fef2f2;border-bottom:1px solid #fecaca}
+.dc-vhead .k{font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:#b91c1c;font-weight:700}
+.dc-vhead .v{font-size:19px;font-weight:800;color:#111827;margin-top:2px}
+.dc-vhead .sub{font-size:12px;color:#4b5563;text-align:right}
+.dc-ids{display:grid;grid-template-columns:repeat(4,1fr)}
+.dc-id{padding:10px 14px;border-right:1px solid #e5e7eb}
+.dc-id:last-child{border-right:0}
+.dc-id .k{font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:#6b7280;font-weight:700}
+.dc-id .v{font-family:Consolas,'Courier New',monospace;font-size:12.5px;font-weight:700;color:#111827;margin-top:3px;word-break:break-all}
+.dc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.dc-card{border:1px solid #e5e7eb;border-radius:10px;padding:12px 16px 6px;break-inside:avoid}
+.dc-card.full{grid-column:1/-1}
+.dc-card h4{margin:0 0 6px;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#e31837;font-weight:800}
+.dc-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid #f1f2f4}
+.dc-row span{color:#6b7280;flex:0 0 38%}
+.dc-row b{flex:1;text-align:right;color:#111827;font-weight:600;word-break:break-word}
+.dc-note{margin:16px 0 0;padding:10px 14px;border-radius:8px;font-size:11px;color:#4b5563;background:#f9fafb;border-left:4px solid #e31837}
+.dc-sign{display:flex;justify-content:space-between;gap:60px;margin-top:52px}
+.dc-sign div{flex:1;border-top:1.5px solid #111827;padding-top:6px;text-align:center;font-size:11px;color:#374151;font-weight:600}
+.dc-foot{margin-top:16px;text-align:center;font-size:10px;color:#9ca3af}
+@media (max-width:640px){.dc-grid{grid-template-columns:1fr}.dc-ids{grid-template-columns:1fr 1fr}.dc-id:nth-child(2){border-right:0}.dc-id:nth-child(-n+2){border-bottom:1px solid #e5e7eb}.dc-top{flex-direction:column}.dc-meta{text-align:left}.dc-pills{justify-content:flex-start}}
+@media print{
+  @page{size:A4;margin:10mm}
+  body.printing-doc{background:#fff !important}
+  body.printing-doc > *:not(#docModal){display:none !important}
+  body.printing-doc #docModal{position:static;display:block;background:none;padding:0;overflow:visible}
+  body.printing-doc #docModal .modal-box{box-shadow:none;max-width:none;width:100%;padding:0;margin:0;border-radius:0}
+  body.printing-doc .doc-actions{display:none !important}
+  body.printing-doc .dc{border:0;border-radius:0;padding:14px 4px 0}
+}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:#111827;color:#fff;padding:11px 16px;border-radius:10px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:5000;max-width:90%}#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}</style>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 
@@ -971,13 +1024,13 @@ textarea{
 
     <div class="header-inner">
 
-        <div>
+        <div onclick="window.location.href='index.html'" style="cursor:pointer" title="Back to Sales &amp; Quotation">
             <div class="brand-title">
                 Hero Dealership
             </div>
 
             <div class="brand-subtitle">
-                Vehicle Finalization & Booking
+                Delivery Challan, Receipt &amp; Gate Pass
             </div>
         </div>
 
@@ -1009,17 +1062,13 @@ textarea{
 <div class="top-summary">
 
     <div class="summary-item">
-        <label>BOOKING</label>
-        <strong id="bookingNo">
-            BK-2026-00125
-        </strong>
+        <label>DELIVERY NO</label>
+        <strong id="bookingNo">—</strong>
     </div>
 
     <div class="summary-item">
         <label>QUOTATION</label>
-        <strong>
-            QT-2026-000125
-        </strong>
+        <strong id="topQuotation">—</strong>
     </div>
 
   <div class="summary-item">
@@ -1031,16 +1080,12 @@ textarea{
 
     <div class="summary-item">
         <label>SALES EXECUTIVE</label>
-        <strong>
-            Prajwal Joshi
-        </strong>
+        <strong id="topDse">—</strong>
     </div>
 
     <div class="summary-item">
         <label>STATUS</label>
-        <span class="status-badge">
-            FINALIZATION IN PROGRESS
-        </span>
+        <span class="status-badge" id="topStatus">DELIVERY IN PROGRESS</span>
     </div>
 
 </div>
@@ -1071,38 +1116,14 @@ textarea{
 
         <div class="step" data-step="4">
             <div class="step-circle">4</div>
-            <div class="step-label">RTO</div>
+            <div class="step-label">Delivery</div>
         </div>
 
         <div class="step" data-step="5">
             <div class="step-circle">5</div>
-            <div class="step-label">Payment</div>
-        </div>
-
-        <div class="step" data-step="6">
-            <div class="step-circle">6</div>
-            <div class="step-label">Exchange</div>
-        </div>
-
-        <div class="step" data-step="7">
-            <div class="step-circle">7</div>
-            <div class="step-label">Insurance</div>
-        </div>
-
-        <div class="step" data-step="8">
-            <div class="step-circle">8</div>
-            <div class="step-label">Documents</div>
-        </div>
-
-        <div class="step" data-step="9">
-            <div class="step-circle">9</div>
-            <div class="step-label">Delivery</div>
-        </div>
-
-        <div class="step" data-step="10">
-            <div class="step-circle">10</div>
             <div class="step-label">Review</div>
         </div>
+<div class="step" data-step="6"><div class="step-circle">6</div><div class="step-label">Receipt &amp; Gate Pass</div></div>
 
     </div>
 
@@ -1159,9 +1180,7 @@ textarea{
 </div>
                 </div>
 
-                <button class="btn btn-secondary">
-                    Change Customer
-                </button>
+                <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-secondary" onclick="window.location.href='index.html'">← Back to Quotation</button><button class="btn btn-secondary" onclick="window.location.href='index.html'">Change Customer</button></div>
 
             </div>
 
@@ -1182,22 +1201,22 @@ textarea{
 
                 <div class="form-group">
                     <label>Quotation Number</label>
-                    <input class="input" value="QT-2026-000125" readonly>
+                    <input class="input" id="qNo" readonly>
                 </div>
 
                 <div class="form-group">
                     <label>Quotation Date</label>
-                    <input class="input" value="21/09/2026" readonly>
+                    <input class="input" id="qDate" readonly>
                 </div>
 
                 <div class="form-group">
                     <label>Quotation Amount</label>
-                    <input class="input" value="₹1,04,500" readonly>
+                    <input class="input" id="qAmount" readonly>
                 </div>
 
                 <div class="form-group">
                     <label>Customer Type</label>
-                    <input class="input" value="Existing Customer" readonly>
+                    <input class="input" id="qCustType" readonly>
                 </div>
 
             </div>
@@ -1222,1867 +1241,128 @@ textarea{
      STEP 2
 ===================================================== -->
 
-<section class="step-content" id="step2">
-
-    <div class="section">
-
-        <div class="section-title">
-            Final Vehicle Selection
-        </div>
-
-        <div class="section-subtitle">
-            Select the single vehicle that the customer has finalized.
-        </div>
-
-        <div class="card">
-
-            <div class="table-wrapper">
-
-                <table class="data-table">
-
-                    <thead>
-
-                    <tr>
-                        <th>Select</th>
-                        <th>Vehicle</th>
-                        <th>Variant</th>
-                        <th>Colour</th>
-                        <th>Ex-Showroom</th>
-                        <th>Availability</th>
-                    </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                    <tr class="selected">
-
-                        <td>
-                            <input
-                                type="radio"
-                                name="vehicle"
-                                class="radio"
-                                checked
-                                onchange="selectVehicle('Xtreme 125R','Disc Variant','Black',98000)">
-                        </td>
-
-                        <td>
-                            <div class="vehicle-name">
-                                Xtreme 125R
-                            </div>
-                            <div class="vehicle-sub">
-                                Hero MotoCorp
-                            </div>
-                        </td>
-
-                        <td>
-                            Disc Variant
-                        </td>
-
-                        <td>
-                            Black
-                        </td>
-
-                        <td>
-                            ₹98,000
-                        </td>
-
-                        <td>
-                            <span class="badge badge-green">
-                                Available
-                            </span>
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td>
-                            <input
-                                type="radio"
-                                name="vehicle"
-                                class="radio"
-                                onchange="selectVehicle('Splendor Plus','XTEC 2.0','Red',89000)">
-                        </td>
-
-                        <td>
-                            <div class="vehicle-name">
-                                Splendor Plus
-                            </div>
-                            <div class="vehicle-sub">
-                                Hero MotoCorp
-                            </div>
-                        </td>
-
-                        <td>
-                            XTEC 2.0
-                        </td>
-
-                        <td>
-                            Red
-                        </td>
-
-                        <td>
-                            ₹89,000
-                        </td>
-
-                        <td>
-                            <span class="badge badge-green">
-                                Available
-                            </span>
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td>
-                            <input
-                                type="radio"
-                                name="vehicle"
-                                class="radio"
-                                onchange="selectVehicle('Glamour','XTEC','Blue',91000)">
-                        </td>
-
-                        <td>
-                            <div class="vehicle-name">
-                                Glamour
-                            </div>
-                            <div class="vehicle-sub">
-                                Hero MotoCorp
-                            </div>
-                        </td>
-
-                        <td>
-                            XTEC
-                        </td>
-
-                        <td>
-                            Blue
-                        </td>
-
-                        <td>
-                            ₹91,000
-                        </td>
-
-                        <td>
-                            <span class="badge badge-green">
-                                Available
-                            </span>
-                        </td>
-
-                    </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="card">
-
-            <div class="section-title">
-                Selected Vehicle
-            </div>
-
-            <div class="grid-4">
-
-                <div class="form-group">
-                    <label>MODEL</label>
-                    <input class="input" id="selectedModel" value="Xtreme 125R" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label>VARIANT</label>
-                    <input class="input" id="selectedVariant" value="Disc Variant" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label>COLOUR</label>
-                    <input class="input" id="selectedColour" value="Black" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label>EX-SHOWROOM</label>
-                    <input class="input" id="selectedPrice" value="₹98,000" readonly>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
+<section class="step-content" id="step2"><div class="section">
+<div class="section-title">Final Vehicle Selection</div>
+<div class="section-subtitle">Pre-filled from the quotation. The physical vehicle is allocated by VIN in the next step.</div>
+<div class="card"><div class="grid-4">
+ <div class="form-group"><label>MODEL</label><select id="selectedModel" onchange="onFinModelChange()"></select></div>
+ <div class="form-group"><label>VARIANT</label><select id="selectedVariant" onchange="onFinVariantChange()"></select></div>
+ <div class="form-group"><label>COLOUR</label><select id="selectedColour" onchange="onFinColourChange()"></select></div>
+ <div class="form-group"><label>EX-SHOWROOM</label><input class="input" id="selectedPrice" readonly></div>
+</div></div></div></section>
 
 
 <!-- =====================================================
      STEP 3
 ===================================================== -->
 
-<section class="step-content" id="step3">
-
-    <div class="section">
-
-        <div class="section-title">
-            VIN / Vehicle Allocation
-        </div>
-
-        <div class="section-subtitle">
-            Select an available physical vehicle from inventory.
-        </div>
-
-        <div class="info-box info-blue">
-            Only vehicles matching the selected model, variant and colour are displayed.
-        </div>
-
-        <div class="card">
-
-            <div class="table-wrapper">
-
-                <table class="data-table">
-
-                    <thead>
-
-                    <tr>
-                        <th>Select</th>
-                        <th>VIN</th>
-                        <th>Chassis No</th>
-                        <th>Engine No</th>
-                        <th>Colour</th>
-                        <th>Mfg Date</th>
-                        <th>Location</th>
-                        <th>Status</th>
-                    </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                    <tr class="selected">
-
-                        <td>
-                            <input
-                                type="radio"
-                                name="vin"
-                                class="radio"
-                                checked
-                                onchange="selectVIN('MBHXXXX001','MBLHA123456789','EGN987654321')">
-                        </td>
-
-                        <td>
-                            <strong>MBHXXXX001</strong>
-                        </td>
-
-                        <td>
-                            MBLHA123456789
-                        </td>
-
-                        <td>
-                            EGN987654321
-                        </td>
-
-                        <td>
-                            Black
-                        </td>
-
-                        <td>
-                            09/2026
-                        </td>
-
-                        <td>
-                            Pune Yard
-                        </td>
-
-                        <td>
-                            <span class="badge badge-green">
-                                Available
-                            </span>
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td>
-                            <input
-                                type="radio"
-                                name="vin"
-                                class="radio"
-                                onchange="selectVIN('MBHXXXX002','MBLHA123456790','EGN987654322')">
-                        </td>
-
-                        <td>
-                            <strong>MBHXXXX002</strong>
-                        </td>
-
-                        <td>
-                            MBLHA123456790
-                        </td>
-
-                        <td>
-                            EGN987654322
-                        </td>
-
-                        <td>
-                            Black
-                        </td>
-
-                        <td>
-                            09/2026
-                        </td>
-
-                        <td>
-                            Pune Yard
-                        </td>
-
-                        <td>
-                            <span class="badge badge-green">
-                                Available
-                            </span>
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td>
-                            <input
-                                type="radio"
-                                name="vin"
-                                class="radio"
-                                onchange="selectVIN('MBHXXXX003','MBLHA123456791','EGN987654323')">
-                        </td>
-
-                        <td>
-                            <strong>MBHXXXX003</strong>
-                        </td>
-
-                        <td>
-                            MBLHA123456791
-                        </td>
-
-                        <td>
-                            EGN987654323
-                        </td>
-
-                        <td>
-                            Black
-                        </td>
-
-                        <td>
-                            08/2026
-                        </td>
-
-                        <td>
-                            Main Yard
-                        </td>
-
-                        <td>
-                            <span class="badge badge-green">
-                                Available
-                            </span>
-                        </td>
-
-                    </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-
-            <div class="allocation-box">
-
-                <div class="allocation-title">
-                    Selected Vehicle Allocation
-                </div>
-
-                <div class="allocation-grid">
-
-                    <div class="allocation-item">
-                        <label>VIN</label>
-                        <strong id="vinValue">
-                            MBHXXXX001
-                        </strong>
-                    </div>
-
-                    <div class="allocation-item">
-                        <label>CHASSIS</label>
-                        <strong id="chassisValue">
-                            MBLHA123456789
-                        </strong>
-                    </div>
-
-                    <div class="allocation-item">
-                        <label>ENGINE</label>
-                        <strong id="engineValue">
-                            EGN987654321
-                        </strong>
-                    </div>
-
-                    <div class="allocation-item">
-                        <label>STATUS</label>
-                        <strong>
-                            READY TO RESERVE
-                        </strong>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     STEP 4
-===================================================== -->
-
-<section class="step-content" id="step4">
-
-    <div class="section">
-
-        <div class="section-title">
-            RTO & Registration
-        </div>
-
-        <div class="card">
-
-            <div class="grid-3">
-
-                <div class="form-group">
-                    <label>Registration Type</label>
-
-                    <select id="registrationType">
-
-                        <option>Permanent Registration</option>
-                        <option>Temporary Registration</option>
-                        <option>BH Series</option>
-                        <option>Company Registration</option>
-
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-                    <label>Registration State</label>
-
-                    <select>
-                        <option>Maharashtra</option>
-                        <option>Gujarat</option>
-                        <option>Karnataka</option>
-                        <option>Delhi</option>
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-                    <label>RTO</label>
-
-                    <select>
-
-                        <option>MH-12 Pune</option>
-                        <option>MH-14 Pimpri-Chinchwad</option>
-                        <option>MH-01 Mumbai</option>
-
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-                    <label>Owner Name</label>
-                    <input class="input" value="Rahul Sharma">
-                </div>
-
-                <div class="form-group">
-                    <label>Mobile</label>
-                    <input class="input" value="9812345621">
-                </div>
-
-                <div class="form-group">
-                    <label>Pincode</label>
-                    <input class="input" value="411005">
-                </div>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>Registration Address</label>
-
-                <textarea>
-12 FC Road, Shivajinagar, Pune, Maharashtra
-                </textarea>
-
-            </div>
-
-
-            <div class="grid-4">
-
-                <div class="form-group">
-                    <label>Hypothecation</label>
-
-                    <select id="hypothecation" onchange="toggleFinancier()">
-                        <option>Yes</option>
-                        <option>No</option>
-                    </select>
-
-                </div>
-
-                <div class="form-group" id="financierGroup">
-                    <label>Financier</label>
-
-                    <select>
-                        <option>HDFC Bank</option>
-                        <option>Hero FinCorp</option>
-                        <option>Bajaj Finance</option>
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-                    <label>RTO Agent</label>
-                    <input class="input" placeholder="Agent name">
-                </div>
-
-                <div class="form-group">
-                    <label>Expected Registration Date</label>
-                    <input class="input" type="date">
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-title">
-            RTO Charges
-        </div>
-
-        <div class="card">
-
-            <div class="table-wrapper">
-
-                <table class="data-table">
-
-                    <tr>
-                        <td>Registration Fee</td>
-                        <td>₹600</td>
-                    </tr>
-
-                    <tr>
-                        <td>Road Tax</td>
-                        <td>₹7,800</td>
-                    </tr>
-
-                    <tr>
-                        <td>Smart Card</td>
-                        <td>₹200</td>
-                    </tr>
-
-                    <tr>
-                        <td>HSRP</td>
-                        <td>₹450</td>
-                    </tr>
-
-                    <tr>
-                        <td><strong>Total RTO</strong></td>
-                        <td><strong>₹9,050</strong></td>
-                    </tr>
-
-                </table>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="info-box info-orange">
-
-        RTO verification will be triggered after the customer and payment details are confirmed.
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     STEP 5
-===================================================== -->
-
-<section class="step-content" id="step5">
-
-    <div class="section">
-
-        <div class="section-title">
-            Payment & Finance
-        </div>
-
-        <div class="card">
-
-            <div class="section-subtitle">
-                Select the customer's actual payment structure.
-            </div>
-
-            <div class="payment-grid">
-
-                <div class="payment-option active"
-                     onclick="selectPayment(this,'Cash')">
-                    CASH
-                </div>
-
-                <div class="payment-option"
-                     onclick="selectPayment(this,'UPI')">
-                    UPI
-                </div>
-
-                <div class="payment-option"
-                     onclick="selectPayment(this,'Card')">
-                    CARD
-                </div>
-
-                <div class="payment-option"
-                     onclick="selectPayment(this,'Bank Transfer')">
-                    BANK TRANSFER
-                </div>
-
-                <div class="payment-option"
-                     onclick="selectPayment(this,'Finance')">
-                    FINANCE
-                </div>
-
-                <div class="payment-option"
-                     onclick="selectPayment(this,'Mixed')">
-                    MIXED
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="section" id="financeDetails">
-
-        <div class="section-title">
-            Finance Details
-        </div>
-
-        <div class="card">
-
-            <div class="grid-3">
-
-                <div class="form-group">
-                    <label>Finance Partner</label>
-
-                    <select>
-                        <option>HDFC Bank</option>
-                        <option>Hero FinCorp</option>
-                        <option>Bajaj Finance</option>
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-                    <label>Loan Amount</label>
-
-                    <input
-                        class="input"
-                        id="loanAmount"
-                        value="85000"
-                        type="number"
-                        oninput="calculatePayment()">
-
-                </div>
-
-                <div class="form-group">
-                    <label>Down Payment</label>
-
-                    <input
-                        class="input"
-                        id="downPayment"
-                        value="31800"
-                        type="number"
-                        oninput="calculatePayment()">
-
-                </div>
-
-                <div class="form-group">
-                    <label>Tenure</label>
-
-                    <select>
-                        <option>24 Months</option>
-                        <option selected>36 Months</option>
-                        <option>48 Months</option>
-                        <option>60 Months</option>
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-                    <label>Interest Rate</label>
-
-                    <input class="input" value="11%" type="text">
-                </div>
-
-                <div class="form-group">
-                    <label>Finance Application No</label>
-
-                    <input class="input" placeholder="Application number">
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-title">
-            Payment Schedule
-        </div>
-
-        <div class="card">
-
-            <div class="table-wrapper">
-
-                <table class="data-table">
-
-                    <thead>
-                    <tr>
-                        <th>Payment</th>
-                        <th>Mode</th>
-                        <th>Amount</th>
-                        <th>Reference</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-
-                    <tr>
-                        <td>Booking Amount</td>
-                        <td>UPI</td>
-                        <td>₹10,000</td>
-                        <td>UPI12345</td>
-                        <td>21/09/2026</td>
-                        <td>
-                            <span class="badge badge-green">
-                                Paid
-                            </span>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Down Payment</td>
-                        <td>Bank Transfer</td>
-                        <td>₹21,800</td>
-                        <td>NEFT12345</td>
-                        <td>21/09/2026</td>
-                        <td>
-                            <span class="badge badge-green">
-                                Paid
-                            </span>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Finance</td>
-                        <td>HDFC Bank</td>
-                        <td>₹85,000</td>
-                        <td>FIN12345</td>
-                        <td>—</td>
-                        <td>
-                            <span class="badge badge-blue">
-                                Approved
-                            </span>
-                        </td>
-                    </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="amount-box">
-
-            <div class="amount-row">
-                <span>Total Vehicle Value</span>
-                <strong>₹1,16,800</strong>
-            </div>
-
-            <div class="amount-row">
-                <span>Paid</span>
-                <strong>₹31,800</strong>
-            </div>
-
-            <div class="amount-row">
-                <span>Finance</span>
-                <strong>₹85,000</strong>
-            </div>
-
-            <div class="amount-row total">
-                <span>Balance</span>
-                <span id="balanceAmount">₹0</span>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     STEP 6
-===================================================== -->
-
-<section class="step-content" id="step6">
-
-    <div class="section">
-
-        <div class="section-title">
-            Exchange Vehicle
-        </div>
-
-        <div class="section-subtitle">
-            Capture details of the customer's old vehicle.
-        </div>
-
-        <div class="card">
-
-            <div class="grid-3">
-
-                <div class="form-group">
-                    <label>Registration Number</label>
-                    <input class="input" value="MH12AB1234">
-                </div>
-
-                <div class="form-group">
-                    <label>Make</label>
-                    <input class="input" value="Hero">
-                </div>
-
-                <div class="form-group">
-                    <label>Model</label>
-                    <input class="input" value="Splendor">
-                </div>
-
-                <div class="form-group">
-                    <label>Manufacturing Year</label>
-                    <input class="input" value="2021">
-                </div>
-
-                <div class="form-group">
-                    <label>KM Reading</label>
-                    <input class="input" value="32500">
-                </div>
-
-                <div class="form-group">
-                    <label>Owner Name</label>
-                    <input class="input" value="Rahul Sharma">
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-title">
-            Exchange Valuation
-        </div>
-
-        <div class="card">
-
-            <div class="grid-3">
-
-                <div class="form-group">
-                    <label>Customer Expected Value</label>
-                    <input class="input" value="45000">
-                </div>
-
-                <div class="form-group">
-                    <label>Evaluator Value</label>
-                    <input class="input" value="42000">
-                </div>
-
-                <div class="form-group">
-                    <label>Approved Exchange Value</label>
-                    <input class="input" value="42000">
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-title">
-            Exchange Documents
-        </div>
-
-        <div class="card">
-
-            <div class="checklist">
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    RC
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    Insurance
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    PUC
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    Aadhaar
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    Transfer Form
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    NOC
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     STEP 7
-===================================================== -->
-
-<section class="step-content" id="step7">
-
-    <div class="section">
-
-        <div class="section-title">
-            Insurance
-        </div>
-
-        <div class="card">
-
-            <div class="grid-3">
-
-                <div class="form-group">
-                    <label>Insurance Company</label>
-
-                    <select>
-                        <option>HDFC Ergo</option>
-                        <option>ICICI Lombard</option>
-                        <option>Bajaj Allianz</option>
-                        <option>United India</option>
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-                    <label>Policy Type</label>
-
-                    <select>
-                        <option>Comprehensive</option>
-                        <option>Third Party</option>
-                        <option>Own Damage</option>
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-                    <label>IDV</label>
-                    <input class="input" value="85000">
-                </div>
-
-                <div class="form-group">
-                    <label>Policy Start Date</label>
-                    <input class="input" type="date">
-                </div>
-
-                <div class="form-group">
-                    <label>Premium</label>
-                    <input class="input" value="7500">
-                </div>
-
-                <div class="form-group">
-                    <label>Policy Number</label>
-                    <input class="input" placeholder="Policy number">
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-title">
-            Add-ons
-        </div>
-
-        <div class="card">
-
-            <div class="checklist">
-
-                <div class="check-item">
-                    <input type="checkbox" checked>
-                    Zero Depreciation
-                </div>
-
-                <div class="check-item">
-                    <input type="checkbox">
-                    Engine Protection
-                </div>
-
-                <div class="check-item">
-                    <input type="checkbox">
-                    Return to Invoice
-                </div>
-
-                <div class="check-item">
-                    <input type="checkbox">
-                    Roadside Assistance
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-title">
-            Accessories
-        </div>
-
-        <div class="card">
-
-            <div class="table-wrapper">
-
-                <table class="data-table">
-
-                    <thead>
-
-                    <tr>
-                        <th>Accessory</th>
-                        <th>Qty</th>
-                        <th>Price</th>
-                        <th>Discount</th>
-                        <th>Final</th>
-                    </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                    <tr>
-                        <td>Seat Cover</td>
-                        <td>1</td>
-                        <td>₹1,200</td>
-                        <td>₹0</td>
-                        <td>₹1,200</td>
-                    </tr>
-
-                    <tr>
-                        <td>Leg Guard</td>
-                        <td>1</td>
-                        <td>₹1,800</td>
-                        <td>₹200</td>
-                        <td>₹1,600</td>
-                    </tr>
-
-                    <tr>
-                        <td>Helmet</td>
-                        <td>1</td>
-                        <td>₹1,500</td>
-                        <td>₹0</td>
-                        <td>₹1,500</td>
-                    </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     STEP 8
-===================================================== -->
-
-<section class="step-content" id="step8">
-
-    <div class="section">
-
-        <div class="section-title">
-            Customer KYC & Documents
-        </div>
-
-        <div class="section-subtitle">
-            Verify all mandatory documents before final booking.
-        </div>
-
-        <div class="card">
-
-            <div class="document-row">
-
-                <div>
-                    <div class="document-name">
-                        Aadhaar Card
-                    </div>
-
-                    <div class="document-meta">
-                        XXXX-XXXX-1234
-                    </div>
-                </div>
-
-                <span class="badge badge-green">
-                    VERIFIED
-                </span>
-
-                <button class="upload-btn">
-                    View
-                </button>
-
-                <span class="badge badge-green">
-                    ✓
-                </span>
-
-            </div>
-
-
-            <div class="document-row">
-
-                <div>
-                    <div class="document-name">
-                        PAN Card
-                    </div>
-
-                    <div class="document-meta">
-                        ABCDE1234F
-                    </div>
-                </div>
-
-                <span class="badge badge-green">
-                    VERIFIED
-                </span>
-
-                <button class="upload-btn">
-                    View
-                </button>
-
-                <span class="badge badge-green">
-                    ✓
-                </span>
-
-            </div>
-
-
-            <div class="document-row">
-
-                <div>
-                    <div class="document-name">
-                        Address Proof
-                    </div>
-
-                    <div class="document-meta">
-                        Electricity Bill
-                    </div>
-                </div>
-
-                <span class="badge badge-green">
-                    VERIFIED
-                </span>
-
-                <button class="upload-btn">
-                    View
-                </button>
-
-                <span class="badge badge-green">
-                    ✓
-                </span>
-
-            </div>
-
-
-            <div class="document-row">
-
-                <div>
-                    <div class="document-name">
-                        Driving Licence
-                    </div>
-
-                    <div class="document-meta">
-                        Required
-                    </div>
-                </div>
-
-                <span class="badge badge-orange">
-                    PENDING
-                </span>
-
-                <button class="upload-btn">
-                    Upload
-                </button>
-
-                <span class="badge badge-orange">
-                    !
-                </span>
-
-            </div>
-
-
-            <div class="document-row">
-
-                <div>
-                    <div class="document-name">
-                        Customer Photograph
-                    </div>
-
-                    <div class="document-meta">
-                        Recent photograph
-                    </div>
-                </div>
-
-                <span class="badge badge-green">
-                    VERIFIED
-                </span>
-
-                <button class="upload-btn">
-                    View
-                </button>
-
-                <span class="badge badge-green">
-                    ✓
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-title">
-            Internal Verification
-        </div>
-
-        <div class="card">
-
-            <div class="checklist">
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    Customer details verified
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    Vehicle details verified
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    VIN verified
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    Price approved
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    Finance verified
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    Payment verified
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     STEP 9
-===================================================== -->
-
-<section class="step-content" id="step9">
-
-    <div class="section">
-        <div class="section-title">Delivery Receipt</div>
-        <div class="section-subtitle">Capture the complete delivery receipt information before handing over the vehicle.</div>
-
-        <div class="card">
-            <div class="section-title">Receipt & Customer Details</div>
-            <div class="grid-4">
-
-                <div class="form-group">
-                    <label>DELIVERY RECEIPT NO</label>
-                    <input class="input" id="deliveryReceiptNo" value="DR-2026-000125" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label>DATE</label>
-                    <input class="input" id="deliveryDate" type="date">
-                </div>
-
-                <div class="form-group">
-                    <label>DSE NAME</label>
-                    <select id="deliveryDSE">
-                        <option value="">Select DSE</option>
-                        <option>Prajwal Joshi</option>
-                        <option>Sales Executive 1</option>
-                        <option>Sales Executive 2</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>RELATION</label>
-                    <select id="deliveryRelation">
-                        <option value="">Select</option>
-                        <option>S/O</option>
-                        <option>D/O</option>
-                        <option>W/O</option>
-                        <option>C/O</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>CUSTOMER (FIRST NAME)</label>
-                    <input class="input" id="deliveryFirstName" placeholder="First name">
-                </div>
-
-                <div class="form-group">
-                    <label>CUSTOMER (LAST NAME)</label>
-                    <input class="input" id="deliveryLastName" placeholder="Last name">
-                </div>
-
-                <div class="form-group">
-                    <label>RELATION NAME</label>
-                    <input class="input" id="deliveryRelationName" placeholder="Relation name">
-                </div>
-
-                <div class="form-group">
-                    <label>CONTACT NO</label>
-                    <input class="input" id="deliveryContactNo" maxlength="10" inputmode="numeric" placeholder="10 digit mobile">
-                </div>
-
-                <div class="form-group">
-                    <label>MAIL ID</label>
-                    <input class="input" id="deliveryMailId" type="email" placeholder="Email address">
-                </div>
-
-                <div class="form-group">
-                    <label>OCCUPATION</label>
-                    <input class="input" id="deliveryOccupation" placeholder="Occupation">
-                </div>
-
-                <div class="form-group" style="grid-column:span 2;">
-                    <label>ADDRESS</label>
-                    <input class="input" id="deliveryAddress" placeholder="Complete address">
-                </div>
-
-                <div class="form-group">
-                    <label>TAHSIL</label>
-                    <select id="deliveryTahsil">
-                        <option value="">Select Tahsil</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>DISTRICT</label>
-                    <select id="deliveryDistrict">
-                        <option value="">Select District</option>
-                        <option>Pune</option>
-                        <option>Mumbai</option>
-                        <option>Nashik</option>
-                        <option>Nagpur</option>
-                        <option>Satara</option>
-                        <option>Kolhapur</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>PINCODE</label>
-                    <input class="input" id="deliveryPincode" maxlength="6" inputmode="numeric" placeholder="6 digit pincode">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section">
-        <div class="card">
-            <div class="section-title">Nominee Details</div>
-            <div class="grid-3">
-                <div class="form-group">
-                    <label>NOMINEE NAME</label>
-                    <input class="input" id="nomineeName" placeholder="Nominee name">
-                </div>
-                <div class="form-group">
-                    <label>NOMINEE RELATION</label>
-                    <input class="input" id="nomineeRelation" placeholder="Nominee relation">
-                </div>
-                <div class="form-group">
-                    <label>NOMINEE AGE</label>
-                    <input class="input" id="nomineeAge" type="number" min="0" max="120" placeholder="Age">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section">
-        <div class="card">
-            <div class="section-title">Vehicle Details</div>
-            <div class="grid-4">
-
-                <div class="form-group">
-                    <label>VIN NO (LAST 7 CHARACTER)</label>
-                    <input class="input" id="deliveryVinLast7" readonly>
-                </div>
-
-                <div class="form-group" style="grid-column:span 2;">
-                    <label>VIN NO</label>
-                    <input class="input" id="deliveryVinNo" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label>ENGINE NO</label>
-                    <input class="input" id="deliveryEngineNo" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label>SKU</label>
-                    <input class="input" id="deliverySKU" placeholder="SKU / stock code">
-                </div>
-
-                <div class="form-group">
-                    <label>MODEL</label>
-                    <input class="input" id="deliveryModel" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label>EX-PRICE</label>
-                    <input class="input" id="deliveryExPrice" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label>BATTERY NO</label>
-                    <input class="input" id="batteryNo" placeholder="Battery number">
-                </div>
-
-                <div class="form-group">
-                    <label>KEY NO</label>
-                    <input class="input" id="keyNo" placeholder="Key number">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section">
-        <div class="card">
-            <div class="section-title">Purchase & Registration</div>
-            <div class="grid-3">
-                <div class="form-group">
-                    <label>PURCHASE TYPE</label>
-                    <select id="deliveryPurchaseType" onchange="toggleDeliveryFinancier()">
-                        <option value="">Select Purchase Type</option>
-                        <option value="CASH">CASH</option>
-                        <option value="FINANCE">FINANCE</option>
-                    </select>
-                </div>
-
-                <div class="form-group" id="deliveryFinancierGroup">
-                    <label>FINANCIER NAME</label>
-                    <select id="deliveryFinancierName">
-                        <option value="">Select Financier</option>
-                        <option>HDFC Bank</option>
-                        <option>ICICI Bank</option>
-                        <option>Bajaj Finance</option>
-                        <option>SBI</option>
-                        <option>Other</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>RTO APPLICATION NUMBER</label>
-                    <input class="input" id="rtoApplicationNumber" placeholder="RTO application number">
-                </div>
-            </div>
-
-            <div class="info-box info-blue" style="margin-top:8px;">
-                VIN, Engine No, Model and Ex-Price are automatically taken from the allocated vehicle. VIN last 7 characters are calculated automatically.
-            </div>
-        </div>
-    </div>
-
-</section>
+<section class="step-content" id="step3"><div class="section">
+<div class="section-title">VIN / Vehicle Allocation</div>
+<div class="section-subtitle">Search by the last 7 characters of the VIN. Only vehicles that are Available, On Hand and PDI-complete can be allocated.</div>
+<div class="card">
+ <div class="grid-3">
+  <div class="form-group"><label>VIN LAST 7 CHARACTERS (SEARCH) <span class="req">*</span></label><input class="input" id="vinSearch" maxlength="17" placeholder="e.g. A123456" autocomplete="off" oninput="searchVIN()" style="text-transform:uppercase"></div>
+  <div class="form-group"><label>FILTER</label><label style="display:flex;gap:6px;align-items:center;font-size:11px;margin-top:10px"><input type="checkbox" id="vinMatchModel" checked onchange="searchVIN()"> Only selected model</label></div>
+  <div class="form-group"><label>&nbsp;</label><button class="btn btn-secondary" type="button" onclick="releaseVIN()">Release allocated VIN</button></div>
+ </div>
+ <div id="vinMessage" class="info-box info-blue" style="margin-bottom:10px">Enter at least 3 characters.</div>
+ <div class="table-wrapper"><table class="data-table"><thead><tr><th>Select</th><th>VIN</th><th>Model</th><th>Variant</th><th>Colour</th><th>Engine No</th><th>SKU</th><th>Ex-Price</th><th>Location</th></tr></thead><tbody id="vinResults"><tr><td colspan="9" style="color:#6b7280">No search yet.</td></tr></tbody></table></div>
+ <div class="allocation-box"><div class="allocation-title">Allocated Vehicle</div><div class="allocation-grid">
+  <div class="allocation-item"><label>VIN</label><strong id="vinValue">—</strong></div>
+  <div class="allocation-item"><label>ENGINE</label><strong id="engineValue">—</strong></div>
+  <div class="allocation-item"><label>SKU</label><strong id="skuValue">—</strong></div>
+  <div class="allocation-item"><label>STATUS</label><strong id="vinStatusValue">NOT ALLOCATED</strong></div>
+ </div></div>
+ <div id="stockIntegrity" class="info-box info-orange" style="display:none;margin-top:10px"></div>
+</div></div></section>
+
+
+<!-- STEP 4 : DELIVERY CHALLAN -->
+<section class="step-content" id="step4"><div class="section">
+<div class="section-title">Delivery Challan</div>
+<div class="section-subtitle">Customer and quotation data are auto-filled and editable. Fields marked * are mandatory.</div>
+<div id="noQuoteBanner" class="info-box info-orange" style="display:none;margin-bottom:12px">No quotation was loaded. Open this page from the Sales page via “Convert to Delivery Challan”. <a href="index.html" style="color:inherit;font-weight:700">Go to Sales &amp; Quotation →</a></div>
+<div class="card"><div class="section-title">Receipt &amp; Customer Details</div><div class="grid-4">
+ <div class="form-group"><label>DELIVERY RECEIPT NO</label><input class="input" id="deliveryReceiptNo" readonly></div>
+ <div class="form-group"><label>DATE</label><input class="input" id="deliveryDate" type="date" readonly></div>
+ <div class="form-group"><label>DSE NAME <span class="req">*</span></label><input class="input" id="deliveryDSE" list="dl_dse" autocomplete="off" placeholder="Search DSE"></div>
+ <div class="form-group"><label>RELATION <span class="req">*</span></label><select id="deliveryRelation"></select></div>
+ <div class="form-group"><label>CUSTOMER (FIRST NAME) <span class="req">*</span></label><input class="input" id="deliveryFirstName"></div>
+ <div class="form-group"><label>CUSTOMER (LAST NAME) <span class="req">*</span></label><input class="input" id="deliveryLastName"></div>
+ <div class="form-group"><label>RELATION NAME <span class="req">*</span></label><input class="input" id="deliveryRelationName"></div>
+ <div class="form-group"><label>CONTACT NO <span class="req">*</span></label><input class="input" id="deliveryContactNo" maxlength="10" inputmode="numeric"></div>
+ <div class="form-group"><label>MAIL ID</label><input class="input" id="deliveryMailId" type="email"></div>
+ <div class="form-group" style="grid-column:span 3"><label>ADDRESS <span class="req">*</span></label><input class="input" id="deliveryAddress"></div>
+ <div class="form-group"><label>STATE <span class="req">*</span></label><select id="deliveryState" onchange="onDelStateChange()"></select></div>
+ <div class="form-group"><label>DISTRICT <span class="req">*</span></label><select id="deliveryDistrict"></select></div>
+ <div class="form-group"><label>TAHSIL <span class="req">*</span></label><input class="input" id="deliveryTahsil"></div>
+ <div class="form-group"><label>PINCODE <span class="req">*</span></label><input class="input" id="deliveryPincode" maxlength="6" inputmode="numeric"></div>
+</div></div></div>
+<div class="section"><div class="card"><div class="section-title">Nominee Details</div><div class="grid-3">
+ <div class="form-group"><label>NOMINEE NAME <span class="req">*</span></label><input class="input" id="nomineeName"></div>
+ <div class="form-group"><label>NOMINEE RELATION <span class="req">*</span></label><select id="nomineeRelation"></select></div>
+ <div class="form-group"><label>NOMINEE AGE <span class="req">*</span></label><input class="input" id="nomineeAge" inputmode="numeric" maxlength="3" placeholder="Numbers only"></div>
+</div></div></div>
+<div class="section"><div class="card"><div class="section-title">Vehicle Details <button class="btn btn-secondary" type="button" style="float:right;padding:6px 10px;font-size:10px" onclick="goToStep(3)">Search / change VIN</button></div><div class="grid-4">
+ <div class="form-group"><label>VIN NO (LAST 7 CHARACTER) <span class="req">*</span></label><input class="input" id="deliveryVinLast7" readonly></div>
+ <div class="form-group" style="grid-column:span 2"><label>VIN NO</label><input class="input" id="deliveryVinNo" readonly></div>
+ <div class="form-group"><label>ENGINE NO</label><input class="input" id="deliveryEngineNo" readonly></div>
+ <div class="form-group"><label>SKU</label><input class="input" id="deliverySKU" readonly></div>
+ <div class="form-group"><label>MODEL</label><input class="input" id="deliveryModel" readonly></div>
+ <div class="form-group"><label>EX-PRICE</label><input class="input" id="deliveryExPrice" readonly></div>
+ <div class="form-group"><label>BATTERY NO <span class="req">*</span></label><input class="input" id="batteryNo"></div>
+ <div class="form-group"><label>KEY NO <span class="req">*</span></label><input class="input" id="keyNo"></div>
+</div></div></div>
+<div class="section"><div class="card"><div class="section-title">Purchase &amp; RTO</div><div class="grid-3">
+ <div class="form-group"><label>PURCHASE TYPE <span class="req">*</span></label><select id="deliveryPurchaseType" onchange="toggleDeliveryFinancier()"><option value="">Select</option><option value="CASH">Cash</option><option value="FINANCE">Finance</option></select></div>
+ <div class="form-group" id="deliveryFinancierGroup"><label>FINANCIER NAME <span class="req" id="delFinReq" style="display:none">*</span></label><input class="input" id="deliveryFinancierName" list="dl_fin" autocomplete="off" placeholder="Search financier"></div>
+ <div class="form-group"><label>RTO DISTRICT <span class="req">*</span></label><select id="deliveryRtoDistrict"></select></div>
+ <div class="form-group"><label>RTO OTP STATUS</label><input class="input" id="rtoOtpStatus" readonly tabindex="-1" value="PENDING"></div>
+ <div class="form-group"><label>RTO APPLICATION NUMBER</label><input class="input" id="rtoApplicationNumber" readonly tabindex="-1" value="Not yet generated"></div>
+</div><div class="info-box info-blue" style="margin-top:8px">VIN, Engine No, SKU, Model and Ex-Price come from the allocated stock record and cannot be edited. RTO OTP status and application number are system controlled.</div></div></div></section>
 
 
 <!-- =====================================================
      STEP 10
 ===================================================== -->
 
-<section class="step-content" id="step10">
-
-    <div class="section">
-
-        <div class="section-title">
-            Final Review
-        </div>
-
-        <div class="section-subtitle">
-            Review all information before permanently assigning the vehicle.
-        </div>
-
-    </div>
-
-
-    <!-- CUSTOMER -->
-
-    <div class="card review-section">
-
-        <div class="review-header">
-
-            <strong>
-                Customer
-            </strong>
-
-            <span class="review-edit"
-                  onclick="goToStep(1)">
-                Edit
-            </span>
-
-        </div>
-
-        <table class="review-table">
-
-            <tr>
-                <td>Name</td>
-                <td>Rahul Sharma</td>
-            </tr>
-
-            <tr>
-                <td>Mobile</td>
-                <td>9812345621</td>
-            </tr>
-
-            <tr>
-                <td>Address</td>
-                <td>12 FC Road, Shivajinagar, Pune</td>
-            </tr>
-
-        </table>
-
-    </div>
-
-
-    <!-- VEHICLE -->
-
-    <div class="card review-section">
-
-        <div class="review-header">
-
-            <strong>
-                Vehicle & VIN
-            </strong>
-
-            <span class="review-edit"
-                  onclick="goToStep(3)">
-                Edit
-            </span>
-
-        </div>
-
-        <table class="review-table">
-
-            <tr>
-                <td>Model</td>
-                <td>Xtreme 125R</td>
-            </tr>
-
-            <tr>
-                <td>Variant</td>
-                <td>Disc Variant</td>
-            </tr>
-
-            <tr>
-                <td>Colour</td>
-                <td>Black</td>
-            </tr>
-
-            <tr>
-                <td>VIN</td>
-                <td>MBHXXXX001</td>
-            </tr>
-
-            <tr>
-                <td>Chassis</td>
-                <td>MBLHA123456789</td>
-            </tr>
-
-            <tr>
-                <td>Engine</td>
-                <td>EGN987654321</td>
-            </tr>
-
-        </table>
-
-    </div>
-
-
-    <!-- COMMERCIAL -->
-
-    <div class="card review-section">
-
-        <div class="review-header">
-
-            <strong>
-                Commercial Summary
-            </strong>
-
-            <span class="review-edit"
-                  onclick="goToStep(5)">
-                Edit
-            </span>
-
-        </div>
-
-        <table class="review-table">
-
-            <tr>
-                <td>Vehicle</td>
-                <td>₹98,000</td>
-            </tr>
-
-            <tr>
-                <td>RTO</td>
-                <td>₹9,050</td>
-            </tr>
-
-            <tr>
-                <td>Insurance</td>
-                <td>₹7,500</td>
-            </tr>
-
-            <tr>
-                <td>Accessories</td>
-                <td>₹4,300</td>
-            </tr>
-
-            <tr>
-                <td>Discount</td>
-                <td>- ₹2,000</td>
-            </tr>
-
-            <tr>
-                <td>Exchange</td>
-                <td>- ₹42,000</td>
-            </tr>
-
-        </table>
-
-    </div>
-
-
-    <!-- FINAL AMOUNT -->
-
-    <div class="section">
-
-        <div class="amount-box">
-
-            <div class="amount-row">
-                <span>Vehicle</span>
-                <span>₹98,000</span>
-            </div>
-
-            <div class="amount-row">
-                <span>RTO</span>
-                <span>₹9,050</span>
-            </div>
-
-            <div class="amount-row">
-                <span>Insurance</span>
-                <span>₹7,500</span>
-            </div>
-
-            <div class="amount-row">
-                <span>Accessories</span>
-                <span>₹4,300</span>
-            </div>
-
-            <div class="amount-row">
-                <span>Discount</span>
-                <span>- ₹2,000</span>
-            </div>
-
-            <div class="amount-row">
-                <span>Exchange</span>
-                <span>- ₹42,000</span>
-            </div>
-
-            <div class="amount-row total">
-                <span>NET ON-ROAD</span>
-                <span>₹74,850</span>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- CHECKLIST -->
-
-    <div class="section">
-
-        <div class="section-title">
-            Finalization Checklist
-        </div>
-
-        <div class="card">
-
-            <div class="checklist">
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    Customer Verified
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    Vehicle Selected
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    VIN Allocated
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    RTO Details
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    Payment Captured
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    Insurance Selected
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    Documents Verified
-                </div>
-
-                <div class="check-item">
-                    <div class="check-icon">✓</div>
-                    Final Amount Confirmed
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="info-box info-orange">
-
-        ⚠ Once you confirm the booking, the selected VIN will be reserved against this customer and will no longer be available for another booking.
-
-    </div>
-
-
-    <button
-        class="btn btn-success"
-        style="width:100%;padding:15px;font-size:13px;"
-        onclick="openBookingConfirmation()">
-
-        ✓ CONFIRM VEHICLE BOOKING
-
-    </button>
-
-</section>
+<section class="step-content" id="step5"><div class="section"><div class="section-title">Final Review</div>
+<div class="section-subtitle">Review everything. Generating the challan permanently allocates the VIN.</div></div>
+<div id="reviewBody"></div>
+<div class="section"><div class="section-title">Finalization Checklist</div><div class="card"><div class="checklist" id="reviewChecklist"></div></div></div>
+<div class="info-box info-orange">⚠ On confirmation the VIN is marked Delivered and cannot be allocated to another transaction.</div>
+<button class="btn btn-success" id="btnGenerateChallan" style="width:100%;padding:15px;font-size:13px;margin-top:10px" onclick="openBookingConfirmation()">✓ GENERATE DELIVERY CHALLAN</button></section>
+<section class="step-content" id="step6"><div class="section"><div class="section-title">Receipt &amp; Gate Pass</div>
+<div class="section-subtitle">Generated from the saved Delivery Challan. Core customer and vehicle data cannot be re-entered here.</div>
+<div class="grid-2" style="margin-bottom:12px"><button class="btn btn-secondary" id="tabRc" onclick="showDocTab('rc')">Receipt</button><button class="btn btn-secondary" id="tabGp" onclick="showDocTab('gp')">Gate Pass</button></div>
+<div id="docRc" class="card"><div class="section-title">Receipt</div><div class="grid-4">
+ <div class="form-group"><label>RECEIPT NO</label><input class="input" id="rcNo" readonly></div>
+ <div class="form-group"><label>DATE</label><input class="input" id="rcDate" readonly></div>
+ <div class="form-group"><label>CUSTOMER NAME</label><input class="input" id="rcCustomer" readonly></div>
+ <div class="form-group"><label>VIN NO</label><input class="input" id="rcVin" readonly></div>
+ <div class="form-group"><label>MODEL</label><input class="input" id="rcModel" readonly></div>
+ <div class="form-group"><label>EX-PRICE</label><input class="input" id="rcExPrice" readonly></div>
+ <div class="form-group"><label>RTO</label><input class="input rc-amt" id="rcRto" inputmode="decimal" oninput="rcTotal()"></div>
+ <div class="form-group"><label>INSURANCE</label><input class="input rc-amt" id="rcInsurance" inputmode="decimal" oninput="rcTotal()"></div>
+ <div class="form-group"><label>NEOM</label><input class="input rc-amt" id="rcNeom" inputmode="decimal" oninput="rcTotal()"></div>
+ <div class="form-group"><label>FUEL</label><input class="input rc-amt" id="rcFuel" inputmode="decimal" oninput="rcTotal()"></div>
+ <div class="form-group"><label>ST &amp; OTHER</label><input class="input rc-amt" id="rcSt" inputmode="decimal" oninput="rcTotal()"></div>
+ <div class="form-group"><label>RENT AGREEMENT</label><input class="input rc-amt" id="rcRent" inputmode="decimal" oninput="rcTotal()"></div>
+ <div class="form-group"><label>TOTAL</label><input class="input" id="rcTotalField" readonly></div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-primary" onclick="generateReceipt(this)">Generate Receipt</button><button class="btn btn-secondary" onclick="previewDoc('rc')">Preview &amp; Print</button><button class="btn btn-success" onclick="shareDoc('rc')">WhatsApp</button></div></div>
+<div id="docGp" class="card" style="display:none"><div class="section-title">Gate Pass</div><div class="grid-4">
+ <div class="form-group"><label>GATE PASS NO</label><input class="input" id="gpNo" readonly></div>
+ <div class="form-group"><label>CUSTOMER NAME</label><input class="input" id="gpCustomer" readonly></div>
+ <div class="form-group"><label>MODEL</label><input class="input" id="gpModel" readonly></div>
+ <div class="form-group"><label>VIN NO</label><input class="input" id="gpVin" readonly></div>
+ <div class="form-group"><label>ENGINE NO</label><input class="input" id="gpEngine" readonly></div>
+ <div class="form-group"><label>KEY NO</label><input class="input" id="gpKey" readonly></div>
+ <div class="form-group"><label>FUEL</label><input class="input" id="gpFuel" placeholder="e.g. 2 L"></div>
+ <div class="form-group"><label>DSE NAME</label><input class="input" id="gpDse" readonly></div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-primary" onclick="generateGatePass(this)">Generate Gate Pass</button><button class="btn btn-secondary" onclick="previewDoc('gp')">Preview &amp; Print</button><button class="btn btn-success" onclick="shareDoc('gp')">WhatsApp</button><button class="btn btn-secondary" onclick="markExited(this)">Mark Vehicle Exited</button><button class="btn btn-secondary" onclick="window.location.href='index.html'">← Back to Sales</button></div></div>
+</div></section>
 
 
 </main>
@@ -3099,7 +1379,7 @@ textarea{
         <div class="nav-status">
 
             Step <strong id="currentStepLabel">1</strong>
-            of 9
+            of 11
             ·
             <span id="stepStatus">
                 Customer Confirmation
@@ -3139,12 +1419,13 @@ textarea{
      BOOKING CONFIRMATION MODAL
 ========================= -->
 
+<div class="modal" id="docModal"><div class="modal-box"><div id="docBody"></div><div class="doc-actions"><button class="btn btn-secondary" type="button" onclick="closeDoc()">Close</button><button class="btn btn-primary" type="button" onclick="printDoc()">Print</button></div></div></div>
 <div class="modal" id="bookingModal">
 
     <div class="modal-box">
 
         <div class="modal-title">
-            Confirm Vehicle Booking
+            Generate Delivery Challan
         </div>
 
         <div class="modal-subtitle">
@@ -3161,34 +1442,7 @@ textarea{
         </div>
 
 
-        <table class="review-table">
-
-            <tr>
-                <td>Customer</td>
-                <td>Rahul Sharma</td>
-            </tr>
-
-            <tr>
-                <td>Vehicle</td>
-                <td>Xtreme 125R</td>
-            </tr>
-
-            <tr>
-                <td>VIN</td>
-                <td>MBHXXXX001</td>
-            </tr>
-
-            <tr>
-                <td>Chassis</td>
-                <td>MBLHA123456789</td>
-            </tr>
-
-            <tr>
-                <td>Net Amount</td>
-                <td>₹74,850</td>
-            </tr>
-
-        </table>
+        <table class="review-table" id="bookingSummary"></table>
 
 
         <div class="modal-actions">
@@ -3205,7 +1459,7 @@ textarea{
                 class="btn btn-success"
                 onclick="confirmBooking()">
 
-                Confirm Booking
+                Confirm &amp; Generate
 
             </button>
 
@@ -3229,25 +1483,21 @@ textarea{
         </div>
 
         <div class="success-title">
-            Booking Confirmed
+            Delivery Challan Generated
         </div>
 
         <div class="success-subtitle">
 
-            Vehicle has been successfully assigned to the customer.
+            The vehicle is allocated and the challan is saved.
 
         </div>
 
 
         <div class="booking-number">
 
-            <label>
-                BOOKING NUMBER
-            </label>
+            <label>DELIVERY RECEIPT NO</label>
 
-            <strong id="finalBookingNo">
-                BK-2026-00125
-            </strong>
+            <strong id="finalBookingNo">—</strong>
 
         </div>
 
@@ -3255,40 +1505,12 @@ textarea{
         <div class="info-box info-green"
              style="margin-top:15px;">
 
-            ✓ VIN has been reserved.<br>
-            ✓ Customer assignment completed.<br>
-            ✓ Booking created successfully.
+            ✓ VIN marked Delivered.<br>✓ Quotation status set to Sold.<br>✓ Receipt &amp; Gate Pass can now be generated.
 
         </div>
 
 
-        <div class="modal-actions">
-
-            <button
-                class="btn btn-secondary"
-                onclick="closeSuccess()">
-
-                Close
-
-            </button>
-
-            <button
-                class="btn btn-primary"
-                onclick="printBooking()">
-
-                Print Booking
-
-            </button>
-
-            <button
-                class="btn btn-success"
-                onclick="exportAllDataToExcel()">
-
-                Export Excel
-
-            </button>
-
-        </div>
+        <div class="modal-actions"><button class="btn btn-secondary" onclick="closeSuccess()">Close</button><button class="btn btn-primary" onclick="printBooking()">Print Challan</button><button class="btn btn-success" onclick="openDocsFromSuccess()">Receipt &amp; Gate Pass →</button><button class="btn btn-secondary" onclick="exportAllDataToExcel()">Export Excel</button><button class="btn btn-secondary" onclick="window.location.href='index.html'">Back to Sales</button></div>
 
     </div>
 
@@ -3303,7 +1525,7 @@ textarea{
 
 let currentStep = 1;
 
-const totalSteps = 10;
+var totalSteps = 6;
 
 let selectedVehicle = {
     model:"Xtreme 125R",
@@ -3324,18 +1546,12 @@ let selectedVIN = {
 ========================================= */
 
 const stepTitles = {
-
     1:"Customer Confirmation",
     2:"Vehicle Selection",
     3:"VIN Allocation",
-    4:"RTO & Registration",
-    5:"Payment & Finance",
-    6:"Exchange Vehicle",
-    7:"Insurance & Accessories",
-    8:"Documents & KYC",
-    9:"Delivery Receipt",
-    10:"Final Review"
-
+    4:"Delivery Challan",
+    5:"Final Review",
+    6:"Receipt & Gate Pass"
 };
 
 
@@ -3412,7 +1628,7 @@ function updateStepper(){
         document.getElementById("nextBtn");
 
 
-    if(currentStep === totalSteps){
+    if(currentStep >= 5){
 
         nextBtn.style.display = "none";
 
@@ -3826,95 +2042,6 @@ function selectVIN(
 
 
 /* =========================================
-   PAYMENT MODE
-========================================= */
-
-function selectPayment(element, mode){
-
-    document
-        .querySelectorAll(".payment-option")
-        .forEach(option => {
-
-            option.classList.remove("active");
-
-        });
-
-
-    element.classList.add("active");
-
-
-    if(mode === "Finance"){
-
-        document.getElementById("financeDetails")
-            .style.display = "block";
-
-    }
-    else{
-
-        document.getElementById("financeDetails")
-            .style.display = "block";
-
-    }
-
-}
-
-
-/* =========================================
-   PAYMENT CALCULATION
-========================================= */
-
-function calculatePayment(){
-
-    const total = 116800;
-
-    const down =
-        parseFloat(
-            document.getElementById("downPayment").value
-        ) || 0;
-
-    const loan =
-        parseFloat(
-            document.getElementById("loanAmount").value
-        ) || 0;
-
-    const balance =
-        Math.max(total - down - loan,0);
-
-
-    document.getElementById("balanceAmount")
-        .textContent =
-        "₹" + balance.toLocaleString("en-IN");
-
-}
-
-
-/* =========================================
-   FINANCIER
-========================================= */
-
-function toggleFinancier(){
-
-    const value =
-        document.getElementById("hypothecation").value;
-
-    const group =
-        document.getElementById("financierGroup");
-
-    if(value === "Yes"){
-
-        group.style.display = "block";
-
-    }
-    else{
-
-        group.style.display = "none";
-
-    }
-
-}
-
-
-/* =========================================
    DELIVERY RECEIPT
 ========================================= */
 
@@ -4192,13 +2319,9 @@ function getExcelSection(el){
             step1:"Customer / Enquiry",
             step2:"Vehicle Selection",
             step3:"VIN Allocation",
-            step4:"RTO & Registration",
-            step5:"Payment & Finance",
-            step6:"Exchange Vehicle",
-            step7:"Insurance & Accessories",
-            step8:"Documents & KYC",
-            step9:"Delivery Receipt",
-            step10:"Final Review"
+            step4:"Delivery Challan",
+            step5:"Final Review",
+            step6:"Receipt & Gate Pass"
         };
         return map[id] || id;
     }
@@ -4354,23 +2477,441 @@ document
     });
 
 
-/* =========================================
-   INITIALIZATION
-========================================= */
+/* ============ SHARED MASTER DATA (BRD §9) — keep identical in both files ============ */
+var HERO_MASTER = {
+  DSE: ['Prajwal Joshi','Rakesh Verma','Sunita Patil','Amit Kulkarni','Neha Deshmukh','Vikram Singh'],
+  FINANCIERS: ['HDFC Bank','ICICI Bank','Bajaj Finance','Hero FinCorp','SBI','TVS Credit','IDFC First Bank'],
+  ENQUIRY_SOURCES: ['Walk-in','Telephonic','Digital','Bike Wale','Field'],
+  RELATIONS: ['S/O','D/O','W/O','C/O'],
+  NOMINEE_RELATIONS: ['Father','Mother','Spouse','Son','Daughter','Brother','Sister','Other'],
+  STATES: {
+    'Maharashtra':['Pune','Mumbai','Nagpur','Nashik','Satara','Kolhapur','Thane','Aurangabad'],
+    'Rajasthan':['Jaipur','Jodhpur','Udaipur','Kota','Ajmer','Bikaner','Alwar','Sikar'],
+    'Gujarat':['Ahmedabad','Surat','Vadodara','Rajkot'],
+    'Madhya Pradesh':['Indore','Bhopal','Gwalior','Jabalpur'],
+    'Karnataka':['Bengaluru','Mysuru','Hubballi'],
+    'Delhi':['New Delhi','South Delhi','North Delhi']
+  },
+  MODELS: {
+    'Splendor Plus':{variants:{'XTEC 2.0':89000,'Drum':76500,'i3s':78500},colors:['Red','Black','Grey']},
+    'Xtreme 125R':{variants:{'Disc Variant':98000,'ABS':105000},colors:['Black','Red','Blue']},
+    'Super Splendor':{variants:{'Disc':94000,'Drum':88000},colors:['Teal','Black','Grey']},
+    'Glamour':{variants:{'XTEC':91000,'Drum':84000},colors:['Blue','Black','Red']},
+    'Passion Plus':{variants:{'Drum':79000},colors:['Black','Red']},
+    'HF Deluxe':{variants:{'Self Drum':64000,'Kick Drum':60000},colors:['Black','Blue','Red']}
+  }
+};
+/* -------- helpers shared by both pages -------- */
+function heroLS(key, fallback){ try{ var v = JSON.parse(localStorage.getItem(key)); return v==null?fallback:v; }catch(e){ return fallback; } }
+function heroSetLS(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
+function heroNextSeq(key){ var n=(parseInt(localStorage.getItem(key)||'0',10)||0)+1; localStorage.setItem(key,String(n)); return n; }
+function heroPeekSeq(key){ return (parseInt(localStorage.getItem(key)||'0',10)||0)+1; }
+function heroDocNo(prefix, n){ return prefix+'-'+new Date().getFullYear()+'-'+String(n).padStart(6,'0'); }
+function heroAudit(action, entity, ref, detail){
+  var log = heroLS('hero_audit', []);
+  log.push({ts:new Date().toISOString(), user:'PJ (Sales/DSE)', action:action, entity:entity, ref:ref||'', detail:detail||''});
+  heroSetLS('hero_audit', log.slice(-2000));
+}
+function heroFillSelect(el, items, placeholder){
+  if(!el) return;
+  var cur = el.value;
+  el.innerHTML = '<option value="">'+placeholder+'</option>' + items.map(function(x){ return '<option value="'+String(x).replace(/"/g,'&quot;')+'">'+x+'</option>'; }).join('');
+  if(items.indexOf(cur)>-1) el.value = cur;
+}
+function heroFillDatalist(id, items){
+  var dl = document.getElementById(id);
+  if(!dl){ dl = document.createElement('datalist'); dl.id = id; document.body.appendChild(dl); }
+  dl.innerHTML = items.map(function(x){ return '<option value="'+String(x).replace(/"/g,'&quot;')+'"></option>'; }).join('');
+}
+function heroOnlyDigits(el, max){ el.addEventListener('input', function(){ el.value = el.value.replace(/\D/g,'').slice(0,max); }); }
+function heroGuard(btn, fn){ /* prevents duplicate submission from double-click */
+  if(btn && btn.dataset.busy==='1') return;
+  if(btn){ btn.dataset.busy='1'; btn.disabled=true; }
+  try{ return fn(); } finally { if(btn){ setTimeout(function(){ btn.dataset.busy='0'; btn.disabled=false; }, 900); } }
+}
 
-updateStepper();
+/* =====================================================================
+   BRD LAYER — Delivery Challan, VIN allocation, Receipt & Gate Pass
+   ===================================================================== */
+var CTX = {customer:null, quote:null};
+var TXN_ID = '';
+var delivered = false;
+var DELIVERY = null;
+var _confirming = false;
+var RTO_LIST = [];
 
-calculatePayment();
+/* ---------- stock master (BRD §7, §9) ---------- */
+function seedStock(){
+  if(heroLS('hero_stock', null)) return;
+  var out=[], seq=0, locs=['Main Yard','Showroom Yard','Warehouse A'], mi=0;
+  Object.keys(HERO_MASTER.MODELS).forEach(function(model){
+    var m=HERO_MASTER.MODELS[model], letter='ABCDEFGH'.charAt(mi), vi=0;
+    Object.keys(m.variants).forEach(function(variant){
+      m.colors.forEach(function(color,ci){
+        for(var u=0;u<2;u++){
+          seq++;
+          var rec={ vin:'MBLHA10EXP'+letter+String(100000+seq*37).slice(-6), engine:'HA11EJ'+String(1000000+seq*53).slice(-7),
+            sku:'HM'+(mi+1)+(vi+1)+(ci+1), hsn:'87112019', model:model, variant:variant, color:color, exPrice:m.variants[variant],
+            location:locs[seq%3], allocationStatus:'Available', stnStatus:'On Hand', pdi:'Done', txn:'' };
+          if(seq%11===0){ rec.allocationStatus='Delivered'; rec.stnStatus='Delivered'; }
+          else if(seq%7===0){ rec.allocationStatus='Reserved'; rec.txn='OTHER-TXN'; }
+          else if(seq%9===0){ rec.pdi='Pending'; }
+          out.push(rec);
+        }
+      });
+      vi++;
+    });
+    mi++;
+  });
+  heroSetLS('hero_stock', out);
+}
+function getStock(){ seedStock(); return heroLS('hero_stock', []); }
+function saveStock(s){ heroSetLS('hero_stock', s); }
+function dupVins(stock){ var c={}, d={}; stock.forEach(function(s){ c[s.vin]=(c[s.vin]||0)+1; }); Object.keys(c).forEach(function(k){ if(c[k]>1) d[k]=1; }); return d; }
+function vinEligible(s, dups){
+  if(dups[s.vin]) return false;
+  if(s.allocationStatus==='Reserved' && s.txn===TXN_ID) return true;
+  return s.allocationStatus==='Available' && s.stnStatus==='On Hand' && s.pdi==='Done';
+}
+function vinReason(s, dups){
+  if(dups[s.vin]) return 'duplicate VIN in stock — blocked until data is corrected';
+  if(s.allocationStatus==='Delivered') return 'already Delivered';
+  if(s.allocationStatus==='Reserved' && s.txn!==TXN_ID) return 'reserved for another transaction';
+  if(s.stnStatus!=='On Hand') return 'STN status is '+s.stnStatus;
+  if(s.pdi!=='Done') return 'PDI is not complete';
+  return 'not eligible';
+}
+function searchVIN(){
+  var q=(document.getElementById('vinSearch').value||'').trim().toUpperCase();
+  var msg=document.getElementById('vinMessage'), body=document.getElementById('vinResults');
+  var stock=getStock(), dups=dupVins(stock), dn=Object.keys(dups).length, wi=document.getElementById('stockIntegrity');
+  wi.style.display = dn?'block':'none'; if(dn) wi.textContent='Data quality: '+dn+' duplicate VIN value(s) found in stock. They are blocked from allocation until corrected.';
+  if(q.length<3){ msg.className='info-box info-blue'; msg.textContent='Enter at least 3 characters of the VIN (last 7 recommended).'; body.innerHTML='<tr><td colspan="9" style="color:#6b7280">No search yet.</td></tr>'; return; }
+  var matches=stock.filter(function(s){ return s.vin.slice(-7).indexOf(q)>-1 || s.vin===q; });
+  var onlyModel=document.getElementById('vinMatchModel').checked && selectedVehicle && selectedVehicle.model;
+  var ok=matches.filter(function(s){ return vinEligible(s,dups) && (!onlyModel || s.model===selectedVehicle.model); });
+  if(!ok.length){
+    body.innerHTML='<tr><td colspan="9" style="color:#6b7280">No eligible vehicle.</td></tr>';
+    msg.className='info-box info-orange';
+    if(!matches.length) msg.textContent='No vehicle found for “'+q+'”.';
+    else { var bad=matches.filter(function(s){ return !vinEligible(s,dups); })[0]; msg.textContent = bad ? (bad.vin.slice(-7)+': '+vinReason(bad,dups)+'.') : 'Matches exist for other models — untick “Only selected model” to see them.'; }
+    return;
+  }
+  msg.className='info-box info-blue'; msg.textContent=ok.length+' eligible vehicle(s). Select exactly one.';
+  body.innerHTML=ok.slice(0,25).map(function(s){
+    var sel=selectedVIN && selectedVIN.vin===s.vin;
+    return '<tr class="'+(sel?'selected':'')+'"><td><input type="radio" name="vin" class="radio" '+(sel?'checked':'')+' onchange="selectVIN(\''+s.vin+'\')"></td><td><strong>'+s.vin+'</strong></td><td>'+s.model+'</td><td>'+s.variant+'</td><td>'+s.color+'</td><td>'+s.engine+'</td><td>'+s.sku+'</td><td>₹'+Number(s.exPrice).toLocaleString('en-IN')+'</td><td>'+s.location+'</td></tr>';
+  }).join('');
+}
+function selectVIN(vin){
+  var stock=getStock(), rec=stock.find(function(s){ return s.vin===vin; }), dups=dupVins(stock);
+  if(!rec){ toast('VIN not found'); return; }
+  if(!vinEligible(rec,dups)){ toast('Cannot allocate: '+vinReason(rec,dups)); searchVIN(); return; }
+  stock.forEach(function(s){ if(s.txn===TXN_ID && s.vin!==vin && s.allocationStatus==='Reserved'){ s.allocationStatus='Available'; s.txn=''; heroAudit('RELEASE','VIN',s.vin,TXN_ID); } });
+  rec.allocationStatus='Reserved'; rec.txn=TXN_ID; rec.reservedAt=new Date().toISOString();
+  saveStock(stock); heroAudit('ALLOCATE','VIN',vin,TXN_ID);
+  selectedVIN={vin:rec.vin, chassis:'', engine:rec.engine, sku:rec.sku, location:rec.location};
+  selectedVehicle={model:rec.model, variant:rec.variant, colour:rec.color, price:rec.exPrice};
+  fillVehicleStep(); showAllocation(); populateDeliveryVehicleFields(); searchVIN();
+  toast('VIN '+vin.slice(-7)+' reserved for this transaction');
+}
+function releaseVIN(){
+  var stock=getStock(), ch=false;
+  stock.forEach(function(s){ if(s.txn===TXN_ID && s.allocationStatus==='Reserved'){ s.allocationStatus='Available'; s.txn=''; ch=true; heroAudit('RELEASE','VIN',s.vin,TXN_ID); } });
+  if(ch) saveStock(stock);
+  selectedVIN={vin:'',chassis:'',engine:'',sku:'',location:''}; showAllocation(); populateDeliveryVehicleFields(); searchVIN();
+  if(ch) toast('VIN released back to available stock');
+}
+function showAllocation(){
+  var v=selectedVIN&&selectedVIN.vin;
+  document.getElementById('vinValue').textContent=v||'—'; document.getElementById('engineValue').textContent=(selectedVIN&&selectedVIN.engine)||'—';
+  document.getElementById('skuValue').textContent=(selectedVIN&&selectedVIN.sku)||'—';
+  document.getElementById('vinStatusValue').textContent = delivered?'DELIVERED':(v?'RESERVED':'NOT ALLOCATED');
+}
 
-toggleFinancier();
+/* ---------- step 2 vehicle ---------- */
+function fillVehicleStep(){
+  var M=HERO_MASTER.MODELS, v=selectedVehicle||{};
+  heroFillSelect(document.getElementById('selectedModel'), Object.keys(M), 'Select Model'); document.getElementById('selectedModel').value=v.model||'';
+  var m=M[v.model]; heroFillSelect(document.getElementById('selectedVariant'), m?Object.keys(m.variants):[], 'Select Variant'); document.getElementById('selectedVariant').value=v.variant||'';
+  heroFillSelect(document.getElementById('selectedColour'), m?m.colors:[], 'Select Colour'); document.getElementById('selectedColour').value=v.colour||'';
+  document.getElementById('selectedPrice').value = v.price? '₹'+Number(v.price).toLocaleString('en-IN') : '';
+}
+function vehicleChanged(){
+  if(selectedVIN && selectedVIN.vin){ releaseVIN(); toast('Vehicle selection changed — allocated VIN released'); }
+  populateDeliveryVehicleFields();
+}
+function onFinModelChange(){ var model=document.getElementById('selectedModel').value, m=HERO_MASTER.MODELS[model];
+  selectedVehicle={model:model,variant:'',colour:'',price:0}; if(m && Object.keys(m.variants).length===1){ var k=Object.keys(m.variants)[0]; selectedVehicle.variant=k; selectedVehicle.price=m.variants[k]; }
+  fillVehicleStep(); vehicleChanged(); }
+function onFinVariantChange(){ var m=HERO_MASTER.MODELS[selectedVehicle.model], v=document.getElementById('selectedVariant').value;
+  selectedVehicle.variant=v; selectedVehicle.price=(m&&m.variants[v])||0; fillVehicleStep(); vehicleChanged(); }
+function onFinColourChange(){ selectedVehicle.colour=document.getElementById('selectedColour').value; vehicleChanged(); }
 
+/* ---------- context load ---------- */
+function loadConvertedCustomer(){ /* superseded by loadContext() */ }
+function G(id){ return document.getElementById(id); }
+function setV(id,val){ var e=G(id); if(e && val!==undefined && val!==null) e.value=val; }
+function money(n){ return '₹'+Number(n||0).toLocaleString('en-IN'); }
+function loadContext(){
+  CTX.customer=heroLS('hero_selected_customer',null); CTX.quote=heroLS('hero_selected_quotation',null);
+  var c=CTX.customer||{}, q=CTX.quote||null, e=q?q.excelEnquiry:{};
+  TXN_ID = q ? q.number : 'ADHOC-'+(localStorage.getItem('hero_adhoc_txn')||(function(){ var t=String(Date.now()); localStorage.setItem('hero_adhoc_txn',t); return t; })());
+  var full=(c.name||((e.customerFirstMiddleName||'')+' '+(e.customerLastName||''))).trim();
+  G('noQuoteBanner').style.display = q?'none':'block';
+  setV('headerCustomerName', full||'—'); G('headerCustomerName').textContent=full||'—'; G('headerCustomerMobile').textContent=c.mobile||e.contactNo||'—';
+  G('summaryCustomerName').textContent=full||'—'; G('topQuotation').textContent=q?q.number:'—'; G('topDse').textContent=e.dseName||c.dseName||'—';
+  G('bookingNo').textContent=heroDocNo('DR',heroPeekSeq('hero_delivery_seq'))+' (on generation)';
+  G('finalCustomerName').textContent=full||'—'; G('finalCustomerAvatar').textContent=(full.split(' ').filter(Boolean).slice(0,2).map(function(x){return x[0].toUpperCase();}).join(''))||'C';
+  G('finalCustomerMobileCity').textContent=(c.mobile||'—')+' · '+(c.id||'—'); G('finalCustomerAddress').textContent=[e.address||c.address,e.tahsil,e.district,e.state,e.pincode].filter(Boolean).join(', ')||'—';
+  setV('qNo', q?q.number:'—'); setV('qDate', q?q.date:'—'); setV('qAmount', q?money(e.finalDealAmount):'—'); setV('qCustType', q?q.customer.customerType:'—');
+  /* vehicle from quotation */
+  selectedVehicle = q ? {model:e.model, variant:e.variant, colour:e.color, price:e.exPrice} : {model:'',variant:'',colour:'',price:0};
+  selectedVIN={vin:'',chassis:'',engine:'',sku:'',location:''};
+  /* delivery challan prefill (auto + edit) */
+  heroFillDatalist('dl_dse',HERO_MASTER.DSE); heroFillDatalist('dl_fin',HERO_MASTER.FINANCIERS);
+  heroFillSelect(G('deliveryRelation'),HERO_MASTER.RELATIONS,'Select'); heroFillSelect(G('nomineeRelation'),HERO_MASTER.NOMINEE_RELATIONS,'Select');
+  heroFillSelect(G('deliveryState'),Object.keys(HERO_MASTER.STATES),'Select State');
+  var rg=''; Object.keys(HERO_MASTER.STATES).forEach(function(st){ rg+='<optgroup label="'+st+'">'+HERO_MASTER.STATES[st].map(function(d){return '<option value="'+d+'">'+d+'</option>';}).join('')+'</optgroup>'; });
+  G('deliveryRtoDistrict').innerHTML='<option value="">Select RTO District</option>'+rg;
+  setV('deliveryDSE', e.dseName||c.dseName||''); setV('deliveryRelation', e.relation||c.relation||'');
+  var nm=(c.firstName||c.lastName)?{f:c.firstName||'',l:c.lastName||''}:(function(p){ p=full.split(/\s+/).filter(Boolean); var l=p.length>1?p.pop():''; return {f:p.join(' '),l:l}; })();
+  setV('deliveryFirstName', e.customerFirstMiddleName||nm.f); setV('deliveryLastName', e.customerLastName||nm.l);
+  setV('deliveryRelationName', e.relationName||c.relationName||''); setV('deliveryContactNo', e.contactNo||c.mobile||''); setV('deliveryMailId', e.mailId||c.email||'');
+  setV('deliveryAddress', e.address||c.address||''); setV('deliveryState', e.state||c.state||''); onDelStateChange(); setV('deliveryDistrict', e.district||c.district||'');
+  setV('deliveryTahsil', e.tahsil||c.tahsil||''); setV('deliveryPincode', e.pincode||c.pincode||'');
+  setV('deliveryPurchaseType', e.purchaseType||''); setV('deliveryFinancierName', e.financierName||''); 
+  if((e.district||c.district) && G('deliveryRtoDistrict').querySelector('option[value="'+(e.district||c.district)+'"]')) setV('deliveryRtoDistrict', e.district||c.district);
+  ['deliveryContactNo','deliveryPincode'].forEach(function(id){ heroOnlyDigits(G(id), id.indexOf('Pincode')>-1?6:10); });
+  heroOnlyDigits(G('nomineeAge'),3);
+  setV('deliveryDate', new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10));
+  setV('deliveryReceiptNo', heroDocNo('DR',heroPeekSeq('hero_delivery_seq')));
+  toggleDeliveryFinancier(); fillVehicleStep();
+  /* restore an existing reservation of this transaction */
+  var mine=getStock().find(function(s){ return s.txn===TXN_ID && s.allocationStatus==='Reserved'; });
+  if(mine){ selectedVIN={vin:mine.vin,chassis:'',engine:mine.engine,sku:mine.sku,location:mine.location}; selectedVehicle={model:mine.model,variant:mine.variant,colour:mine.color,price:mine.exPrice}; fillVehicleStep(); }
+  showAllocation(); populateDeliveryVehicleFields();
+  var done=heroLS('hero_deliveries',[]).find(function(d){ return d.quotationNo===TXN_ID; });
+  if(done){ DELIVERY=done; delivered=true; lockDelivery(); }
+}
+function onDelStateChange(){ var st=G('deliveryState').value; heroFillSelect(G('deliveryDistrict'), st?(HERO_MASTER.STATES[st]||[]):[], st?'Select District':'Select State first'); }
+function toggleDeliveryFinancier(){
+  var fin=G('deliveryPurchaseType').value==='FINANCE', f=G('deliveryFinancierName');
+  f.disabled=!fin; if(!fin) f.value=''; G('deliveryFinancierGroup').style.opacity=fin?'1':'.55'; G('delFinReq').style.display=fin?'inline':'none';
+}
+function populateDeliveryVehicleFields(){
+  var s=selectedVIN||{}, v=selectedVehicle||{}, vin=s.vin||'';
+  setV('deliveryVinNo',vin); setV('deliveryVinLast7',vin.slice(-7)); setV('deliveryEngineNo',s.engine||''); setV('deliverySKU',s.sku||'');
+  setV('deliveryModel',v.model||''); setV('deliveryExPrice', v.price? money(v.price):'');
+}
+function quoteE(){ return CTX.quote ? CTX.quote.excelEnquiry : {}; }
+/* ---------- validation (BRD §6.3, §10) ---------- */
+function validateDelivery(){
+  var v=function(id){ return (G(id).value||'').trim(); };
+  var bad=function(msg,id,step){ return {ok:false,msg:msg,id:id,step:step}; };
+  if(!(selectedVIN&&selectedVIN.vin)) return bad('Allocate a VIN first','vinSearch',3);
+  var rec=getStock().find(function(s){ return s.vin===selectedVIN.vin; });
+  if(!rec || rec.allocationStatus!=='Reserved' || rec.txn!==TXN_ID) return bad('VIN is no longer reserved for this transaction — select again','vinSearch',3);
+  if(HERO_MASTER.DSE.indexOf(v('deliveryDSE'))<0) return bad('Select DSE Name from the list','deliveryDSE',4);
+  if(!v('deliveryFirstName')) return bad('Customer first name is required','deliveryFirstName',4);
+  if(!v('deliveryLastName')) return bad('Customer last name is required','deliveryLastName',4);
+  if(!v('deliveryRelation')) return bad('Relation is required','deliveryRelation',4);
+  if(!v('deliveryRelationName')) return bad('Relation name is required','deliveryRelationName',4);
+  if(!/^\d{10}$/.test(v('deliveryContactNo'))) return bad('Contact No must be exactly 10 digits','deliveryContactNo',4);
+  if(v('deliveryMailId') && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('deliveryMailId'))) return bad('Enter a valid Mail ID','deliveryMailId',4);
+  if(!v('deliveryAddress')) return bad('Address is required','deliveryAddress',4);
+  if(!v('deliveryState')) return bad('State is required','deliveryState',4);
+  if(!v('deliveryDistrict')) return bad('District is required','deliveryDistrict',4);
+  if(!v('deliveryTahsil')) return bad('Tahsil is required','deliveryTahsil',4);
+  if(!/^\d{6}$/.test(v('deliveryPincode'))) return bad('Pincode must be exactly 6 digits','deliveryPincode',4);
+  if(!v('nomineeName')) return bad('Nominee name is required','nomineeName',4);
+  if(!v('nomineeRelation')) return bad('Nominee relation is required','nomineeRelation',4);
+  if(!/^\d{1,3}$/.test(v('nomineeAge')) || +v('nomineeAge')<1 || +v('nomineeAge')>120) return bad('Nominee age must be a number (1–120)','nomineeAge',4);
+  if(!v('batteryNo')) return bad('Battery No is required','batteryNo',4);
+  if(!v('keyNo')) return bad('Key No is required','keyNo',4);
+  if(!v('deliveryPurchaseType')) return bad('Purchase Type is required','deliveryPurchaseType',4);
+  if(v('deliveryPurchaseType')==='FINANCE' && HERO_MASTER.FINANCIERS.indexOf(v('deliveryFinancierName'))<0) return bad('Financier is mandatory for Finance purchase','deliveryFinancierName',4);
+  if(!v('deliveryRtoDistrict')) return bad('RTO District is required','deliveryRtoDistrict',4);
+  return {ok:true};
+}
+function failTo(r){ toast(r.msg); goToStep(r.step); setTimeout(function(){ var e=G(r.id); if(e){ e.focus(); e.scrollIntoView({block:'center',behavior:'smooth'}); } },250); }
 
+/* ---------- navigation ---------- */
+var _origUpdate=updateStepper;
+updateStepper=function(){ _origUpdate(); onStepEnter(currentStep); };
+function onStepEnter(n){
+  if(n===1){} 
+  if(n===3){ searchVIN(); showAllocation(); }
+  if(n===4){ populateDeliveryVehicleFields(); }
+  if(n===5){ renderReview(); }
+  if(n===6){ initDocs(); }
+  document.getElementById('nextBtn').style.display = (n>=5)?'none':'block';
+}
+function nextStep(){
+  if(currentStep===3 && !(selectedVIN&&selectedVIN.vin)){ toast('Allocate a VIN before continuing'); return; }
+  if(currentStep<5){ currentStep++; updateStepper(); }
+}
+function goToStep(step){
+  if(step<1||step>totalSteps) return;
+  if(step===6 && !delivered){ toast('Generate the Delivery Challan first'); return; }
+  currentStep=step; updateStepper();
+}
 
-document.addEventListener("DOMContentLoaded", function(){
-    initDeliveryReceipt();
-});
+/* ---------- review ---------- */
+function renderReview(){
+  var e=quoteE(), g=function(id){ return G(id).value||'—'; };
+  var tbl=function(rows){ return '<table class="review-table">'+rows.map(function(r){ return '<tr><td>'+r[0]+'</td><td>'+(r[1]||'—')+'</td></tr>'; }).join('')+'</table>'; };
+  var card=function(t,step,rows){ return '<div class="card review-section"><div class="review-header"><strong>'+t+'</strong>'+(delivered?'':'<span class="review-edit" onclick="goToStep('+step+')">Edit</span>')+'</div>'+tbl(rows)+'</div>'; };
+  var total=e.finalDealAmount||0;
+  G('reviewBody').innerHTML=
+   card('Customer',4,[['Name',(g('deliveryFirstName')+' '+g('deliveryLastName')).replace(/—/g,'').trim()],['Relation',g('deliveryRelation')+' '+g('deliveryRelationName')],['Contact',g('deliveryContactNo')],['Address',[G('deliveryAddress').value,G('deliveryTahsil').value,G('deliveryDistrict').value,G('deliveryState').value,G('deliveryPincode').value].filter(Boolean).join(', ')],['DSE',g('deliveryDSE')],['Nominee',(G('nomineeName').value||'—')+' ('+(G('nomineeRelation').value||'—')+', '+(G('nomineeAge').value||'—')+')']])+
+   card('Vehicle & VIN',3,[['Model',g('deliveryModel')],['Variant',(selectedVehicle||{}).variant],['Colour',(selectedVehicle||{}).colour],['VIN',g('deliveryVinNo')],['Engine No',g('deliveryEngineNo')],['SKU',g('deliverySKU')],['Battery / Key',g('batteryNo')+' / '+g('keyNo')]])+
+   card('Purchase & RTO',4,[['Purchase Type',g('deliveryPurchaseType')],['Financier',G('deliveryFinancierName').value||'—'],['RTO District',g('deliveryRtoDistrict')],['RTO OTP Status',g('rtoOtpStatus')],['RTO Application No',g('rtoApplicationNumber')]])+
+   card('Commercial',1,[['Quotation',CTX.quote?CTX.quote.number:'—'],['Ex-Price',g('deliveryExPrice')],['On-Road Price',money(e.onRoadPrice)],['Final Deal Amount',money(total)]]);
+  var chk=[['Customer details complete',!!(G('deliveryFirstName').value&&/^\d{10}$/.test(G('deliveryContactNo').value)&&G('deliveryAddress').value)],
+   ['Vehicle selected',!!(selectedVehicle&&selectedVehicle.model)],['VIN allocated',!!(selectedVIN&&selectedVIN.vin)],['Nominee captured',!!(G('nomineeName').value&&G('nomineeAge').value)],
+   ['Battery & key captured',!!(G('batteryNo').value&&G('keyNo').value)],['RTO district selected',!!G('deliveryRtoDistrict').value],['Final amount confirmed',total>0]];
+  G('reviewChecklist').innerHTML=chk.map(function(c){ return '<div class="check-item"><div class="check-icon" style="'+(c[1]?'':'background:#dc2626')+'">'+(c[1]?'✓':'!')+'</div> '+c[0]+'</div>'; }).join('');
+  G('btnGenerateChallan').disabled=delivered; G('btnGenerateChallan').textContent=delivered?'✓ DELIVERY CHALLAN GENERATED — '+(DELIVERY&&DELIVERY.deliveryReceiptNo):'✓ GENERATE DELIVERY CHALLAN';
+}
+
+/* ---------- confirm / save ---------- */
+function openBookingConfirmation(){
+  var r=validateDelivery(); if(!r.ok){ failTo(r); return; }
+  var e=quoteE();
+  G('bookingSummary').innerHTML=[['Customer',(G('deliveryFirstName').value+' '+G('deliveryLastName').value)],['Model',G('deliveryModel').value],['VIN',G('deliveryVinNo').value],['Engine No',G('deliveryEngineNo').value],['Purchase',G('deliveryPurchaseType').value+(G('deliveryFinancierName').value?' · '+G('deliveryFinancierName').value:'')],['Final Deal Amount',money(e.finalDealAmount)]].map(function(r){ return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'; }).join('');
+  G('bookingModal').classList.add('show');
+}
+function collectDelivery(no){
+  var o={}; ['deliveryDSE','deliveryRelation','deliveryFirstName','deliveryLastName','deliveryRelationName','deliveryContactNo','deliveryMailId','deliveryAddress','deliveryState','deliveryDistrict','deliveryTahsil','deliveryPincode','nomineeName','nomineeRelation','nomineeAge','batteryNo','keyNo','deliveryPurchaseType','deliveryFinancierName','deliveryRtoDistrict','rtoOtpStatus','rtoApplicationNumber'].forEach(function(id){ o[id]=(G(id).value||'').trim(); });
+  var e=quoteE(), rec=getStock().find(function(s){ return s.vin===selectedVIN.vin; })||{};
+  return Object.assign(o,{deliveryReceiptNo:no, date:G('deliveryDate').value, quotationNo:TXN_ID, customerId:(CTX.customer||{}).id||'',
+    vinNo:rec.vin, vinLast7:rec.vin.slice(-7), engineNo:rec.engine, sku:rec.sku, model:rec.model, variant:rec.variant, colour:rec.color, exPrice:rec.exPrice,
+    finalDealAmount:e.finalDealAmount||0, onRoadPrice:e.onRoadPrice||0, status:'DELIVERED', savedAt:new Date().toISOString()});
+}
+function confirmBooking(){
+  if(_confirming||delivered) return; _confirming=true; setTimeout(function(){ _confirming=false; },1500);
+  var r=validateDelivery(); if(!r.ok){ G('bookingModal').classList.remove('show'); failTo(r); return; }
+  var list=heroLS('hero_deliveries',[]), seq=heroNextSeq('hero_delivery_seq'), no=heroDocNo('DR',seq);
+  while(list.some(function(d){ return d.deliveryReceiptNo===no; })){ seq=heroNextSeq('hero_delivery_seq'); no=heroDocNo('DR',seq); }
+  DELIVERY=collectDelivery(no); list.unshift(DELIVERY); heroSetLS('hero_deliveries',list);
+  var stock=getStock(), rec=stock.find(function(s){ return s.vin===DELIVERY.vinNo; });
+  rec.allocationStatus='Delivered'; rec.stnStatus='Delivered'; rec.txn=''; rec.deliveryNo=no; rec.deliveredAt=new Date().toISOString(); saveStock(stock);
+  setV('deliveryReceiptNo',no);
+  /* sync quotation / enquiry status */
+  var qs=heroLS('hero_quotes',[]); qs.forEach(function(q){ if(q.number===TXN_ID){ q.status='SOLD'; if(q.excelEnquiry) q.excelEnquiry.enquiryStatus='SOLD'; } }); heroSetLS('hero_quotes',qs);
+  var en=heroLS('hero_enquiries',[]); en.forEach(function(x){ if(x.quotationNo===TXN_ID) x.enquiryStatus='SOLD'; }); heroSetLS('hero_enquiries',en);
+  heroAudit('CREATE','DeliveryChallan',no,DELIVERY.vinNo); heroAudit('DELIVER','VIN',DELIVERY.vinNo,no);
+  delivered=true; lockDelivery(); G('bookingModal').classList.remove('show'); G('finalBookingNo').textContent=no; G('successModal').classList.add('show');
+  G('bookingNo').textContent=no; G('topStatus').textContent='DELIVERED'; showAllocation(); renderReview();
+}
+function lockDelivery(){
+  for(var i=1;i<=5;i++){ document.querySelectorAll('#step'+i+' input,#step'+i+' select,#step'+i+' textarea').forEach(function(el){ el.disabled=true; }); }
+  var vb=document.querySelector('#step3 button'); G('topStatus').textContent='DELIVERED'; if(DELIVERY){ G('bookingNo').textContent=DELIVERY.deliveryReceiptNo; setV('deliveryReceiptNo',DELIVERY.deliveryReceiptNo); }
+}
+function closeBookingConfirmation(){ G('bookingModal').classList.remove('show'); }
+function closeSuccess(){ G('successModal').classList.remove('show'); }
+function openDocsFromSuccess(){ closeSuccess(); goToStep(6); }
+
+/* ---------- Receipt & Gate Pass (BRD 6.4) ---------- */
+function showDocTab(t){ G('docRc').style.display=t==='rc'?'block':'none'; G('docGp').style.display=t==='gp'?'block':'none'; G('tabRc').className='btn '+(t==='rc'?'btn-primary':'btn-secondary'); G('tabGp').className='btn '+(t==='gp'?'btn-primary':'btn-secondary'); }
+function initDocs(){
+  if(!DELIVERY) return; var name=(DELIVERY.deliveryFirstName+' '+DELIVERY.deliveryLastName).trim();
+  var rcs=heroLS('hero_receipts',[]).find(function(r){ return r.deliveryNo===DELIVERY.deliveryReceiptNo; });
+  var gps=heroLS('hero_gatepasses',[]).find(function(r){ return r.deliveryNo===DELIVERY.deliveryReceiptNo; });
+  setV('rcNo', rcs?rcs.receiptNo:heroDocNo('RC',heroPeekSeq('hero_receipt_seq'))); setV('rcDate', new Date().toLocaleDateString('en-IN'));
+  setV('rcCustomer',name); setV('rcVin',DELIVERY.vinNo); setV('rcModel',DELIVERY.model); setV('rcExPrice',money(DELIVERY.exPrice));
+  if(rcs){ [['rcRto','rto'],['rcInsurance','insurance'],['rcNeom','neom'],['rcFuel','fuel'],['rcSt','st'],['rcRent','rent']].forEach(function(p){ setV(p[0],rcs[p[1]]||''); }); }
+  setV('gpNo', gps?gps.gatePassNo:heroDocNo('GP',heroPeekSeq('hero_gatepass_seq'))); setV('gpCustomer',name); setV('gpModel',DELIVERY.model); setV('gpVin',DELIVERY.vinNo);
+  setV('gpEngine',DELIVERY.engineNo); setV('gpKey',DELIVERY.keyNo); setV('gpDse',DELIVERY.deliveryDSE); if(gps) setV('gpFuel',gps.fuel||'');
+  rcTotal(); if(!G('docRc').dataset.shown){ showDocTab('rc'); G('docRc').dataset.shown='1'; }
+}
+function rcTotal(){ var t=(DELIVERY?DELIVERY.exPrice:0); document.querySelectorAll('.rc-amt').forEach(function(i){ i.value=i.value.replace(/[^\d.]/g,''); t+=parseFloat(i.value)||0; }); setV('rcTotalField',money(t)); return t; }
+function generateReceipt(btn){ heroGuard(btn,function(){
+  if(!delivered||!DELIVERY){ toast('Generate the Delivery Challan first'); return; }
+  var list=heroLS('hero_receipts',[]), idx=list.findIndex(function(r){ return r.deliveryNo===DELIVERY.deliveryReceiptNo; });
+  var no = idx>-1?list[idx].receiptNo:heroDocNo('RC',heroNextSeq('hero_receipt_seq'));
+  var rec={receiptNo:no,deliveryNo:DELIVERY.deliveryReceiptNo,customer:G('rcCustomer').value,vin:DELIVERY.vinNo,model:DELIVERY.model,exPrice:DELIVERY.exPrice,rto:G('rcRto').value,insurance:G('rcInsurance').value,neom:G('rcNeom').value,fuel:G('rcFuel').value,st:G('rcSt').value,rent:G('rcRent').value,total:rcTotal(),date:new Date().toISOString()};
+  if(idx>-1) list[idx]=rec; else list.unshift(rec); heroSetLS('hero_receipts',list); setV('rcNo',no); heroAudit(idx>-1?'UPDATE':'CREATE','Receipt',no,DELIVERY.deliveryReceiptNo); toast('Receipt '+no+' saved'); }); }
+function generateGatePass(btn){ heroGuard(btn,function(){
+  if(!delivered||!DELIVERY){ toast('Generate the Delivery Challan first'); return; }
+  var list=heroLS('hero_gatepasses',[]), idx=list.findIndex(function(r){ return r.deliveryNo===DELIVERY.deliveryReceiptNo; });
+  var no = idx>-1?list[idx].gatePassNo:heroDocNo('GP',heroNextSeq('hero_gatepass_seq'));
+  var rec={gatePassNo:no,deliveryNo:DELIVERY.deliveryReceiptNo,customer:G('gpCustomer').value,model:DELIVERY.model,vin:DELIVERY.vinNo,engine:DELIVERY.engineNo,key:DELIVERY.keyNo,fuel:G('gpFuel').value,dse:DELIVERY.deliveryDSE,date:new Date().toISOString()};
+  if(idx>-1) list[idx]=rec; else list.unshift(rec); heroSetLS('hero_gatepasses',list); setV('gpNo',no); heroAudit(idx>-1?'UPDATE':'CREATE','GatePass',no,DELIVERY.deliveryReceiptNo); toast('Gate Pass '+no+' saved'); }); }
+function markExited(btn){ heroGuard(btn,function(){
+  if(!heroLS('hero_gatepasses',[]).some(function(r){ return DELIVERY && r.deliveryNo===DELIVERY.deliveryReceiptNo; })){ toast('Generate the Gate Pass first'); return; }
+  var l=heroLS('hero_deliveries',[]); l.forEach(function(d){ if(DELIVERY && d.deliveryReceiptNo===DELIVERY.deliveryReceiptNo){ d.status='COMPLETED'; d.exitedAt=new Date().toISOString(); } }); heroSetLS('hero_deliveries',l);
+  heroAudit('EXIT','Vehicle',DELIVERY.vinNo,DELIVERY.deliveryReceiptNo); G('topStatus').textContent='COMPLETED'; toast('Vehicle exit recorded — transaction completed'); }); }
+
+/* ---------- documents: preview before print, WhatsApp ---------- */
+function docHtml(t){
+  var d=DELIVERY; if(!d) return '';
+  var row=function(a,b){ return '<tr><td style="padding:5px 8px;border:1px solid #ccc;width:36%;color:#555">'+a+'</td><td style="padding:5px 8px;border:1px solid #ccc"><b>'+(b||'—')+'</b></td></tr>'; };
+  var head=function(title,no){ return '<h2 style="color:#e31837;margin:0">Hero Dealership</h2><div style="font-size:15px;margin:2px 0 2px"><b>'+title+'</b></div><div style="color:#555;margin-bottom:10px">'+no+' · '+new Date().toLocaleDateString('en-IN')+'</div>'; };
+  var sign=function(a,b){ return '<div style="display:flex;justify-content:space-between;margin-top:50px"><span>'+a+'</span><span>'+b+'</span></div>'; };
+  var name=(d.deliveryFirstName+' '+d.deliveryLastName).trim();
+  if(t==='dc') return dcHtml(d,name);
+  if(t==='rc') return '<div style="font-family:Arial;font-size:12px">'+head('Receipt',G('rcNo').value)+'<table style="width:100%;border-collapse:collapse">'+row('Customer',G('rcCustomer').value)+row('VIN No',G('rcVin').value)+row('Model',G('rcModel').value)+row('Ex-Price',G('rcExPrice').value)+row('RTO',G('rcRto').value)+row('Insurance',G('rcInsurance').value)+row('NEOM',G('rcNeom').value)+row('Fuel',G('rcFuel').value)+row('ST & Other',G('rcSt').value)+row('Rent Agreement',G('rcRent').value)+row('Total',G('rcTotalField').value)+'</table>'+sign('Customer Signature','Authorised Signatory')+'</div>';
+  return '<div style="font-family:Arial;font-size:12px">'+head('Gate Pass',G('gpNo').value)+'<table style="width:100%;border-collapse:collapse">'+row('Customer Name',G('gpCustomer').value)+row('Model',G('gpModel').value)+row('VIN No',G('gpVin').value)+row('Engine No',G('gpEngine').value)+row('Key No',G('gpKey').value)+row('Fuel',G('gpFuel').value)+row('DSE Name',G('gpDse').value)+'</table>'+sign('Security / Gate','Authorised Sign')+'</div>';
+}
+
+/* ---------- Delivery Challan layout (print-friendly, one A4 page) ---------- */
+function dcEsc(v){ return String(v==null?'':v).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function dcHtml(d,name){
+  var R=function(k,v){ v=(v===undefined||v===null||String(v).trim()==='')?'—':v; return '<div class="dc-row"><span>'+k+'</span><b>'+dcEsc(v)+'</b></div>'; };
+  var card=function(title,rows,cls){ return '<div class="dc-card'+(cls?' '+cls:'')+'"><h4>'+title+'</h4>'+rows.join('')+'</div>'; };
+  var ID=function(k,v){ return '<div class="dc-id"><div class="k">'+k+'</div><div class="v">'+dcEsc(v||'—')+'</div></div>'; };
+  var dt=d.date?new Date(d.date):new Date(); if(isNaN(dt)) dt=new Date();
+  var date=dt.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  var rel=[d.deliveryRelation,d.deliveryRelationName].filter(Boolean).join(' ');
+  var addr=[d.deliveryAddress,d.deliveryTahsil,d.deliveryDistrict,d.deliveryState,d.deliveryPincode].filter(Boolean).join(', ');
+  var purchase=d.deliveryPurchaseType==='FINANCE'?'Finance':(d.deliveryPurchaseType==='CASH'?'Cash':(d.deliveryPurchaseType||''));
+  var purRows=[R('Purchase type',purchase)];
+  if(d.deliveryFinancierName) purRows.push(R('Financier',d.deliveryFinancierName));
+  purRows.push(R('Ex-showroom price',money(d.exPrice)),R('RTO district',d.deliveryRtoDistrict),R('RTO OTP',d.rtoOtpStatus),R('Application no.',d.rtoApplicationNumber));
+  return '<div class="dc">'
+   +'<div class="dc-top"><div class="dc-brand"><div class="dc-logo">H</div><div><div class="dc-name">Hero Dealership</div><div class="dc-tag">Vehicle Delivery Document</div></div></div>'
+   +'<div class="dc-meta"><div class="dc-title">DELIVERY CHALLAN</div><div class="dc-pills"><span class="dc-pill">Challan No.<b>'+dcEsc(d.deliveryReceiptNo)+'</b></span><span class="dc-pill">Date<b>'+date+'</b></span></div></div></div>'
+   +'<div class="dc-vehicle"><div class="dc-vhead"><div><div class="k">Vehicle delivered</div><div class="v">'+dcEsc(d.model)+'</div></div><div class="sub">'+dcEsc([d.variant,d.colour].filter(Boolean).join(' · '))+'</div></div>'
+   +'<div class="dc-ids">'+ID('VIN / Chassis',d.vinNo)+ID('Engine no.',d.engineNo)+ID('Battery no.',d.batteryNo)+ID('Key no.',d.keyNo)+'</div></div>'
+   +'<div class="dc-grid">'
+   +card('Customer',[R('Name',name),R('Relation',rel),R('Mobile',d.deliveryContactNo),R('Address',addr)])
+   +card('Purchase &amp; Registration',purRows)
+   +card('Nominee &amp; Handover',[R('Nominee',d.nomineeName),R('Relation',d.nomineeRelation),R('Age',d.nomineeAge?d.nomineeAge+' yrs':''),R('Sales executive',d.deliveryDSE)],'full')
+   +'</div>'
+   +'<div class="dc-note">I confirm that I have received the vehicle described above, with its keys, in good condition.</div>'
+   +'<div class="dc-sign"><div>Customer Signature</div><div>Authorised Signatory</div></div>'
+   +'<div class="dc-foot">Thank you for choosing Hero Dealership · Customer copy</div>'
+   +'</div>';
+}
+function printDoc(){
+  document.body.classList.add('printing-doc');
+  var done=function(){ document.body.classList.remove('printing-doc'); window.removeEventListener('afterprint',done); };
+  window.addEventListener('afterprint',done);
+  window.print();
+}
+function previewDoc(t){ if(!delivered){ toast('Generate the Delivery Challan first'); return; } G('docBody').innerHTML=docHtml(t); G('docModal').classList.add('show'); }
+function closeDoc(){ G('docModal').classList.remove('show'); }
+function printBooking(){ previewDoc('dc'); }
+function shareDoc(t){
+  if(!delivered){ toast('Generate the Delivery Challan first'); return; }
+  var no= t==='rc'?G('rcNo').value : t==='gp'?G('gpNo').value : DELIVERY.deliveryReceiptNo, label=t==='rc'?'Receipt':t==='gp'?'Gate Pass':'Delivery Challan';
+  var msg='Hello '+DELIVERY.deliveryFirstName+', your '+label+' ('+no+') for '+DELIVERY.model+' (VIN '+DELIVERY.vinNo+') is ready. Thank you for choosing Hero Dealership.';
+  window.open('https://wa.me/91'+DELIVERY.deliveryContactNo+'?text='+encodeURIComponent(msg),'_blank');
+}
+
+/* ---------- toast ---------- */
+function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(window._tt); window._tt=setTimeout(function(){ t.classList.remove('show'); },2600); }
+
+/* ---------- INIT ---------- */
+RTO_LIST=[];
+seedStock(); loadContext(); updateStepper();
+if(/[?&]view=challan/.test(location.search) && delivered && DELIVERY){ setTimeout(function(){ previewDoc('dc'); },200); }
+
 </script>
 
+<div id="toast"></div>
 </body>
 </html>
  
